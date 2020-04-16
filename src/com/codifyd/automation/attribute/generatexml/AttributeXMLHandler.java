@@ -1,4 +1,4 @@
-package com.codifyd.automation.attribute.excel;
+package com.codifyd.automation.attribute.generatexml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;

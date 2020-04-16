@@ -2,7 +2,7 @@ package com.codifyd.automation.util;
 
 import java.util.Scanner;
 
-import com.codifyd.automation.attribute.excel.AttributeXMLHandler;
+import com.codifyd.automation.attribute.generatexml.AttributeXMLHandler;
 
 
 public class SharedHelper {

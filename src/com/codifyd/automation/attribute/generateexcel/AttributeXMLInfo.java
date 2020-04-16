@@ -1,10 +1,9 @@
-package com.codifyd.automation.attribute.excel;
+package com.codifyd.automation.attribute.generateexcel;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class AttributeInfo {
+public class AttributeXMLInfo {
 
 	private String AttributeID;
 	private String AttributeName;
@@ -33,8 +32,7 @@ public class AttributeInfo {
 	private String Validity;
 	private String LinkType;
 	private Map<String, String> attributeMetadata;
-	
-	
+
 	public Map<String, String> createMetadatMap() {
 		return new LinkedHashMap<String, String>();
 	}

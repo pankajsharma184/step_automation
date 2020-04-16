@@ -6,7 +6,7 @@
 //
 
 
-package com.codifyd.automation.attribute.excel;
+package com.codifyd.automation.attribute.generateexcel;
 
 import java.io.Serializable;
 import java.util.ArrayList;

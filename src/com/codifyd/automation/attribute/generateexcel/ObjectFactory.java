@@ -6,7 +6,7 @@
 //
 
 
-package com.codifyd.automation.attribute.excel;
+package com.codifyd.automation.attribute.generateexcel;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
