@@ -6,17 +6,15 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/poi-3.16.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/apache-logging-log4j.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/commons-collections4-4.1.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/dom4j-1.6.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/javax.activation-api-1.2.0.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/jaxb-api-2.3.0.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/jaxb-core-2.3.0.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/jaxb-impl-2.2.6.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/jaxb-xjc-2.2.7.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/poi-ooxml-3.16.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/poi-ooxml-schemas-3.7-beta1.jar"/>
-	<classpathentry kind="lib" path="C:/DIUP-Documents/jars/poi-ooxml-schemas-3.16.jar"/>
+	<classpathentry kind="lib" path="public/jars/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="public/jars/jaxb-api-2.1.jar"/>
+	<classpathentry kind="lib" path="public/jars/jaxb-impl-2.2.2.jar"/>
+	<classpathentry kind="lib" path="public/jars/poi-3.16.jar"/>
+	<classpathentry kind="lib" path="public/jars/poi-examples-3.16.jar"/>
+	<classpathentry kind="lib" path="public/jars/poi-excelant-3.16.jar"/>
+	<classpathentry kind="lib" path="public/jars/poi-ooxml-3.16.jar"/>
+	<classpathentry kind="lib" path="public/jars/poi-ooxml-schemas-3.16.jar"/>
+	<classpathentry kind="lib" path="public/jars/poi-scratchpad-3.16.jar"/>
+	<classpathentry kind="lib" path="public/jars/xmlbeans-2.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
