@@ -1,9 +1,11 @@
-package com.codifyd.automation.attribute.generateexcel;
+package com.codifyd.automation.attribute;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-public class AttributeXMLInfo {
+public class AttributeInfo {
 
 	private String AttributeID;
 	private String AttributeName;
@@ -11,7 +13,9 @@ public class AttributeXMLInfo {
 	private String ExternallyMaitained;
 	private String CompletenessScore;
 	private String HierarchialFiltering;
+	private String ClassificationHierarchialFiltering;
 	private String Calculated;
+	private String ValueTemplate;
 	private String Type;
 	private String Dimension_Dependencies;
 	private String Mandatory;
@@ -29,10 +33,12 @@ public class AttributeXMLInfo {
 	private String Default_Unit_Name;
 	private String Default_Unit_Description;
 	private String Attribute_Group_Reference_ID;
+	private String Attribute_Group_Reference_Name;
 	private String Validity;
 	private String LinkType;
 	private Map<String, String> attributeMetadata;
-
+	
+	
 	public Map<String, String> createMetadatMap() {
 		return new LinkedHashMap<String, String>();
 	}
@@ -122,6 +128,20 @@ public class AttributeXMLInfo {
 	}
 
 	/**
+	 * @return the classificationHierarchialFiltering
+	 */
+	public String getClassificationHierarchialFiltering() {
+		return ClassificationHierarchialFiltering;
+	}
+
+	/**
+	 * @param classificationHierarchialFiltering the classificationHierarchialFiltering to set
+	 */
+	public void setClassificationHierarchialFiltering(String classificationHierarchialFiltering) {
+		ClassificationHierarchialFiltering = classificationHierarchialFiltering;
+	}
+
+	/**
 	 * @return the calculated
 	 */
 	public String getCalculated() {
@@ -133,6 +153,20 @@ public class AttributeXMLInfo {
 	 */
 	public void setCalculated(String calculated) {
 		Calculated = calculated;
+	}
+
+	/**
+	 * @return the valueTemplate
+	 */
+	public String getValueTemplate() {
+		return ValueTemplate;
+	}
+
+	/**
+	 * @param valueTemplate the valueTemplate to set
+	 */
+	public void setValueTemplate(String valueTemplate) {
+		ValueTemplate = valueTemplate;
 	}
 
 	/**
@@ -374,6 +408,20 @@ public class AttributeXMLInfo {
 	}
 
 	/**
+	 * @return the attribute_Group_Reference_Name
+	 */
+	public String getAttribute_Group_Reference_Name() {
+		return Attribute_Group_Reference_Name;
+	}
+
+	/**
+	 * @param attribute_Group_Reference_Name the attribute_Group_Reference_Name to set
+	 */
+	public void setAttribute_Group_Reference_Name(String attribute_Group_Reference_Name) {
+		Attribute_Group_Reference_Name = attribute_Group_Reference_Name;
+	}
+
+	/**
 	 * @return the validity
 	 */
 	public String getValidity() {
@@ -386,6 +434,8 @@ public class AttributeXMLInfo {
 	public void setValidity(String validity) {
 		Validity = validity;
 	}
+
+	
 
 	/**
 	 * @return the linkType

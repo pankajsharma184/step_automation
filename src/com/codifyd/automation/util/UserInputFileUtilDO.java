@@ -4,6 +4,8 @@ public class UserInputFileUtilDO {
 	String inputPath;
 	String outputPath;
 	String filename;
+	String propertiesFile;
+	String delimeters;
 	public String getInputPath() {
 		return inputPath;
 	}
@@ -21,6 +23,18 @@ public class UserInputFileUtilDO {
 	}
 	public void setFilename(String filename) {
 		this.filename = filename;
+	}
+	public String getPropertiesFile() {
+		return propertiesFile;
+	}
+	public void setPropertiesFile(String propertiesFile) {
+		this.propertiesFile = propertiesFile;
+	}
+	public String getDelimeters() {
+		return delimeters;
+	}
+	public void setDelimeters(String delimeters) {
+		this.delimeters = delimeters;
 	}
 	
 	
