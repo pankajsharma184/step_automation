@@ -41,20 +41,20 @@ public class LOVExcelHandler {
 
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
 		File outputFile = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
-		File property = new File(userInputFileUtilDO.getPropertiesFile());
+		Properties properties = userInputFileUtilDO.getPropertiesFile();
 
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, property);
+			writeExcel(objectFactory, outputFile, properties);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void writeExcel(STEPProductInformation objectFactory, File outputFile, File property)
+	public static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties)
 			throws IOException, IOException {
 
 		// Create blank workbook
@@ -65,10 +65,6 @@ public class LOVExcelHandler {
 		XSSFRow row;
 		// Excel cell color
 		XSSFCellStyle cellStyle = null;
-
-		// Create Property Object and Load Properties File
-		Properties properties = new Properties();
-		properties.load(new FileInputStream(property));
 
 		// Create Header List From Properties File
 		TreeMap<Integer, String> propertyMap = new TreeMap<Integer, String>();

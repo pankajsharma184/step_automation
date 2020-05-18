@@ -51,14 +51,14 @@ public class AttributeExcelHandler {
 //		Map<String, AttributeXMLInfo> inputValues = new HashMap();
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
 		File outputFile = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
-		File proerty = new File(userInputFileUtilDO.getPropertiesFile());
+		Properties properties = userInputFileUtilDO.getPropertiesFile();
 		String delimeterString = userInputFileUtilDO.getDelimeters();
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, proerty, delimeterString);
+			writeExcel(objectFactory, outputFile, properties, delimeterString);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -70,13 +70,10 @@ public class AttributeExcelHandler {
 		}
 	}
 
-	private static void writeExcel(STEPProductInformation objectFactory, File file, File config, String delim)
+	private static void writeExcel(STEPProductInformation objectFactory, File file, Properties prop, String delim)
 			throws FileNotFoundException, IOException {
 
 		// accessing data from properties file
-		FileInputStream inputStream = new FileInputStream(config);
-		Properties prop = new Properties();
-		prop.load(inputStream);
 		Set<String> metaDataHeaderAttributes = new HashSet<String>();
 		ArrayList<Integer> al = new ArrayList<Integer>();
 		for (String key : prop.stringPropertyNames()) {

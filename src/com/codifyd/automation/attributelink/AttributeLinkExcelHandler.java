@@ -41,13 +41,13 @@ public class AttributeLinkExcelHandler {
 //		Map<String, AttributeXMLInfo> inputValues = new HashMap();
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
 		File outputFile = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
-		File proerty = new File(userInputFileUtilDO.getPropertiesFile());
+		Properties properties = userInputFileUtilDO.getPropertiesFile();
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, proerty);
+			writeExcel(objectFactory, outputFile, properties);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -60,7 +60,7 @@ public class AttributeLinkExcelHandler {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, File property)
+	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties)
 			throws FileNotFoundException, IOException {
 
 		// Create blank workbook
@@ -71,10 +71,6 @@ public class AttributeLinkExcelHandler {
 		XSSFRow row;
 		// Excel cell color
 		XSSFCellStyle cellStyle = null;
-
-		// Create Property Object and Load Properties File
-		Properties properties = new Properties();
-		properties.load(new FileInputStream(property));
 
 		// Create Header List From Properties File
 		TreeMap<Integer, String> propertyMap = new TreeMap<Integer, String>();

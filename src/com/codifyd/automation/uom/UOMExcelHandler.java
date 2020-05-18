@@ -1,12 +1,14 @@
 package com.codifyd.automation.uom;
 
+import static com.codifyd.automation.uom.UOMXMLReader.familyHandler;
+import static com.codifyd.automation.uom.UOMXMLReader.unitHandler;
+import static com.codifyd.automation.uom.UOMXMLReader.getMetaDataValue;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -29,25 +31,24 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.STEPProductInformation;
-import com.codifyd.stepxsd.TrueFalseType;
-import com.codifyd.stepxsd.UnitConversionType;
 import com.codifyd.stepxsd.UnitFamilyType;
 import com.codifyd.stepxsd.UnitType;
 import com.codifyd.stepxsd.ValueType;
 
-public class UomExcelHandler {
+public class UOMExcelHandler {
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws IOException {
 
 //		Map<String, AttributeXMLInfo> inputValues = new HashMap();
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
-		File outputFile = new File(userInputFileUtilDO.getOutputPath()+"\\"+userInputFileUtilDO.getFilename());
-		File proerty = new File(userInputFileUtilDO.getPropertiesFile());
+		File outputFile = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
+		Properties properties = userInputFileUtilDO.getPropertiesFile();
+		String delimeter = userInputFileUtilDO.getDelimeters();
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, proerty);
+			writeExcel(objectFactory, outputFile, properties, delimeter);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -59,7 +60,8 @@ public class UomExcelHandler {
 		}
 	}
 
-	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, File property)
+	@SuppressWarnings("deprecation")
+	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties, String delim)
 			throws FileNotFoundException, IOException {
 
 		// Create blank workbook
@@ -71,10 +73,6 @@ public class UomExcelHandler {
 		// Excel cell color
 		XSSFCellStyle cellStyle = null;
 
-		// Create Property Object and Load Properties File
-		Properties properties = new Properties();
-		properties.load(new FileInputStream(property));
-
 		// Create Header List From Properties File
 		TreeMap<Integer, String> propertyMap = new TreeMap<Integer, String>();
 		for (String key : properties.stringPropertyNames()) {
@@ -82,16 +80,29 @@ public class UomExcelHandler {
 		}
 
 		ArrayList<String> headerList = new ArrayList<String>();
-		for (Entry ent : propertyMap.entrySet()) {
+		for (Entry<Integer, String> ent : propertyMap.entrySet()) {
 			headerList.add(ent.getValue().toString());
 		}
 
 		// Metadata Header List
 		HashSet<String> metaHeader = new HashSet<String>();
-		for (Object unitList : objectFactory.getUnitList().getUnitFamilyOrUnit()) {
-			for (UnitType unit : ((UnitFamilyType) unitList).getUnit()) {
-				for (Object value : unit.getMetaData().getValueOrMultiValueOrValueGroup()) {
-					metaHeader.add(((ValueType) value).getAttributeID());
+		List<Object> unitList = objectFactory.getUnitList().getUnitFamilyOrUnit();
+		for (Object object1 : unitList) {
+			if (object1 instanceof UnitFamilyType) {
+				List<UnitType> unitType = ((UnitFamilyType) object1).getUnit();
+				for (UnitType unit : unitType) {
+					if (unit.getMetaData() != null && unit.getMetaData().getValueOrMultiValueOrValueGroup() != null) {
+						for (Object value : unit.getMetaData().getValueOrMultiValueOrValueGroup()) {
+							metaHeader.add(((ValueType) value).getAttributeID());
+						}
+					}
+				}
+			} else if (unitList instanceof UnitType) {
+				if (((UnitType) unitList).getMetaData() != null
+						&& ((UnitType) unitList).getMetaData().getValueOrMultiValueOrValueGroup() != null) {
+					for (Object value : ((UnitType) unitList).getMetaData().getValueOrMultiValueOrValueGroup()) {
+						metaHeader.add(((ValueType) value).getAttributeID());
+					}
 				}
 			}
 		}
@@ -106,75 +117,37 @@ public class UomExcelHandler {
 		int i = 0;
 
 		// Create UomMap Store Uom Info
-		Map<Integer, List<String>> uomMap = new TreeMap<Integer, List<String>>();
+		TreeMap<Integer, List<String>> uomMap = new TreeMap<Integer, List<String>>();
 		uomMap.put(i, headerList);
 
-		for (Object family : objectFactory.getUnitList().getUnitFamilyOrUnit()) {
-			String unitGroupId = ((UnitFamilyType) family).getID();
-			String unitGroupName = ((UnitFamilyType) family).getName().get(0).getContent();
-			String conversionFactor = "";
-			String conversionoffset = "";
-			String conversionBaseUnitId = "";
-			for (UnitType unit : ((UnitFamilyType) family).getUnit()) {
-				i++;
-				List<String> data = new ArrayList<String>();
-				Map<String, String> map = new HashMap<String, String>();
-				
-				
-				String unitId = unit.getID();
-				String unitName = unit.getName().get(0).getContent();
-				String reference=unit.isReferenced()?TrueFalseType.TRUE.toString() : TrueFalseType.FALSE.toString();
+		List<Object> unitListType = objectFactory.getUnitList().getUnitFamilyOrUnit();
+		Object[] args = new Object[] { i, (List<Object>) unitListType, headerList, uomMap, metadataMap, delim };
+		i = familyHandler(args);
+		System.out.println(i);
+		Object[] args2 = new Object[] { i, (List<Object>) unitListType, headerList, uomMap, metadataMap, delim, "",
+				"" };
+		i = unitHandler(args2);
+		System.out.println(i);
 
-				if (null != unit.getUnitConversion()) {
-					UnitConversionType conversion = unit.getUnitConversion();
-					conversionFactor = conversion.getFactor();
-					conversionoffset = conversion.getOffset();
-					conversionBaseUnitId = conversion.getBaseUnitID();
-				}
-
-				for (Object metaDataValue : unit.getMetaData().getValueOrMultiValueOrValueGroup()) {
-					String id = ((ValueType) metaDataValue).getAttributeID();
-					String value = ((ValueType) metaDataValue).getContent();
-					map.put(id, value);
-				}
-
-				metadataMap.put(unitId, map);
-
-				data.add(unitId);
-				data.add(unitName);
-				data.add(unitGroupId);
-				data.add(unitGroupName);
-				data.add(reference);
-				data.add(conversionBaseUnitId);
-				data.add(conversionFactor);
-				data.add(conversionoffset);
-
-				for (int index = data.size(); index <= headerList.size(); index++) {
-					data.add("");
-				}
-
-				uomMap.put(i, data);
-
-			}
-		}
-		
 		for (Entry<Integer, List<String>> entrySet : uomMap.entrySet()) {
 			Integer rowNum = entrySet.getKey();
 			if (rowNum > 0) {
-				String attrID = (String) entrySet.getValue().get(0);
-				if (metadataMap.containsKey(attrID)) {
-					Map<String, String> metadataValues = metadataMap.get(attrID);
-					List uomData = entrySet.getValue();
-					for (Map.Entry<String, String> itr : metadataValues.entrySet()) {
-						String metaAttrID = itr.getKey();
-						String metaAttrValue = itr.getValue();
-						int index = headerList.indexOf(metaAttrID);
-						uomData.add(index, metaAttrValue);
-					}
+				List<String> obj = entrySet.getValue();
+				String key1 = (String) obj.get(0) + obj.get(2);
+//				String key2 = (String) entrySet.getValue().get(0);
+				if (metadataMap.containsKey(key1)) {
+					Map<String, String> metadataValues = metadataMap.get(key1);
+					List<String> uomData = entrySet.getValue();
+					getMetaDataValue(metadataValues, uomData, headerList);
+
+//				} else if (metadataMap.containsKey(key2)) {
+//					Map<String, String> metadataValues = metadataMap.get(key1);
+//					List<String> uomData = entrySet.getValue();
+//					getMetaDataValue(metadataValues, uomData, headerList);
 				}
 			}
 		}
-		
+
 		Set<Integer> keyid = uomMap.keySet();
 		int rowid = 0;
 		for (Integer key : keyid) {
