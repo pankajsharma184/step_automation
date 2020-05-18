@@ -87,7 +87,7 @@ public class SharedHelper {
 				} else if (str.equals(UOM)) {
 					prop = sh.getFileFromResources("/resources/uom-config.properties");
 				} else {
-					prop = sh.getFileFromResources("/resourcestaxonomy-config.properties");
+					prop = sh.getFileFromResources("/resources/taxonomy-config.properties");
 				}
 			} else {
 				FileInputStream inputStream = new FileInputStream(propsFile);
