@@ -2,6 +2,9 @@ package com.codifyd.automation.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import com.codifyd.automation.util.MyExceptions.InvalidDirectoryException;
@@ -37,6 +40,7 @@ public class UserInputFileUtilDO {
 	 * @set inputPath
 	 */
 	public void setInputPath(String inputPath, String str) throws NullValueException, InvalidFileException {
+
 		if (inputPath != null && !"".equals(inputPath.trim())) {
 			if (new File(inputPath).isFile()) {
 				if (str.equals(EXCELToXML) && inputPath.trim().endsWith(".xlsx")) {
@@ -115,41 +119,51 @@ public class UserInputFileUtilDO {
 
 	/**
 	 * @throws InvalidFileException
+	 * 
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 * @set propertiesFile
 	 */
 	@SuppressWarnings("resource")
-	public void setPropertiesFile(String propertiesFile, String str) throws InvalidFileException {
+	public void setPropertiesFile(String propertiesFile, String str)
+			throws InvalidFileException, FileNotFoundException, IOException {
+		ClassLoader classLoader = this.getClass().getClassLoader();
 		Properties properties = new Properties();
-		try {
-			if (propertiesFile != null && !"".equals(propertiesFile.trim())) {
-				if (new File(propertiesFile.trim()).isFile()) {
-					if (propertiesFile.trim().endsWith(".properties") || propertiesFile.trim().endsWith(".txt")) {
-						properties.load(new FileInputStream(propertiesFile));
-						this.propertiesFile = properties;
-					} else {
-						throw exceptions.new InvalidFileException("Invalid Properties File");
-					}
+		if (propertiesFile != null && !"".equals(propertiesFile.trim())) {
+			if (new File(propertiesFile.trim()).isFile()) {
+				if (propertiesFile.trim().endsWith(".properties") || propertiesFile.trim().endsWith(".txt")) {
+					properties.load(new FileInputStream(propertiesFile));
 				} else {
-					throw exceptions.new InvalidFileException("File Not Found");
+					throw exceptions.new InvalidFileException("Invalid Properties File");
 				}
 			} else {
-				if (str.equals(ATTRIBUTE)) {
-					propertiesFile = new File("src\\resources\\attribute-config.properties").getAbsolutePath();
-				} else if (str.equals(ATTRIBUTELINK)) {
-					propertiesFile = new File("src\\resources\\attributelink-config.properties").getAbsolutePath();
-				} else if (str.equals(LOV)) {
-					propertiesFile = new File("src\\resources\\lov-Config.properties").getAbsolutePath();
-				} else if (str.equals(UOM)) {
-					propertiesFile = new File("src\\resources\\uom-config.properties").getAbsolutePath();
-				} else if (str.equals(TAXONOMY)) {
-					propertiesFile = new File("src\\resources\\taxonomy-config.properties").getAbsolutePath();
-				}
-
-				properties.load(new FileInputStream(propertiesFile));
-				this.propertiesFile = properties;
+				throw exceptions.new InvalidFileException("File Not Found");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
+			InputStream inStream = null;
+			if (str.equals(ATTRIBUTE)) {
+				inStream = classLoader.getResourceAsStream("resources/Attribute-Config.properties");
+//					propertiesFile = new File("src\\resources\\attribute-config.properties").getAbsolutePath();
+			} else if (str.equals(ATTRIBUTELINK)) {
+				inStream = classLoader.getResourceAsStream("resources/AttributeLink-Config.properties");
+//					propertiesFile = new File("src\\resources\\attributelink-config.properties").getAbsolutePath();
+			} else if (str.equals(LOV)) {
+				inStream = classLoader.getResourceAsStream("resources/LOV-Config.properties");
+//					propertiesFile = new File("src\\resources\\lov-Config.properties").getAbsolutePath();
+			} else if (str.equals(UOM)) {
+				inStream = classLoader.getResourceAsStream("resources/UOM-Config.properties");
+//					propertiesFile = new File("src\\resources\\uom-config.properties").getAbsolutePath();
+			} else if (str.equals(TAXONOMY)) {
+				inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
+//					propertiesFile = new File("src\\resources\\taxonomy-config.properties").getAbsolutePath();
+			}
+
+			if (inStream != null) {
+				properties.load(inStream);
+//					this.propertiesFile.load(inStream);
+			}
+//				
+			this.propertiesFile = properties;
 		}
 	}
 
