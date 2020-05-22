@@ -1,5 +1,7 @@
 package com.codifyd.automation.attribute;
 
+import static com.codifyd.automation.util.ErrorLog.getErrorLog;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -36,9 +38,6 @@ import com.codifyd.stepxsd.ValidationType;
 import com.codifyd.stepxsd.ValueTemplateType;
 import com.codifyd.stepxsd.ValueType;
 
-import static com.codifyd.automation.util.Utility.getDelimeter;
-import static com.codifyd.automation.util.Utility.toBoolean;
-
 public class AttributeXMLHandler {
 
 	private static final String LOV = "lov";
@@ -48,9 +47,9 @@ public class AttributeXMLHandler {
 	private static final String MAIN = "Main";
 	private static final String CONTEXT1 = "Context1";
 
-	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) {
+	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
-		Runtime runtime = Runtime.getRuntime();
+//		Runtime runtime = Runtime.getRuntime();
 //		long beforeUsedMem = runtime.totalMemory() - runtime.freeMemory();
 //		System.out.println(beforeUsedMem);
 
@@ -60,10 +59,6 @@ public class AttributeXMLHandler {
 			ArrayList<AttributeInfo> excelValues = new ArrayList<AttributeInfo>();
 			readExcel(new File(userInputFileUtilDO.getInputPath()), excelValues);
 
-			String delimeter = userInputFileUtilDO.getDelimeters();
-			if (delimeter.equals("|")) {
-				delimeter = "\\|";
-			}
 			// System.out.println(excelValues.size());
 
 			File file = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
@@ -86,25 +81,30 @@ public class AttributeXMLHandler {
 				nameType.setContent(attrInfo.getAttributeName());
 				attribute.getName().add(nameType);
 				attribute.setHierarchicalFiltering(
-						toBoolean(attrInfo.getHierarchialFiltering()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
+						Boolean.parseBoolean(attrInfo.getHierarchialFiltering()) ? TrueFalseType.TRUE
+								: TrueFalseType.FALSE);
 				attribute.setClassificationHierarchicalFiltering(
-						toBoolean(attrInfo.getClassificationHierarchialFiltering()) ? TrueFalseType.TRUE
+						Boolean.parseBoolean(attrInfo.getClassificationHierarchialFiltering()) ? TrueFalseType.TRUE
 								: TrueFalseType.FALSE);
 				attribute.setExternallyMaintained(
-						toBoolean(attrInfo.getExternallyMaitained()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
+						Boolean.parseBoolean(attrInfo.getExternallyMaitained()) ? TrueFalseType.TRUE
+								: TrueFalseType.FALSE);
 				attribute.setFullTextIndexed(
-						toBoolean(attrInfo.getFullTextIndexed()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
+						Boolean.parseBoolean(attrInfo.getFullTextIndexed().toLowerCase()) ? TrueFalseType.TRUE
+								: TrueFalseType.FALSE);
 				attribute.setDefaultUnitID(attrInfo.getDefault_Unit_ID());
-				attribute.setMandatory(toBoolean(attrInfo.getMandatory()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
+				attribute.setMandatory(Boolean.parseBoolean(attrInfo.getMandatory().toLowerCase()) ? TrueFalseType.TRUE
+						: TrueFalseType.FALSE);
 				attribute.setMultiValued(
-						toBoolean(attrInfo.getMulti_Valued()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
+						Boolean.parseBoolean(attrInfo.getMulti_Valued()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 				if (attrInfo.getType().trim().equalsIgnoreCase(SPECIFICATION)
 						|| attrInfo.getType().trim().equalsIgnoreCase("")) {
 					attribute.setProductMode(NORMAL);
 				} else {
 					attribute.setProductMode(PROPERTY);
 				}
-				attribute.setDerived(toBoolean(attrInfo.getCalculated()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
+				attribute.setDerived(
+						Boolean.parseBoolean(attrInfo.getCalculated()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 
 				if (attrInfo.getValidation_Base_Type().equalsIgnoreCase(LOV)
 						&& !"".equals(attrInfo.getList_of_Values())) {
@@ -124,7 +124,7 @@ public class AttributeXMLHandler {
 
 					List<UnitLinkType> extUnitLinks = validation.getUnitLink();
 
-					String[] unitIDs = attrInfo.getUnit_ID().split(getDelimeter(attrInfo.getUnit_ID()));
+					String[] unitIDs = attrInfo.getUnit_ID().split(";|,|\\|");
 					for (String unitID : unitIDs) {
 						if (!"".equals(unitID) || !unitID.trim().isEmpty()) {
 							UnitLinkType unitLink = objectFactory.createUnitLinkType();
@@ -138,7 +138,7 @@ public class AttributeXMLHandler {
 
 				List<UserTypeLinkType> extUserType = attribute.getUserTypeLink();
 				if (attrInfo.getValidity() != null && !"".equals(attrInfo.getValidity())) {
-					String[] userTypeLinks = attrInfo.getValidity().split(getDelimeter(attrInfo.getValidity()));
+					String[] userTypeLinks = attrInfo.getValidity().split(";|,|\\|");
 					for (String userTypeID : userTypeLinks) {
 						if ("".equals(userTypeID) || !userTypeID.trim().isEmpty()) {
 							UserTypeLinkType userTypeLink = objectFactory.createUserTypeLinkType();
@@ -160,13 +160,11 @@ public class AttributeXMLHandler {
 				List<AttributeGroupLinkType> extAttrGRP = attribute.getAttributeGroupLink();
 				if (attrInfo.getAttribute_Group_Reference_ID() != null
 						&& !"".equals(attrInfo.getAttribute_Group_Reference_ID())) {
-					String[] attrGrpIDs = attrInfo.getAttribute_Group_Reference_ID()
-							.split(getDelimeter(attrInfo.getAttribute_Group_Reference_ID()));
+					String[] attrGrpIDs = attrInfo.getAttribute_Group_Reference_ID().split(";|,|\\|");
 					for (String attrGrpID : attrGrpIDs) {
 						if ("".equals(attrGrpID) || !attrGrpID.trim().isEmpty()) {
 							AttributeGroupLinkType attrGrpLink = objectFactory.createAttributeGroupLinkType();
 							attrGrpLink.setAttributeGroupID(attrGrpID);
-
 							extAttrGRP.add(attrGrpLink);
 						}
 					}
@@ -190,8 +188,7 @@ public class AttributeXMLHandler {
 				////
 
 				List<DimensionLinkType> extDimensionLink = attribute.getDimensionLink();
-				String[] dimensions = attrInfo.getDimension_Dependencies()
-						.split(getDelimeter(attrInfo.getDimension_Dependencies()));
+				String[] dimensions = attrInfo.getDimension_Dependencies().split(";|,|\\|");
 				for (String dimensionID : dimensions) {
 					if (!dimensionID.trim().isEmpty() || !"".equals(dimensionID)) {
 						DimensionLinkType dimensionLink = objectFactory.createDimensionLinkType();
@@ -203,7 +200,7 @@ public class AttributeXMLHandler {
 				////
 
 				List<LinkTypeType> extLinkType = attribute.getLinkType();
-				String[] linkTypes = attrInfo.getLinkType().split(getDelimeter(attrInfo.getLinkType()));
+				String[] linkTypes = attrInfo.getLinkType().split(";|,|\\|");
 				for (String linkTypeID : linkTypes) {
 					if (!linkTypeID.trim().isEmpty() || !"".equals(linkTypeID)) {
 
@@ -230,7 +227,10 @@ public class AttributeXMLHandler {
 			System.out.println("File Generated in path : " + file.getAbsolutePath());
 
 		} catch (Exception e) {
-			System.out.print("Exception : " + e.getMessage());
+			e.printStackTrace();
+			String path = new File(userInputFileUtilDO.getOutputPath()).getPath().toString();
+			getErrorLog(path, e);
+			throw new Exception("Error.lo File Generated At : " + path);
 		}
 
 //		long afterUsedMem = runtime.totalMemory() - runtime.freeMemory();
@@ -244,7 +244,7 @@ public class AttributeXMLHandler {
 
 	}
 
-	private void readExcel(File file, List<AttributeInfo> excelValues) {
+	private void readExcel(File file, List<AttributeInfo> excelValues) throws Exception {
 		try {
 			List<String> headerList = null;
 			InputStream fs = new FileInputStream(file);
@@ -339,10 +339,14 @@ public class AttributeXMLHandler {
 
 					excelValues.add(attributeInfo);
 				}
+
 			}
+			workbook.close();
 			fs.close();
-		} catch (Exception ioe) {
-			ioe.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+			getErrorLog(file.getPath(), e);
+			throw new Exception("Error.lo File Generated At : " + file.getPath().toString());
 		}
 	}
 

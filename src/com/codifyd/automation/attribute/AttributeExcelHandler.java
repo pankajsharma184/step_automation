@@ -1,7 +1,8 @@
 package com.codifyd.automation.attribute;
 
+import static com.codifyd.automation.util.ErrorLog.getErrorLog;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,7 +18,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -37,6 +37,7 @@ import com.codifyd.stepxsd.STEPProductInformation;
 import com.codifyd.stepxsd.UnitLinkType;
 import com.codifyd.stepxsd.UnitType;
 import com.codifyd.stepxsd.UserTypeLinkType;
+import com.codifyd.stepxsd.ValueTemplateType;
 import com.codifyd.stepxsd.ValueType;
 
 public class AttributeExcelHandler {
@@ -46,7 +47,7 @@ public class AttributeExcelHandler {
 	private static final String FALSE = "false";
 
 	// public static void main(String[] args) {
-	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws IOException {
+	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
 //		Map<String, AttributeXMLInfo> inputValues = new HashMap();
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
@@ -59,30 +60,31 @@ public class AttributeExcelHandler {
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
 			writeExcel(objectFactory, outputFile, properties, delimeterString);
-		} catch (JAXBException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			String path = inputFile.getPath().toString();
+			getErrorLog(path, e);
+			throw new Exception("Error.lo File Generated At : " + path);
 		}
 	}
 
-	private static void writeExcel(STEPProductInformation objectFactory, File file, Properties prop, String delim)
+	private static void writeExcel(STEPProductInformation objectFactory, File file, Properties properties, String delim)
 			throws FileNotFoundException, IOException {
 
-		// accessing data from properties file
+		/*
+		 * // accessing data from properties file Properties prop = new Properties();
+		 * prop.load(insStream);
+		 */
+
 		Set<String> metaDataHeaderAttributes = new HashSet<String>();
 		ArrayList<Integer> al = new ArrayList<Integer>();
-		for (String key : prop.stringPropertyNames()) {
+		for (String key : properties.stringPropertyNames()) {
 			al.add(Integer.parseInt(key));
 		}
 		Collections.sort(al);
 		LinkedList<String> list = new LinkedList<String>();
 		for (Object j : al) {
-			list.add(prop.getProperty(j.toString()));
+			list.add(properties.getProperty(j.toString()));
 		}
 		List<AttributeType> attributeList1 = objectFactory.getAttributeList().getAttribute();
 		for (AttributeType attribute : attributeList1) {
@@ -111,7 +113,7 @@ public class AttributeExcelHandler {
 		// Excel cell color
 		XSSFCellStyle cellStyle = null;
 		HashMap<String, String> unitMap = new HashMap<String, String>();
-		Map<String, List> attributeMap = new LinkedHashMap<String, List>();
+		Map<String, List<String>> attributeMap = new LinkedHashMap<String, List<String>>();
 		Map<String, Map<String, String>> metadataAttribute = new HashMap<String, Map<String, String>>();
 		int i = 0;
 		attributeMap.put(String.valueOf(i), list);
@@ -131,7 +133,7 @@ public class AttributeExcelHandler {
 		List<AttributeType> attributeList = objectFactory.getAttributeList().getAttribute();
 		for (AttributeType attribute : attributeList) {
 			i++;
-			List<Object> attributeInfo = new ArrayList<>(list.size());
+			List<String> attributeInfo = new ArrayList<String>();
 			String id = attribute.getID();
 			String name = attribute.getName().get(0).getContent();
 
@@ -187,12 +189,13 @@ public class AttributeExcelHandler {
 					? attribute.getExternallyMaintained().toString()
 					: FALSE;
 			String calculated = (null != attribute.getDerived()) ? attribute.getDerived().toString() : FALSE;
+
 			String valueTemplate = "";
-			if (null != attribute.getValueTemplateOrUnitTemplate()) {
-				for (Object obj : attribute.getValueTemplateOrUnitTemplate()) {
-					valueTemplate = attribute.getValueTemplateOrUnitTemplate().get(0).toString();
-				}
-			}
+			if (null != attribute.getValueTemplateOrUnitTemplate())
+				for (Object obj : attribute.getValueTemplateOrUnitTemplate())
+					if (obj instanceof ValueTemplateType)
+						valueTemplate = ((ValueTemplateType) obj).getContent();
+
 			String userTypeID = "";
 			if (null != attribute.getUserTypeLink() && !attribute.getUserTypeLink().isEmpty()) {
 				StringBuffer str = new StringBuffer();
@@ -289,13 +292,13 @@ public class AttributeExcelHandler {
 			}
 			attributeMap.put(String.valueOf(i++), attributeInfo);
 		}
-		for (Map.Entry<String, List> entrySet : attributeMap.entrySet()) {
+		for (Map.Entry<String, List<String>> entrySet : attributeMap.entrySet()) {
 			Integer rowNum = Integer.parseInt(entrySet.getKey());
 			if (rowNum > 0) {
 				String attrID = (String) entrySet.getValue().get(0);
 				if (metadataAttribute.containsKey(attrID)) {
 					Map<String, String> metadataValues = metadataAttribute.get(attrID);
-					List attributeData = entrySet.getValue();
+					List<String> attributeData = entrySet.getValue();
 					for (Map.Entry<String, String> itr : metadataValues.entrySet()) {
 						String metaAttrID = itr.getKey();
 						String metaAttrValue = itr.getValue();
@@ -310,7 +313,7 @@ public class AttributeExcelHandler {
 		int rowid = 0;
 		for (String key : keyid) {
 			row = spreadsheet.createRow(rowid++);
-			List objectArr = attributeMap.get(key);
+			List<String> objectArr = attributeMap.get(key);
 			int cellid = 0;
 			for (Object obj : objectArr) {
 				Cell cell = row.createCell(cellid++);
