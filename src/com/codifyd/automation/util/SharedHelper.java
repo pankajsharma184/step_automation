@@ -84,7 +84,7 @@ public class SharedHelper {
 		return userInputFileUtilDO;
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		InputStreamReader inStream = new InputStreamReader(System.in);
 		BufferedReader reader = new BufferedReader(inStream);
 
