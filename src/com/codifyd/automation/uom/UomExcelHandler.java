@@ -2,7 +2,7 @@ package com.codifyd.automation.uom;
 
 import static com.codifyd.automation.uom.UomXMLReader.familyHandler;
 import static com.codifyd.automation.uom.UomXMLReader.unitHandler;
-import static com.codifyd.automation.util.ErrorLog.getErrorLog;
+
 
 import static com.codifyd.automation.uom.UomXMLReader.getMetaDataValue;
 
@@ -52,9 +52,6 @@ public class UomExcelHandler {
 			writeExcel(objectFactory, outputFile, properties, delimeter);
 		} catch (Exception e) {
 			e.printStackTrace();
-			String path = inputFile.getParentFile().getPath().toString();
-			getErrorLog(path, e);
-			throw new Exception("Error.lo File Generated At : " + path);
 		}
 	}
 

@@ -1,7 +1,5 @@
 package com.codifyd.automation.attribute;
 
-import static com.codifyd.automation.util.ErrorLog.getErrorLog;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -20,6 +18,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.AttributeGroupLinkType;
 import com.codifyd.stepxsd.AttributeListType;
@@ -38,7 +37,7 @@ import com.codifyd.stepxsd.ValidationType;
 import com.codifyd.stepxsd.ValueTemplateType;
 import com.codifyd.stepxsd.ValueType;
 
-public class AttributeXMLHandler {
+public class AttributeExcelFileHandler {
 
 	private static final String LOV = "lov";
 	private static final String PROPERTY = "Property";
@@ -48,6 +47,9 @@ public class AttributeXMLHandler {
 	private static final String CONTEXT1 = "Context1";
 
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
+		
+		//parse the input for errors
+		InputValidator.validateExcelToXML(userInputFileUtilDO);
 
 //		Runtime runtime = Runtime.getRuntime();
 //		long beforeUsedMem = runtime.totalMemory() - runtime.freeMemory();
@@ -228,9 +230,6 @@ public class AttributeXMLHandler {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			String path = new File(userInputFileUtilDO.getOutputPath()).getPath().toString();
-			getErrorLog(path, e);
-			throw new Exception("Error.lo File Generated At : " + path);
 		}
 
 //		long afterUsedMem = runtime.totalMemory() - runtime.freeMemory();
@@ -345,8 +344,6 @@ public class AttributeXMLHandler {
 			fs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			getErrorLog(file.getPath(), e);
-			throw new Exception("Error.lo File Generated At : " + file.getPath().toString());
 		}
 	}
 

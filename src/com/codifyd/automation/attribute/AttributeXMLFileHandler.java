@@ -1,7 +1,5 @@
 package com.codifyd.automation.attribute;
 
-import static com.codifyd.automation.util.ErrorLog.getErrorLog;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,6 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.AttributeGroupLinkType;
 import com.codifyd.stepxsd.AttributeType;
@@ -40,7 +39,7 @@ import com.codifyd.stepxsd.UserTypeLinkType;
 import com.codifyd.stepxsd.ValueTemplateType;
 import com.codifyd.stepxsd.ValueType;
 
-public class AttributeExcelHandler {
+public class AttributeXMLFileHandler {
 	private static final String NORMAL = "Normal";
 	private static final String DESCRIPTION = "Description";
 	private static final String SPECIFICATION = "Specification";
@@ -49,6 +48,9 @@ public class AttributeExcelHandler {
 	// public static void main(String[] args) {
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
+		//parse the input for errors
+		InputValidator.validateXMLToExcel(userInputFileUtilDO);
+		
 //		Map<String, AttributeXMLInfo> inputValues = new HashMap();
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
 		File outputFile = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
@@ -61,10 +63,7 @@ public class AttributeExcelHandler {
 
 			writeExcel(objectFactory, outputFile, properties, delimeterString);
 		} catch (Exception e) {
-			e.printStackTrace();
-			String path = inputFile.getPath().toString();
-			getErrorLog(path, e);
-			throw new Exception("Error.lo File Generated At : " + path);
+			e.printStackTrace();			
 		}
 	}
 
