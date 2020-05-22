@@ -1,12 +1,8 @@
 package com.codifyd.automation.util;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Properties;
 
 import com.codifyd.automation.attribute.AttributeExcelHandler;
 import com.codifyd.automation.attribute.AttributeXMLHandler;
@@ -14,7 +10,8 @@ import com.codifyd.automation.attributelink.AttributeLinkExcelHandler;
 import com.codifyd.automation.attributelink.AttributeLinkXMLHandler;
 import com.codifyd.automation.lov.LOVExcelHandler;
 import com.codifyd.automation.lov.LovXMLHandler;
-import com.codifyd.automation.uom.UOMExcelHandler;
+import com.codifyd.automation.uom.UomExcelHandler;
+import com.codifyd.automation.uom.UomXMLHandler;
 
 public class SharedHelper {
 
@@ -22,101 +19,72 @@ public class SharedHelper {
 	private static String ATTRIBUTELINK = "Attributelink";
 	private static String LOV = "LOV";
 	private static String UOM = "UOM";
-//	private static String SCHEMA = "Schema";
 	private static String TAXONOMY = "Taxonomy";
 	private static String EXCELToXML = "ExcelToXML";
+	private static String XMLToEXCEL = "XMLToExcel";
 
-	private Properties getFileFromResources(String fileName) {
-
-		InputStream resource = getClass().getResourceAsStream(fileName);
-
-		if (resource == null) {
-			throw new IllegalArgumentException("file is not found!");
-		} else {
-			Properties prop = new Properties();
-			try {
-				prop.load(resource);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return prop;
-		}
-
-	}
-
-	@SuppressWarnings("unused")
-	public static UserInputFileUtilDO getUserInput(BufferedReader reader, String str) throws IOException {
-
+//	@SuppressWarnings("unused")
+	public static UserInputFileUtilDO getUserInput(BufferedReader reader, String str, String str2) throws IOException {
 		UserInputFileUtilDO userInputFileUtilDO = new UserInputFileUtilDO();
-		System.out.print("Please enter the input file path : ");
-		String inputFilePath = reader.readLine();
-		while (inputFilePath == null || inputFilePath.trim().isEmpty()) {
-			System.out.println("You need to specify a path!");
-			inputFilePath = reader.readLine();
-		}
-
-		System.out.print("Please enter the output file path : ");
-		String outFilePath = reader.readLine();
-		while (outFilePath == null || outFilePath.trim().isEmpty()) {
-			System.out.println("You need to specify a path!");
-			outFilePath = reader.readLine();
-		}
-
-		System.out.print("Please enter the output Filename with extension : ");
-		String outputFileName = reader.readLine();
-		while (outputFileName == null || outputFileName.trim().isEmpty()) {
-			System.out.println("You need to specify a name!");
-			outputFileName = reader.readLine();
-		}
-
-		if (!str.equals(EXCELToXML)) {
-			System.out.print("Please enter the config File path if any: ");
-			String propertiesFile = reader.readLine();
-			SharedHelper sh = new SharedHelper();
-			File propsFile = new File(propertiesFile);
-			Properties prop = new Properties();
-			if (propertiesFile == null || propertiesFile.trim().isEmpty()) {
-				// Properties file selection part
-				if (str.equals(ATTRIBUTE)) {
-					prop = sh.getFileFromResources("/resources/attribute-config.properties");
-				} else if (str.equals(ATTRIBUTELINK)) {
-					prop = sh.getFileFromResources("/resources/attributelink-config.properties");
-				} else if (str.equals(LOV)) {
-					prop = sh.getFileFromResources("/resources/lov-config.properties");
-				} else if (str.equals(UOM)) {
-					prop = sh.getFileFromResources("/resources/uom-config.properties");
-				} else {
-					prop = sh.getFileFromResources("/resources/taxonomy-config.properties");
-				}
-			} else {
-				FileInputStream inputStream = new FileInputStream(propsFile);
-				prop.load(inputStream);
+		try {
+			System.out.print("Please enter the input file path : ");
+			String inputFilePath = reader.readLine();
+			while (inputFilePath == null || inputFilePath.trim().isEmpty()) {
+				System.out.println("You need to specify a path!");
+				inputFilePath = reader.readLine();
 			}
-			userInputFileUtilDO.setPropertiesFile(prop);
-		}
 
-		System.out.print("Please enter the Multi Field Seperator (Can be only \",\" \";\" \"|\"): ");
-		String delimeter = reader.readLine();
-		while (!(delimeter.trim().equals(";") || delimeter.trim().equals(",") || delimeter.trim().equals("|")
-				|| delimeter.trim().isEmpty())) {
-			System.out.print("The Multi Field Seperator Can be only \",\" \";\" \"|\": ");
-			delimeter = reader.readLine();
-		}
-		if (delimeter == null || delimeter.trim().isEmpty()) {
-			delimeter = ";";
-		}
+			userInputFileUtilDO.setInputPath(inputFilePath.trim(), str2);
 
-		userInputFileUtilDO.setInputPath(inputFilePath.trim());
-		userInputFileUtilDO.setOutputPath(outFilePath.trim());
-		userInputFileUtilDO.setFilename(outputFileName.trim());
-		userInputFileUtilDO.setDelimeters(delimeter.trim());
+			System.out.print("Please enter the output file path : ");
+			String outFilePath = reader.readLine();
+			while (outFilePath == null || outFilePath.trim().isEmpty()) {
+				System.out.println("You need to specify a path!");
+				outFilePath = reader.readLine();
+			}
+
+			userInputFileUtilDO.setOutputPath(outFilePath.trim());
+
+			System.out.print("Please enter the output Filename with extension : ");
+			String outputFileName = reader.readLine();
+			while (outputFileName == null || outputFileName.trim().isEmpty()) {
+				System.out.println("You need to specify a name!");
+				outputFileName = reader.readLine();
+			}
+			userInputFileUtilDO.setFilename(outputFileName.trim(), str2);
+
+			if (!str.equals(EXCELToXML)) {
+				System.out.print("Please enter the config File path if any: ");
+				String propertiesFile = reader.readLine();
+				/*
+				 * if (propertiesFile == null || ((String) propertiesFile).trim().isEmpty()) {
+				 * // Properties file selection part if (str.equals(ATTRIBUTE)) { propertiesFile
+				 * = ("resources/Attribute-Config.properties"); } else if
+				 * (str.equals(ATTRIBUTELINK)) { propertiesFile =
+				 * ("resources/AttributeLink-Config.properties"); } else if (str.equals(LOV)) {
+				 * propertiesFile = ("resources/LOV-Config.properties"); } else if
+				 * (str.equals(UOM)) { propertiesFile = ("resources/UOM-Config.properties"); }
+				 * else if (str.equals(TAXONOMY)) { propertiesFile =
+				 * ("resources/Taxonomy-Config.properties"); } }
+				 */
+				userInputFileUtilDO.setPropertiesFile(propertiesFile, str);
+
+				System.out.print("Please enter the Multi Field Seperator (Can be only \",\" \";\" \"|\"): ");
+				String delimeter = reader.readLine();
+				while (!delimeter.trim().matches(";|,|\\|") && !delimeter.trim().equals("") && null != delimeter) {
+					System.out.print("The Multi Field Seperator Can be only \",\" \";\" \"|\": ");
+					delimeter = reader.readLine();
+				}
+				userInputFileUtilDO.setDelimeters(delimeter.trim());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 		return userInputFileUtilDO;
-
 	}
 
 	public static void main(String[] args) throws IOException {
-
 		InputStreamReader inStream = new InputStreamReader(System.in);
 		BufferedReader reader = new BufferedReader(inStream);
 
@@ -141,32 +109,27 @@ public class SharedHelper {
 			switch (option1) {
 			case "1":
 				AttributeExcelHandler convertXMLToExcel = new AttributeExcelHandler();
-				convertXMLToExcel.handleFile(getUserInput(reader, ATTRIBUTE));
+				convertXMLToExcel.handleFile(getUserInput(reader, ATTRIBUTE, XMLToEXCEL));
 				break;
 
 			case "2":
 				AttributeLinkExcelHandler attributeLinkExcel = new AttributeLinkExcelHandler();
-				attributeLinkExcel.handleFile(getUserInput(reader, ATTRIBUTELINK));
+				attributeLinkExcel.handleFile(getUserInput(reader, ATTRIBUTELINK, XMLToEXCEL));
 				break;
 
 			case "3":
 				LOVExcelHandler convertXmltoExcellov = new LOVExcelHandler();
-				convertXmltoExcellov.handleFile(getUserInput(reader, LOV));
+				convertXmltoExcellov.handleFile(getUserInput(reader, LOV, XMLToEXCEL));
 				break;
 
 			case "4":
-				UOMExcelHandler uomxmlHandler = new UOMExcelHandler();
-				uomxmlHandler.handleFile(getUserInput(reader, UOM));
+				UomExcelHandler uomxmlHandler = new UomExcelHandler();
+				uomxmlHandler.handleFile(getUserInput(reader, UOM, XMLToEXCEL));
 				break;
 
 			case "5":
-				// SchemaXMLHandler schemaXMLHandler = new SchemaXMLHandler();
-				// schemaXMLHandler.handleFile(getUserInput());
-				break;
-
-			case "6":
 				// TaxonomyXMLHandler taxonomyXMLHandler = new TaxonomyXMLHandler();
-				// taxonomyXMLHandler.handleFile(getUserInput());
+				// taxonomyXMLHandler.handleFile(getUserInput(reader, TAXONOMY));
 				break;
 
 			default:
@@ -185,32 +148,27 @@ public class SharedHelper {
 			switch (option2) {
 			case "1":
 				AttributeXMLHandler attributeXMLHandler = new AttributeXMLHandler();
-				attributeXMLHandler.handleFile(getUserInput(reader, EXCELToXML));
+				attributeXMLHandler.handleFile(getUserInput(reader, ATTRIBUTE, EXCELToXML));
 				break;
 
 			case "2":
 				AttributeLinkXMLHandler attributeLinkXML = new AttributeLinkXMLHandler();
-				attributeLinkXML.handleFile(getUserInput(reader, EXCELToXML));
+				attributeLinkXML.handleFile(getUserInput(reader, ATTRIBUTE, EXCELToXML));
 				break;
 
 			case "3":
 				LovXMLHandler lovXMLHandler = new LovXMLHandler();
-				lovXMLHandler.handleFile(getUserInput(reader, EXCELToXML));
+				lovXMLHandler.handleFile(getUserInput(reader, ATTRIBUTE, EXCELToXML));
 				break;
 
 			case "4":
-				// UOMXMLHandler uomxmlHandler = new UOMXMLHandler();
-				// uomxmlHandler.handleFile(getUserInput());
+				UomXMLHandler uomxmlHandler = new UomXMLHandler();
+				uomxmlHandler.handleFile(getUserInput(reader, ATTRIBUTE, EXCELToXML));
 				break;
 
 			case "5":
-				// SchemaXMLHandler schemaXMLHandler = new SchemaXMLHandler();
-				// schemaXMLHandler.handleFile(getUserInput());
-				break;
-
-			case "6":
-				// TaxonomyXMLHandler taxonomyXMLHandler = new TaxonomyXMLHandler();
-				// taxonomyXMLHandler.handleFile(getUserInput());
+//				TaxonomyXMLHandler taxonomyXMLHandler = new TaxonomyXMLHandler();
+//				taxonomyXMLHandler.handleFile(getUserInput(reader, ATTRIBUTE, EXCELToXML));
 				break;
 
 			default:
