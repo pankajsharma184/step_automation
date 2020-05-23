@@ -13,21 +13,21 @@ import com.codifyd.stepxsd.ValueType;
 
 public class UomXMLWriter {
 
-	public static UnitFamilyType familyHandler(ObjectFactory objectFactory, List<UomInfo> uomInfo, String familyID) {
+	public static UnitFamilyType familyHandler(ObjectFactory objectFactory, List<UomExcelInfo> uomInfo, String familyID) {
 		UnitFamilyType unitFamily = objectFactory.createUnitFamilyType();
 		unitFamily.setID(familyID);
 		NameType nameType = objectFactory.createNameType();
 		nameType.setContent(uomInfo.get(0).getParentName());
 		unitFamily.getName().add(nameType);
 		List<UnitType> unitList = unitFamily.getUnit();
-		for (UomInfo unitInfo : uomInfo) {
+		for (UomExcelInfo unitInfo : uomInfo) {
 			UnitType unit = unitHandler(objectFactory, unitInfo);
 			unitList.add(unit);
 		}
 		return unitFamily;
 	}
 
-	public static UnitType unitHandler(ObjectFactory objectFactory, UomInfo unitInfo) {
+	public static UnitType unitHandler(ObjectFactory objectFactory, UomExcelInfo unitInfo) {
 		UnitType unit = objectFactory.createUnitType();
 		NameType nameType = objectFactory.createNameType();
 		nameType.setContent(unitInfo.getName());

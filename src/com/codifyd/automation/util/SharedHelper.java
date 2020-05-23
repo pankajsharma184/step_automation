@@ -8,10 +8,10 @@ import com.codifyd.automation.attribute.AttributeXMLFileHandler;
 import com.codifyd.automation.attribute.AttributeExcelFileHandler;
 import com.codifyd.automation.attributelink.AttributeLinkXMLFileHandler;
 import com.codifyd.automation.attributelink.AttributeLinkExcelFileHandler;
-import com.codifyd.automation.lov.LOVExcelHandler;
-import com.codifyd.automation.lov.LovXMLHandler;
-import com.codifyd.automation.uom.UomExcelHandler;
-import com.codifyd.automation.uom.UomXMLHandler;
+import com.codifyd.automation.lov.LovXMLFileHandler;
+import com.codifyd.automation.lov.LovExcelFileHandler;
+import com.codifyd.automation.uom.UomXMLFileHandler;
+import com.codifyd.automation.uom.UomExcelFIleHandler;
 
 public class SharedHelper {
 
@@ -97,12 +97,12 @@ public class SharedHelper {
 				break;
 
 			case "3":
-				LOVExcelHandler convertXmltoExcellov = new LOVExcelHandler();
+				LovXMLFileHandler convertXmltoExcellov = new LovXMLFileHandler();
 				convertXmltoExcellov.handleFile(getUserInput(reader, AutomationConstants.LOV));
 				break;
 
 			case "4":
-				UomExcelHandler uomxmlHandler = new UomExcelHandler();
+				UomXMLFileHandler uomxmlHandler = new UomXMLFileHandler();
 				uomxmlHandler.handleFile(getUserInput(reader, AutomationConstants.UOM));
 				break;
 
@@ -138,12 +138,12 @@ public class SharedHelper {
 				break;
 
 			case "3":
-				LovXMLHandler lovXMLHandler = new LovXMLHandler();
+				LovExcelFileHandler lovXMLHandler = new LovExcelFileHandler();
 				lovXMLHandler.handleFile(getUserInput(reader, AutomationConstants.ATTRIBUTE));
 				break;
 
 			case "4":
-				UomXMLHandler uomxmlHandler = new UomXMLHandler();
+				UomExcelFIleHandler uomxmlHandler = new UomExcelFIleHandler();
 				uomxmlHandler.handleFile(getUserInput(reader, AutomationConstants.ATTRIBUTE));
 				break;
 

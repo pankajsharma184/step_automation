@@ -3,6 +3,7 @@ package com.codifyd.automation.attribute;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.util.AutomationConstants;
 import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.AttributeGroupLinkType;
@@ -39,16 +41,9 @@ import com.codifyd.stepxsd.ValueType;
 
 public class AttributeExcelFileHandler {
 
-	private static final String LOV = "lov";
-	private static final String PROPERTY = "Property";
-	private static final String NORMAL = "Normal";
-	private static final String SPECIFICATION = "Specification";
-	private static final String MAIN = "Main";
-	private static final String CONTEXT1 = "Context1";
-
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
-		
-		//parse the input for errors
+
+		// parse the input for errors
 		InputValidator.validateExcelToXML(userInputFileUtilDO);
 
 //		Runtime runtime = Runtime.getRuntime();
@@ -61,15 +56,15 @@ public class AttributeExcelFileHandler {
 			ArrayList<AttributeInfo> excelValues = new ArrayList<AttributeInfo>();
 			readExcel(new File(userInputFileUtilDO.getInputPath()), excelValues);
 
-			// System.out.println(excelValues.size());
-
-			File file = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
+			File outputFile = new File(Paths
+					.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
+					.toUri());
 
 			// Initialize object factory and add unit values
 			ObjectFactory objectFactory = new ObjectFactory();
 			STEPProductInformation stepProductInformation = objectFactory.createSTEPProductInformation();
-			stepProductInformation.setContextID(CONTEXT1);
-			stepProductInformation.setWorkspaceID(MAIN);
+			stepProductInformation.setContextID(AutomationConstants.CONTEXT1);
+			stepProductInformation.setWorkspaceID(AutomationConstants.MAIN);
 
 			AttributeListType attributeList = objectFactory.createAttributeListType();
 			List<AttributeType> attributeList1 = attributeList.getAttribute();
@@ -77,11 +72,12 @@ public class AttributeExcelFileHandler {
 			for (AttributeInfo attrInfo : excelValues) {
 				AttributeType attribute = objectFactory.createAttributeType();
 
-				NameType nameType = objectFactory.createNameType();
-
 				attribute.setID(attrInfo.getAttributeID());
+
+				NameType nameType = objectFactory.createNameType();
 				nameType.setContent(attrInfo.getAttributeName());
 				attribute.getName().add(nameType);
+
 				attribute.setHierarchicalFiltering(
 						Boolean.parseBoolean(attrInfo.getHierarchialFiltering()) ? TrueFalseType.TRUE
 								: TrueFalseType.FALSE);
@@ -99,17 +95,19 @@ public class AttributeExcelFileHandler {
 						: TrueFalseType.FALSE);
 				attribute.setMultiValued(
 						Boolean.parseBoolean(attrInfo.getMulti_Valued()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
-				if (attrInfo.getType().trim().equalsIgnoreCase(SPECIFICATION)
-						|| attrInfo.getType().trim().equalsIgnoreCase("")) {
-					attribute.setProductMode(NORMAL);
+
+				if (attrInfo.getType().equalsIgnoreCase(AutomationConstants.SPECIFICATION)
+						|| attrInfo.getType().isEmpty()) {
+					attribute.setProductMode(AutomationConstants.NORMAL);
 				} else {
-					attribute.setProductMode(PROPERTY);
+					attribute.setProductMode(AutomationConstants.PROPERTY);
 				}
+
 				attribute.setDerived(
 						Boolean.parseBoolean(attrInfo.getCalculated()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 
-				if (attrInfo.getValidation_Base_Type().equalsIgnoreCase(LOV)
-						&& !"".equals(attrInfo.getList_of_Values())) {
+				if (attrInfo.getValidation_Base_Type().equalsIgnoreCase(AutomationConstants.LOV)
+						&& !attrInfo.getList_of_Values().isEmpty()) {
 
 					ListOfValueLinkType listOfValueLink = objectFactory.createListOfValueLinkType();
 
@@ -134,7 +132,6 @@ public class AttributeExcelFileHandler {
 							extUnitLinks.add(unitLink);
 						}
 					}
-
 					attribute.setValidation(validation);
 				}
 
@@ -223,10 +220,10 @@ public class AttributeExcelFileHandler {
 			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-			jaxbMarshaller.marshal(stepProductInformation, file);
+			jaxbMarshaller.marshal(stepProductInformation, outputFile);
 			// jaxbMarshaller.marshal(stepProductInformation, System.out);
 
-			System.out.println("File Generated in path : " + file.getAbsolutePath());
+			System.out.println("File Generated in path : " + outputFile.getAbsolutePath());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -243,10 +240,10 @@ public class AttributeExcelFileHandler {
 
 	}
 
-	private void readExcel(File file, List<AttributeInfo> excelValues) throws Exception {
+	private void readExcel(File inputFIle, List<AttributeInfo> excelValues) throws Exception {
 		try {
 			List<String> headerList = null;
-			InputStream fs = new FileInputStream(file);
+			InputStream fs = new FileInputStream(inputFIle);
 
 			// Create Workbook instance holding reference to .xlsx file
 			XSSFWorkbook workbook = new XSSFWorkbook(fs);
@@ -333,12 +330,9 @@ public class AttributeExcelFileHandler {
 							map.put(headerList.get(cell.getColumnIndex()), df.formatCellValue(cell));
 							attributeInfo.setAttributeMetadata(map);
 						}
-
 					}
-
 					excelValues.add(attributeInfo);
 				}
-
 			}
 			workbook.close();
 			fs.close();
@@ -346,5 +340,4 @@ public class AttributeExcelFileHandler {
 			e.printStackTrace();
 		}
 	}
-
 }
