@@ -1,26 +1,32 @@
 package com.codifyd.automation.util;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Utility {
-	public static String getDelimeter(String str) {
-		String delim = null;
-		if(str.indexOf("\\|") != -1) {
-			delim = "\\|";
-		}else if(str.indexOf(",") != -1) {
-			delim = ",";
-		}else{
-			delim = ";";
-		}
-		return delim;
+
+	// MetaData Header Cell Styling
+	public static XSSFCellStyle getMetaDataHeaderStyle(XSSFWorkbook workbook, XSSFCellStyle cellStyle) {
+		cellStyle = workbook.createCellStyle();
+		XSSFFont font = workbook.createFont();
+		font.setBold(true);
+		cellStyle.setFont(font);
+		cellStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(155, 195, 230)));
+		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		return cellStyle;
 	}
-	
-	public static Boolean toBoolean(String str) {
-		boolean bool=false;
-		if(!str.trim().equals(""))
-		{
-			bool=Boolean.parseBoolean(str.toLowerCase());
-		}
-		return bool;
+
+	// Common/Fixed Header Cell Styling
+	public static XSSFCellStyle getHeaderStyle(XSSFWorkbook workbook, XSSFCellStyle cellStyle) {
+		cellStyle = workbook.createCellStyle();
+		XSSFFont font = workbook.createFont();
+		font.setBold(true);
+		cellStyle.setFont(font);
+		cellStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 120, 180)));
+		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		return cellStyle;
 	}
 }

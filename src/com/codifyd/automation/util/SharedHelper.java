@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 
 import com.codifyd.automation.attribute.AttributeXMLFileHandler;
 import com.codifyd.automation.attribute.AttributeExcelFileHandler;
-import com.codifyd.automation.attributelink.AttributeLinkExcelHandler;
-import com.codifyd.automation.attributelink.AttributeLinkXMLHandler;
+import com.codifyd.automation.attributelink.AttributeLinkXMLFileHandler;
+import com.codifyd.automation.attributelink.AttributeLinkExcelFileHandler;
 import com.codifyd.automation.lov.LOVExcelHandler;
 import com.codifyd.automation.lov.LovXMLHandler;
 import com.codifyd.automation.uom.UomExcelHandler;
@@ -92,7 +92,7 @@ public class SharedHelper {
 				break;
 
 			case "2":
-				AttributeLinkExcelHandler attributeLinkExcel = new AttributeLinkExcelHandler();
+				AttributeLinkXMLFileHandler attributeLinkExcel = new AttributeLinkXMLFileHandler();
 				attributeLinkExcel.handleFile(getUserInput(reader, AutomationConstants.ATTRIBUTELINK));
 				break;
 
@@ -133,7 +133,7 @@ public class SharedHelper {
 				break;
 
 			case "2":
-				AttributeLinkXMLHandler attributeLinkXML = new AttributeLinkXMLHandler();
+				AttributeLinkExcelFileHandler attributeLinkXML = new AttributeLinkExcelFileHandler();
 				attributeLinkXML.handleFile(getUserInput(reader, AutomationConstants.ATTRIBUTE));
 				break;
 
