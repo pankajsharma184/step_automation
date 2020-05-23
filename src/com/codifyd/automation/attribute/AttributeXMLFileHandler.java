@@ -23,7 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.codifyd.automation.util.AutomationConstants;
+import com.codifyd.automation.util.HandlerConstants;
 import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.automation.util.Utility;
@@ -167,16 +167,18 @@ public class AttributeXMLFileHandler {
 						unitID = strID.toString();
 						unitName = strName.toString();
 					}
+				} else {
+					validationBase = HandlerConstants.LOV;
 				}
 
 				String listOfValueID = (null != attribute.getListOfValueLink())
 						? attribute.getListOfValueLink().getListOfValueID()
 						: "";
 				String type = attribute.getProductMode().toString();
-				if (type.equals(AutomationConstants.NORMAL)) {
-					type = AutomationConstants.SPECIFICATION;
+				if (type.equals(HandlerConstants.NORMAL)) {
+					type = HandlerConstants.SPECIFICATION;
 				} else {
-					type = AutomationConstants.DESCRIPTION;
+					type = HandlerConstants.DESCRIPTION;
 				}
 
 				String mandatory = (null != attribute.getMandatory()) ? attribute.getMandatory().toString()

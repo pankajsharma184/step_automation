@@ -21,6 +21,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.util.HandlerConstants;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.ObjectFactory;
 import com.codifyd.stepxsd.STEPProductInformation;
@@ -28,15 +29,13 @@ import com.codifyd.stepxsd.UnitFamilyType;
 import com.codifyd.stepxsd.UnitListType;
 import com.codifyd.stepxsd.UnitType;
 
-public class UomXMLHandler {
-	private static String MAIN = "Main";
-	private static String CONTEXT1 = "Context1";
+public class UomExcelFIleHandler {
 
 	public void handleFile(UserInputFileUtilDO userInput) {
 
 		try {
 			// Read the Excel and build the UOM Objects
-			TreeMap<String, ArrayList<UomInfo>> excelinfo = new TreeMap<String, ArrayList<UomInfo>>();
+			TreeMap<String, ArrayList<UomExcelInfo>> excelinfo = new TreeMap<String, ArrayList<UomExcelInfo>>();
 			readExcel(new File(userInput.getInputPath()), excelinfo);
 
 			// System.out.println(excelValues.size());
@@ -46,8 +45,8 @@ public class UomXMLHandler {
 			// Initialize object factory and add unit values
 			ObjectFactory objectFactory = new ObjectFactory();
 			STEPProductInformation stepProductInformation = objectFactory.createSTEPProductInformation();
-			stepProductInformation.setContextID(CONTEXT1);
-			stepProductInformation.setWorkspaceID(MAIN);
+			stepProductInformation.setContextID(HandlerConstants.CONTEXT1);
+			stepProductInformation.setWorkspaceID(HandlerConstants.MAIN);
 
 			UnitListType unitListType = objectFactory.createUnitListType();
 			List<Object> unitList = unitListType.getUnitFamilyOrUnit();
@@ -56,7 +55,7 @@ public class UomXMLHandler {
 					UnitFamilyType familyType = familyHandler(objectFactory, excelinfo.get(familyID), familyID);
 					unitList.add(familyType);
 				} else {
-					for (UomInfo unitInfo : excelinfo.get(familyID)) {
+					for (UomExcelInfo unitInfo : excelinfo.get(familyID)) {
 						UnitType unit = unitHandler(objectFactory, unitInfo);
 						unitList.add(unit);
 					}
@@ -80,10 +79,10 @@ public class UomXMLHandler {
 		}
 	}
 
-	private void readExcel(File file, TreeMap<String, ArrayList<UomInfo>> excelinfo) {
+	private void readExcel(File inputFile, TreeMap<String, ArrayList<UomExcelInfo>> excelinfo) {
 		try {
 			List<String> headerList = null;
-			InputStream fs = new FileInputStream(file);
+			InputStream fs = new FileInputStream(inputFile);
 
 			// Create Workbook instance holding reference to .xlsx file
 			XSSFWorkbook workbook = new XSSFWorkbook(fs);
@@ -101,8 +100,8 @@ public class UomXMLHandler {
 						headerList.add(df.formatCellValue(cell));
 					}
 				} else {
-					ArrayList<UomInfo> list = new ArrayList<UomInfo>();
-					UomInfo uomInfo = new UomInfo();
+					ArrayList<UomExcelInfo> list = new ArrayList<UomExcelInfo>();
+					UomExcelInfo uomInfo = new UomExcelInfo();
 					String familyID = df.formatCellValue(row.getCell(2));
 					if (familyID.equals("")) {
 						familyID = "NoFamily";

@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.util.HandlerConstants;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.ListOfValueType;
 import com.codifyd.stepxsd.ListsOfValuesType;
@@ -30,26 +31,21 @@ import com.codifyd.stepxsd.TrueFalseType;
 import com.codifyd.stepxsd.ValidationType;
 import com.codifyd.stepxsd.ValueType;
 
-import static com.codifyd.automation.util.Utility.toBoolean;
-
-public class LovXMLHandler {
-
-	private String CONTEXT1 = "Context1";
-	private String MAIN = "Main";
+public class LovExcelFileHandler {
 
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) {
 
-		Runtime runtime = Runtime.getRuntime();
+//		Runtime runtime = Runtime.getRuntime();
 //		long beforeUsedMem = runtime.totalMemory() - runtime.freeMemory();
 //		System.out.println(beforeUsedMem);
 
 		try {
 
 			// Read the Excel and build the UOM Objects
-			TreeMap<String, ArrayList<LOVExcelInfo>> excelinfo = new TreeMap<String, ArrayList<LOVExcelInfo>>();
+			TreeMap<String, ArrayList<LovExcelInfo>> excelinfo = new TreeMap<String, ArrayList<LovExcelInfo>>();
 			readExcel(new File(userInputFileUtilDO.getInputPath()), excelinfo);
 
-			String delimeter = userInputFileUtilDO.getDelimeters();
+			String delimeter = userInputFileUtilDO.getDelimiters();
 			if (delimeter.equals("|")) {
 				delimeter = "\\|";
 			}
@@ -59,15 +55,15 @@ public class LovXMLHandler {
 			// Initialize object factory and add unit values
 			ObjectFactory objectFactory = new ObjectFactory();
 			STEPProductInformation stepProductInformation = objectFactory.createSTEPProductInformation();
-			stepProductInformation.setContextID(CONTEXT1);
-			stepProductInformation.setWorkspaceID(MAIN);
+			stepProductInformation.setContextID(HandlerConstants.CONTEXT1);
+			stepProductInformation.setWorkspaceID(HandlerConstants.MAIN);
 
 			ListsOfValuesType listOfValues = objectFactory.createListsOfValuesType();
 			List<ListOfValueType> listOfValue = listOfValues.getListOfValue();
 			for (String key : excelinfo.keySet()) {
 
 				ListOfValueType lov = objectFactory.createListOfValueType();
-				LOVExcelInfo info = excelinfo.get(key).get(0);
+				LovExcelInfo info = excelinfo.get(key).get(0);
 
 				NameType nameType = objectFactory.createNameType();
 
@@ -76,13 +72,15 @@ public class LovXMLHandler {
 				lov.getName().add(nameType);
 
 				lov.setAllowUserValueAddition(
-						toBoolean(info.getAllowUserValueAddition()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
+						Boolean.parseBoolean(info.getAllowUserValueAddition()) ? TrueFalseType.TRUE
+								: TrueFalseType.FALSE);
 
 				lov.setParentID(info.getLovGroupID());
 
-				lov.setReferenced(toBoolean(info.getReferenced()));
+				lov.setReferenced(Boolean.parseBoolean(info.getReferenced()));
 
-				lov.setUseValueID(toBoolean(info.getUserValueID()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
+				lov.setUseValueID(
+						Boolean.parseBoolean(info.getUserValueID()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 
 				ValidationType validation = objectFactory.createValidationType();
 				validation.setBaseType(info.getBaseType());
@@ -95,9 +93,9 @@ public class LovXMLHandler {
 
 				List<ValueType> values = lov.getValue();
 
-				ArrayList<LOVExcelInfo> list = new ArrayList<LOVExcelInfo>();
+				ArrayList<LovExcelInfo> list = new ArrayList<LovExcelInfo>();
 				list.addAll(excelinfo.get(key));
-				for (LOVExcelInfo valueinfo : list) {
+				for (LovExcelInfo valueinfo : list) {
 					ValueType value = objectFactory.createValueType();
 
 					if (!valueinfo.getValueID().trim().equals("")) {
@@ -107,7 +105,7 @@ public class LovXMLHandler {
 
 					values.add(value);
 				}
-				
+
 				if (null != info.getLovMetadata()) {
 					Map<String, String> map = info.getLovMetadata();
 					MetaDataType meta = objectFactory.createMetaDataType();
@@ -123,7 +121,7 @@ public class LovXMLHandler {
 					lov.setMetaData(meta);
 				}
 				listOfValue.add(lov);
-				
+
 			}
 
 			stepProductInformation.setListsOfValues(listOfValues);
@@ -154,9 +152,9 @@ public class LovXMLHandler {
 
 	}
 
-	private void readExcel(File file, TreeMap<String, ArrayList<LOVExcelInfo>> excelinfo) {
+	private void readExcel(File inputFile, TreeMap<String, ArrayList<LovExcelInfo>> excelinfo) {
 		try {
-			InputStream fs = new FileInputStream(file);
+			InputStream fs = new FileInputStream(inputFile);
 
 			// Create Workbook instance holding reference to .xlsx file
 			XSSFWorkbook workbook = new XSSFWorkbook(fs);
@@ -172,7 +170,7 @@ public class LovXMLHandler {
 						headerList.add(df.formatCellValue(iterator2.next()));
 
 				if (row.getRowNum() > 0) {
-					LOVExcelInfo lovInfo = new LOVExcelInfo();
+					LovExcelInfo lovInfo = new LovExcelInfo();
 					String id = df.formatCellValue(row.getCell(0));
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 						Cell cell = (Cell) iterator2.next();
@@ -227,7 +225,7 @@ public class LovXMLHandler {
 					}
 
 					if (!excelinfo.containsKey(id)) {
-						ArrayList<LOVExcelInfo> list = new ArrayList<LOVExcelInfo>();
+						ArrayList<LovExcelInfo> list = new ArrayList<LovExcelInfo>();
 						list.add(lovInfo);
 						excelinfo.put(id, list);
 					} else {
@@ -238,9 +236,9 @@ public class LovXMLHandler {
 
 			}
 
-			for (Entry<String, ArrayList<LOVExcelInfo>> inf : excelinfo.entrySet()) {
-				ArrayList<LOVExcelInfo> list = inf.getValue();
-				for (LOVExcelInfo key : list) {
+			for (Entry<String, ArrayList<LovExcelInfo>> inf : excelinfo.entrySet()) {
+				ArrayList<LovExcelInfo> list = inf.getValue();
+				for (LovExcelInfo key : list) {
 					System.out.println(key.getValueID() + " -> " + key.getValueName());
 				}
 			}

@@ -20,7 +20,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.codifyd.automation.util.AutomationConstants;
+import com.codifyd.automation.util.HandlerConstants;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.AttributeLinkType;
 import com.codifyd.stepxsd.MetaDataType;
@@ -48,8 +48,8 @@ public class AttributeLinkExcelFileHandler {
 			// Initialize object factory and add unit values
 			ObjectFactory objectFactory = new ObjectFactory();
 			STEPProductInformation stepProductInformation = objectFactory.createSTEPProductInformation();
-			stepProductInformation.setContextID(AutomationConstants.CONTEXT1);
-			stepProductInformation.setWorkspaceID(AutomationConstants.MAIN);
+			stepProductInformation.setContextID(HandlerConstants.CONTEXT1);
+			stepProductInformation.setWorkspaceID(HandlerConstants.MAIN);
 
 			ProductsType products = objectFactory.createProductsType();
 			List<ProductType> productList = products.getProduct();

@@ -3,7 +3,7 @@ package com.codifyd.automation.lov;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class LOVExcelInfo {
+public class LovExcelInfo {
 
 	private String allowUserValueAddition;
 	private String lovID;

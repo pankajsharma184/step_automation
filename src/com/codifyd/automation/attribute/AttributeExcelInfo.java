@@ -3,7 +3,7 @@ package com.codifyd.automation.attribute;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class AttributeInfo {
+public class AttributeExcelInfo {
 
 	private String AttributeID;
 	private String AttributeName;

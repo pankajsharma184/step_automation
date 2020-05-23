@@ -1,10 +1,10 @@
 package com.codifyd.automation.lov;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,27 +20,26 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.codifyd.automation.util.UserInputFileUtilDO;
+import com.codifyd.automation.util.Utility;
 import com.codifyd.stepxsd.ListOfValueType;
 import com.codifyd.stepxsd.STEPProductInformation;
 import com.codifyd.stepxsd.TrueFalseType;
 import com.codifyd.stepxsd.ValueType;
 
-public class LOVExcelHandler {
-
-	private static String FALSE = "false";
+public class LovXMLFileHandler {
 
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws FileNotFoundException, IOException {
 
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
-		File outputFile = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
+		File outputFile = new File(
+				Paths.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
+						.toUri());
 		Properties properties = userInputFileUtilDO.getPropertiesFile();
 
 		try {
@@ -74,7 +73,7 @@ public class LOVExcelHandler {
 		}
 
 		ArrayList<String> headerList = new ArrayList<String>();
-		for (Entry ent : propertyMap.entrySet()) {
+		for (Entry<Integer, String> ent : propertyMap.entrySet()) {
 			headerList.add(ent.getValue().toString());
 		}
 
@@ -93,8 +92,8 @@ public class LOVExcelHandler {
 		TreeMap<String, Map<String, String>> metadataMap = new TreeMap<String, Map<String, String>>();
 
 		int i = 0;
-		// creating Lov map for storing
 
+		// Creating Lov map for storing
 		Map<Integer, List<String>> lovMap = new TreeMap<Integer, List<String>>();
 		lovMap.put(i, headerList);
 
@@ -108,7 +107,8 @@ public class LOVExcelHandler {
 			String allowUserValueAdd = null != listOfValue.getAllowUserValueAddition()
 					? listOfValue.getAllowUserValueAddition().toString()
 					: TrueFalseType.FALSE.toString();
-			String userValueId = null != listOfValue.getUseValueID() ? listOfValue.getUseValueID().toString() : FALSE;
+			String userValueId = null != listOfValue.getUseValueID() ? listOfValue.getUseValueID().toString()
+					: TrueFalseType.FALSE.toString();
 
 			String validation = listOfValue.getValidation().getBaseType();
 			String inputMask = (null != listOfValue.getValidation().getInputMask())
@@ -191,18 +191,19 @@ public class LOVExcelHandler {
 		int rowid = 0;
 		for (Integer key : keyid) {
 			row = spreadsheet.createRow(rowid++);
-			List objectArr = lovMap.get(key);
+			List<String> objectArr = lovMap.get(key);
 			int cellid = 0;
 			for (Object obj : objectArr) {
 				Cell cell = row.createCell(cellid++);
 				if (obj instanceof String) {
 					cell.setCellValue((String) obj);
 
-					if (rowid == 1) {
-						cellStyle = workbook.createCellStyle();
-						cellStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 120, 180)));
-						cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-						cell.setCellStyle(cellStyle);
+					if (rowid == 1 && cell.getColumnIndex() < propertyMap.size()) {
+						cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
+						cellStyle=null;
+					} else if (rowid == 1 && cell.getColumnIndex() >= propertyMap.size()) {
+						cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
+						cellStyle=null;
 					}
 
 				} else {

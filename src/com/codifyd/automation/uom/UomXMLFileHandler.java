@@ -1,15 +1,14 @@
 package com.codifyd.automation.uom;
 
 import static com.codifyd.automation.uom.UomXMLReader.familyHandler;
-import static com.codifyd.automation.uom.UomXMLReader.unitHandler;
-
-
 import static com.codifyd.automation.uom.UomXMLReader.getMetaDataValue;
+import static com.codifyd.automation.uom.UomXMLReader.unitHandler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,27 +22,28 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.codifyd.automation.util.UserInputFileUtilDO;
+import com.codifyd.automation.util.Utility;
 import com.codifyd.stepxsd.STEPProductInformation;
 import com.codifyd.stepxsd.UnitFamilyType;
 import com.codifyd.stepxsd.UnitType;
 import com.codifyd.stepxsd.ValueType;
 
-public class UomExcelHandler {
+public class UomXMLFileHandler {
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
 //		Map<String, AttributeXMLInfo> inputValues = new HashMap();
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
-		File outputFile = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
+		File outputFile = new File(
+				Paths.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
+						.toUri());
 		Properties properties = userInputFileUtilDO.getPropertiesFile();
-		String delimeter = userInputFileUtilDO.getDelimeters();
+		String delimeter = userInputFileUtilDO.getDelimiters();
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
@@ -55,14 +55,13 @@ public class UomExcelHandler {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties,
 			String delim) throws FileNotFoundException, IOException {
 
 		// Create blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		// Create a blank sheet
-		XSSFSheet spreadsheet = workbook.createSheet("Attribute Info");
+		XSSFSheet spreadsheet = workbook.createSheet("UOMInfo");
 		// Create row object
 		XSSFRow row;
 		// Excel cell color
@@ -156,16 +155,11 @@ public class UomExcelHandler {
 				Cell cell = row.createCell(cellid++);
 				cell.setCellValue(obj);
 				if (rowid == 1 && cell.getColumnIndex() < propertyMap.size()) {
-					cellStyle = workbook.createCellStyle();
-					cellStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 120, 180)));
-					cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-					cell.setCellStyle(cellStyle);
+					cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
+					cellStyle = null;
 				} else if (rowid == 1 && cell.getColumnIndex() >= propertyMap.size()) {
-					cellStyle = workbook.createCellStyle();
-					cellStyle = workbook.createCellStyle();
-					cellStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(155, 195, 230)));
-					cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-					cell.setCellStyle(cellStyle);
+					cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
+					cellStyle = null;
 				}
 
 			}

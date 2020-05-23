@@ -2,7 +2,7 @@ package com.codifyd.automation.uom;
 
 import java.util.LinkedHashMap;
 
-public class UomInfo {
+public class UomExcelInfo {
 	private String id;
 	private String name;
 	private String parentId;

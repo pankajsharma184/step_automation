@@ -20,6 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.codifyd.automation.util.AutomationConstants;
+import com.codifyd.automation.util.HandlerConstants;
 import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.AttributeGroupLinkType;
@@ -53,7 +54,7 @@ public class AttributeExcelFileHandler {
 		try {
 
 			// Read the Excel and build the UOM Objects
-			ArrayList<AttributeInfo> excelValues = new ArrayList<AttributeInfo>();
+			ArrayList<AttributeExcelInfo> excelValues = new ArrayList<AttributeExcelInfo>();
 			readExcel(new File(userInputFileUtilDO.getInputPath()), excelValues);
 
 			File outputFile = new File(Paths
@@ -63,13 +64,13 @@ public class AttributeExcelFileHandler {
 			// Initialize object factory and add unit values
 			ObjectFactory objectFactory = new ObjectFactory();
 			STEPProductInformation stepProductInformation = objectFactory.createSTEPProductInformation();
-			stepProductInformation.setContextID(AutomationConstants.CONTEXT1);
-			stepProductInformation.setWorkspaceID(AutomationConstants.MAIN);
+			stepProductInformation.setContextID(HandlerConstants.CONTEXT1);
+			stepProductInformation.setWorkspaceID(HandlerConstants.MAIN);
 
 			AttributeListType attributeList = objectFactory.createAttributeListType();
 			List<AttributeType> attributeList1 = attributeList.getAttribute();
 
-			for (AttributeInfo attrInfo : excelValues) {
+			for (AttributeExcelInfo attrInfo : excelValues) {
 				AttributeType attribute = objectFactory.createAttributeType();
 
 				attribute.setID(attrInfo.getAttributeID());
@@ -96,11 +97,11 @@ public class AttributeExcelFileHandler {
 				attribute.setMultiValued(
 						Boolean.parseBoolean(attrInfo.getMulti_Valued()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 
-				if (attrInfo.getType().equalsIgnoreCase(AutomationConstants.SPECIFICATION)
+				if (attrInfo.getType().equalsIgnoreCase(HandlerConstants.SPECIFICATION)
 						|| attrInfo.getType().isEmpty()) {
-					attribute.setProductMode(AutomationConstants.NORMAL);
+					attribute.setProductMode(HandlerConstants.NORMAL);
 				} else {
-					attribute.setProductMode(AutomationConstants.PROPERTY);
+					attribute.setProductMode(HandlerConstants.PROPERTY);
 				}
 
 				attribute.setDerived(
@@ -240,7 +241,7 @@ public class AttributeExcelFileHandler {
 
 	}
 
-	private void readExcel(File inputFIle, List<AttributeInfo> excelValues) throws Exception {
+	private void readExcel(File inputFIle, List<AttributeExcelInfo> excelValues) throws Exception {
 		try {
 			List<String> headerList = null;
 			InputStream fs = new FileInputStream(inputFIle);
@@ -263,7 +264,7 @@ public class AttributeExcelFileHandler {
 				}
 
 				if (row.getRowNum() > 0) {
-					AttributeInfo attributeInfo = new AttributeInfo();
+					AttributeExcelInfo attributeInfo = new AttributeExcelInfo();
 					DataFormatter df = new DataFormatter();
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 						Cell cell = (Cell) iterator2.next();
