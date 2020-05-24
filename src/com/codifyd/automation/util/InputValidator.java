@@ -23,8 +23,8 @@ public class InputValidator {
 
 		// Validate Output Path
 		String outputPath = input.getOutputPath();
-		if (inputFilePath != null && !inputFilePath.trim().isEmpty()) {
-			if (!(new File(inputFilePath).isDirectory())) {
+		if (outputPath != null && !outputPath.trim().isEmpty()) {
+			if (!(new File(outputPath).isDirectory())) {
 				throw new InvalidInputException("Cannot Find Directory - " + outputPath);
 			}
 		} else {
@@ -64,8 +64,8 @@ public class InputValidator {
 
 		// Validate Output Path
 		String outputPath = input.getOutputPath();
-		if (inputFilePath != null && !inputFilePath.trim().isEmpty()) {
-			if (!(new File(inputFilePath).isDirectory())) {
+		if (outputPath != null && !outputPath.trim().isEmpty()) {
+			if (!(new File(outputPath).isDirectory())) {
 				throw new InvalidInputException("Cannot Find Directory - " + outputPath);
 			}
 		} else {
