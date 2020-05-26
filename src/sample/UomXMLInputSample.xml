@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Configuration:
+<?xml version='1.0'?>
+<STEP-ProductInformation ResolveInlineRefs="true">
+<UnitList ExportSize = "Selected">
+<UnitFamily>
+<Unit>
+<Name />
+<UnitConversion />
+<MetaData />
+</Unit>
+</UnitFamily>
+<Unit>
+<Name />
+<UnitConversion />
+<MetaData />
+</Unit>
+</UnitList>
+</STEP-ProductInformation>
+Export from Primary Product Classification
+Classifications All
+Products All
+Assets All
+
+Exported by database exporter.
+-->
+<STEP-ProductInformation ExportTime="2020-05-17 17:15:43" ExportContext="Context1" ContextID="Context1" WorkspaceID="Main" UseContextLocale="false">
+
+  <UnitList>
+    <UnitFamily ID="Pressure" Selected="true" Referenced="true">
+      <Name>Pressure</Name>
+      <Unit ID="unece.unit.25" Selected="true" Referenced="true">
+        <Name>g/cm²</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">gram per square centimetre</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.37" Selected="true" Referenced="true">
+        <Name>oz/ft²</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">ounce per square foot</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.GM" Selected="true" Referenced="true">
+        <Name>g/m²</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">gram per square metre</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.80" Selected="true" Referenced="true">
+        <Name>lb/in²</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">pounds per square inch absolute</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.FP" Selected="true" Referenced="true">
+        <Name>lb/ft²</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">pound per square foot</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.28" Selected="true" Referenced="true">
+        <Name>kg/m²</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">kilogram per square metre</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.GO" Selected="true" Referenced="true">
+        <Name>mg/m²</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">milligrams per square metre</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.ON" Selected="true" Referenced="true">
+        <Name>oz/yd²</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">ounce per square yard</Value>
+        </MetaData>
+      </Unit>
+    </UnitFamily>
+    <UnitFamily ID="Rotational Frequency" Selected="true" Referenced="true">
+      <Name>Rotational Frequency</Name>
+      <Unit ID="RPM" Selected="true" Referenced="true">
+        <Name>RPM</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">revolutions per minute</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.RPM" Selected="true" Referenced="true">
+        <Name>r/min</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">revolutions per minute</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.RPS" Selected="true" Referenced="true">
+        <Name>r/s</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">revolutions per second</Value>
+        </MetaData>
+      </Unit>
+    </UnitFamily>
+    <UnitFamily ID="Power" Selected="true" Referenced="true">
+      <Name>Power</Name>
+      <Unit ID="unece.unit.KWT" Selected="true" Referenced="true">
+        <Name>kW</Name>
+        <UnitConversion BaseUnitID="unece.unit.WTT" Factor="1000" Offset="0"/>
+        <MetaData>
+          <Value AttributeID="UnitDescription">kilowatt</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.C31" Selected="true" Referenced="true">
+        <Name>mW</Name>
+        <UnitConversion BaseUnitID="unece.unit.WTT" Factor=".001" Offset="0"/>
+        <MetaData>
+          <Value AttributeID="UnitDescription">milliwatt</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.WTT" Selected="true" Referenced="true">
+        <Name>W</Name>
+        <MetaData>
+          <Value AttributeID="UnitDescription">watt</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.D80" Selected="true" Referenced="true">
+        <Name>µW</Name>
+        <UnitConversion BaseUnitID="unece.unit.WTT" Factor=".000001" Offset="0"/>
+        <MetaData>
+          <Value AttributeID="UnitDescription">microwatt</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.MAW" Selected="true" Referenced="true">
+        <Name>MW</Name>
+        <UnitConversion BaseUnitID="unece.unit.WTT" Factor="1000000" Offset="0"/>
+        <MetaData>
+          <Value AttributeID="UnitDescription">megawatt</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.HJ" Selected="true" Referenced="true">
+        <Name>metric hp</Name>
+        <UnitConversion BaseUnitID="unece.unit.WTT" Factor="735.49875" Offset="0"/>
+        <MetaData>
+          <Value AttributeID="UnitDescription">metric horse power</Value>
+        </MetaData>
+      </Unit>
+      <Unit ID="unece.unit.A90" Selected="true" Referenced="true">
+        <Name>GW</Name>
+        <UnitConversion BaseUnitID="unece.unit.WTT" Factor="1000000000" Offset="0"/>
+        <MetaData>
+          <Value AttributeID="UnitDescription">gigawatt</Value>
+        </MetaData>
+      </Unit>
+    </UnitFamily>
+
+	<Unit ID="unece.unit.MAW" Selected="true" Referenced="true">
+		<Name>MW</Name>
+		<UnitConversion BaseUnitID="unece.unit.WTT" Factor="1000000" Offset="0"/>
+		<MetaData>
+			<Value AttributeID="UnitDescription">megawatt</Value>
+		</MetaData>
+	</Unit>
+	<Unit ID="unece.unit.HJ" Selected="true" Referenced="true">
+		<Name>metric hp</Name>
+		<UnitConversion BaseUnitID="unece.unit.WTT" Factor="735.49875" Offset="0"/>
+		<MetaData>
+			<Value AttributeID="UnitDescription">metric horse power</Value>
+		</MetaData>
+	</Unit>
+	<Unit ID="unece.unit.A90" Selected="true" Referenced="true">
+		<Name>GW</Name>
+		<UnitConversion BaseUnitID="unece.unit.WTT" Factor="1000000000" Offset="0"/>
+		<MetaData>
+			<Value AttributeID="UnitDescription">gigawatt</Value>
+		</MetaData>
+	</Unit>
+  </UnitList>
+</STEP-ProductInformation>

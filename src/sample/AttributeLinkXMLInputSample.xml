@@ -1,0 +1,1024 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<!-- Configuration:
+<?xml version='1.0'?>
+<STEP-ProductInformation ResolveInlineRefs="true">
+<Products>
+<Product>
+<Name/>
+<AttributeLink IncludeInherited="true">
+<MetaData/>
+<ValueFilter/>
+</AttributeLink>
+</Product>
+</Products>
+</STEP-ProductInformation>
+Export from Products
+Classifications All
+Products "PPH"
+Assets All
+
+Exported by database exporter.
+-->
+<STEP-ProductInformation ExportTime="2020-04-29 06:09:53" ExportContext="Context1" ContextID="Context1" WorkspaceID="Main" UseContextLocale="false">
+	<Products>
+		<Product ID="PPH" UserTypeID="PPH" ParentID="Product hierarchy root">
+			<Name>Products</Name>
+			<AttributeLink AttributeID="grades9_12_aah">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ProductVairantPriority">4879</Value>
+					<Value AttributeID="AttributeVariant">Yes</Value>
+					<Value AttributeID="AttributeMandatory" ID="N">No</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="HierarchyGroup">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="SEOCompletionDate">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="itemgroupname_fam">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="ProductVairantPriority">n1000</Value>
+					<Value AttributeID="AttributeVariant">No</Value>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="backtoschool_aah">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ProductVairantPriority">5464</Value>
+					<Value AttributeID="AttributeVariant">Yes</Value>
+					<Value AttributeID="AttributeMandatory" ID="N">No</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="diversesupplier_dta">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="college_aah">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ProductVairantPriority">5462</Value>
+					<Value AttributeID="AttributeVariant">Yes</Value>
+					<Value AttributeID="AttributeMandatory" ID="N">No</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="grades68_aah">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ProductVairantPriority">5460</Value>
+					<Value AttributeID="AttributeVariant">Yes</Value>
+					<Value AttributeID="AttributeMandatory" ID="N">No</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="gradesk5_aah">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ProductVairantPriority">8759</Value>
+					<Value AttributeID="AttributeVariant">Yes</Value>
+					<Value AttributeID="AttributeMandatory" ID="N">No</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="SEOKeywords">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="quantityperunit_global">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentRequired" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_country_of_origin_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_customer_ctrl_acc_num_cust_spfc" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentRejectReply" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ItemCopyBullets" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ProductVairantPriority">2</Value>
+					<Value AttributeID="AttributeVariant">Yes</Value>
+					<Value AttributeID="AttributeMandatory" ID="N">No</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ItemClaimsBullet" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ProductVairantPriority">3</Value>
+					<Value AttributeID="AttributeVariant">Yes</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_discontinued_date" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="Subheader" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="DisplaySequence">1</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="3PCopy" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_uom_2" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentStatusOverride" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_number_sku_code" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_uom_3" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ItemStatus" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_category_manager_email" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ORSNASCOPartNumber" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_itemcreatedate" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHSegmentID" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_selling_uom" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="GlobalVariantProdName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EcoLabelStnd" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="LifestyleCopy" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="FluuidAttribute" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_type_code" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ArvatoPartNumber" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_status_code" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="RequestResponse" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="FactTags" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_class_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ApprForPublish" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_package_qty" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_line" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHClassID" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_uom_1" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="DataGovFreeFormReq" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_subgroup_1" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="USABinTitle" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_subgroup_2" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="LIMITDESCRIPTION80" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_gt_vendor_number" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EventFeatureName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="AssetPerspective" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentRequiredOverride" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="MfrPartNum" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_subgroup_2_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ErrorCounter" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_step_supplier_code_consolidated" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="brandname_global" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EventPromoName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="AssetsRequired" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_subgroup_3_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_cnet_vendor_code" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EventStoreFrontName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_tdg_flag" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PlantBasedContentPct" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_subgroup_4_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHSubClass ID" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_green_attributes" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ProductDescriptionSuffix" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="GTIN" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_priority" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="AssetApproved" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PackPlantBasedContentPct" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_material_safety_status" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PostConsRecycleContPct" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ConditionAttribute">EcoConscious = Recycled Content</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="datagovreq" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EcoConscious" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="OdGreenRatingTypeCode" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="3PAttributeSource" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="AssetChangeRequestDescription" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EventCollectionName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_manual_intervention_flag" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_discontinued_flag_yn" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_item_type" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHKey" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ItemCreateDate" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentRejectReason" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_uom_1_conversion_factor" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="FamilyApproveReject" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EcoConsciousPackaging" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EligiblePPP" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_item_type_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="RecycledInd" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_uom_2_conversion_factor" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ItemReferenceType" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentStatus" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_category_manager_name" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="TotalRecycleContPct" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="ConditionAttribute">RecycledInd = Yes</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_desc_1_english" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_desc_1_french" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="RMSItemDesc" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_uom_3_conversion_factor" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="FamilyUniqueName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_itemapprovaldate" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_gt_branded_flag" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="SupplierPartNum" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="CNETPartNumber" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="FamilyUniqueKey" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_status_code_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_manufacturer_name" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentStatusRMS" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_class" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_gtin_upc" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="AssgineeGroup" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHCategoryID" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="AssetsRecommended" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_inventory_unit_of_measure_ium" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_manufacturers_part_number" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentRequiredRMS" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ExternalCopywriterApproveReject" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_line_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="producttype_subclass" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EtilizePartNumber" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="FamilyNameKey" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentRequestReason" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="USABinDesc" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="3PAssetMetadata" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PackPostConsRecycleContentPct" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_subgroup_1_description" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_preferred_selling_uom" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ItemAssetUpdateRequest" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="smartfitsystem_aah" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHCategoryName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHSubclassName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="FamilyCopyBullets" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="DisplaySequence">2</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="SellUOM" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="3PUnmappedAttribute" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_gt_vendor_name" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PackTotalRecylceContentPct" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="WebProdDesc" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="ProductVairantPriority">1</Value>
+					<Value AttributeID="AttributeVariant">Yes</Value>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_perc_post_consumer_waste" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHClassName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="TRIPartNumber" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="AssetComment" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_subgroup_3" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="SellQuantity" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_step_supplier_name_consolidated" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="MaintRMSAttributechanges" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="LIMITDESCRIPTION45" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="N">No</Value>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="Manufacturer" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="MFGRecRetail" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_product_subgroup_4" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_vendor_product_number" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="EcoPolicyComp" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="MILTARGET" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="PPHSegmentName" Inherited="1">
+				<MetaData>
+					<Value AttributeID="AttributeMandatory" ID="Y">Yes</Value>
+					<Value AttributeID="SmartsheetMandatory">1</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ContentRejectReasonComment" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="ATT_green_product_flag" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory" Derived="true">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+			<AttributeLink AttributeID="LIMITDESCRIPTION18" Inherited="1">
+				<MetaData>
+					<Value AttributeID="SmartsheetMandatory">0</Value>
+					<Value AttributeID="AttributeVariant" Derived="true">N/A</Value>
+				</MetaData>
+			</AttributeLink>
+		</Product>
+	</Products>
+</STEP-ProductInformation>

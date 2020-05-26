@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration:
+<?xml version='1.0'?>
+<STEP-ProductInformation ResolveInlineRefs="true">
+<ListOfValuesGroupList/>
+<ListsOfValues ExportSize="Minimum"/>
+</STEP-ProductInformation>
+Export from Primary Product Classification
+Classifications All
+Products All
+Assets All
+
+Exported by database exporter.
+-->
+<STEP-ProductInformation ExportTime="2020-05-22 08:42:18" ExportContext="Context1" ContextID="Context1" WorkspaceID="Main" UseContextLocale="false">
+	<ListOfValuesGroupList>
+		<ListOfValuesGroup ID="List Of Values group root">
+			<Name>Lists of Values / LOVs</Name>
+			<ListOfValuesGroup ID="StyleLOVs">
+				<Name>Style LOVs</Name>
+			</ListOfValuesGroup>
+			<ListOfValuesGroup ID="LocalAttributeLOVs2">
+				<Name>Local Attribute LOVs 2</Name>
+			</ListOfValuesGroup>
+			<ListOfValuesGroup ID="ListsOfValues">
+				<Name>Global Attribute LOVs</Name>
+			</ListOfValuesGroup>
+			<ListOfValuesGroup ID="LocalAttributeLOVs">
+				<Name>Local Attribute LOVs</Name>
+			</ListOfValuesGroup>
+			<ListOfValuesGroup ID="GT_LOVs">
+				<Name>G&amp;T LOVs</Name>
+			</ListOfValuesGroup>
+		</ListOfValuesGroup>
+	</ListOfValuesGroupList>
+	<ListsOfValues>
+		<ListOfValue ID="GTFL_55_FullWastebasketIndLOV" ParentID="GT_LOVs" AllowUserValueAddition="false" UseValueID="true">
+			<Name>Fluuid # 55 FullWastebasketInd LOV</Name>
+			<Validation BaseType="text" MinValue="" MaxValue="" MaxLength="" InputMask="" />
+			<DimensionLink DimensionID="Language" />
+			<Value ID="GTFL_Yes">Yes</Value>
+			<Value ID="GTFL_No">No</Value>
+			<Value ID="GTFL_NA">NA</Value>
+		</ListOfValue>
+		<ListOfValue ID="Year" ParentID="Demo_LOV's" AllowUserValueAddition="false" UseValueID="true" DefaultUnitID="unece.unit.ANN" IDPattern="Value-[id]" Selected="true" Referenced="true">
+			<Name>Year</Name>
+			<Validation BaseType="number" MinValue="" MaxValue="" MaxLength="" InputMask="">
+				<UnitLink UnitID="unece.unit.ANN" />
+				<UnitLink UnitID="unece.ANN" />
+				<UnitLink UnitID="unece.unit" />
+			</Validation>
+			<Value ID="Value-104500" UnitID="unece.unit.ANN">2001</Value>
+		</ListOfValue>
+		<ListOfValue ID="termsLOV" ParentID="LocalAttributeLOVs2" AllowUserValueAddition="false" UseValueID="true">
+			<Name>Terms LOV</Name>
+			<Validation BaseType="text" MinValue="" MaxValue="" MaxLength="" InputMask="" />
+			<Value ID="SEMIANNUALLY">Semi-Annually</Value>
+			<Value ID="SEMIMONTHLY">Semi-Monthly</Value>
+			<Value ID="ANNUALLY">Annually</Value>
+			<Value ID="MONTHLY">Monthly</Value>
+			<Value ID="WEEKLY">Weekly</Value>
+		</ListOfValue>
+		<ListOfValue ID="miniprocessorcompatibilityLOV" ParentID="ListsOfValues" AllowUserValueAddition="false" UseValueID="true">
+			<Name>Minimum Process Compatibility</Name>
+			<Validation BaseType="text" MinValue="" MaxValue="" MaxLength="" InputMask="" />
+			<Value ID="PENT75">Pentium 75MHz</Value>
+			<Value ID="PENT166">Pentium 166MHz</Value>
+			<Value ID="PENT300">Pentium 300MHz</Value>
+			<Value ID="PENT266">Pentium 266MHz</Value>
+			<Value ID="PENT500">Pentium 500MHz</Value>
+			<Value ID="POWERG5">PowerPC G5</Value>
+			<Value ID="PENT233">Pentium 233MHz</Value>
+			<Value ID="PENT133">Pentium 133MHz</Value>
+			<Value ID="PENT120">Pentium 120MHz</Value>
+			<Value ID="POWERG3">PowerPC G3</Value>
+			<Value ID="PENT400">Pentium 400MHz</Value>
+			<Value ID="POWERG4">PowerPC G4</Value>
+			<Value ID="PENTIII">Pentium III</Value>
+		</ListOfValue>
+		<ListOfValue ID="LOV_Faced_or_Unfaced" ParentID="Backbone_Taxonomy_LOV_Group" AllowUserValueAddition="false" UseValueID="false" Referenced="true">
+			<Name>Faced or Unfaced</Name>
+			<Validation BaseType="text" MinValue="" MaxValue="" MaxLength="" InputMask="" />
+			<Value>Faced</Value>
+			<Value>Unfaced</Value>
+		</ListOfValue>
+	</ListsOfValues>
+</STEP-ProductInformation>
