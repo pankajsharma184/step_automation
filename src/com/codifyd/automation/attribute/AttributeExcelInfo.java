@@ -1,5 +1,6 @@
 package com.codifyd.automation.attribute;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -34,7 +35,7 @@ public class AttributeExcelInfo {
 	private String Attribute_Group_Reference_Name;
 	private String Validity;
 	private String LinkType;
-	private Map<String, String> attributeMetadata;
+	private Map<String, String> attributeMetadata = new HashMap<String, String>();
 	
 	
 	public Map<String, String> createMetadatMap() {

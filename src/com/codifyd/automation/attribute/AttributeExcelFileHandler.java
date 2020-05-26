@@ -125,13 +125,15 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 					validation.setInputMask(attrInfo.getMask());
 
 					List<UnitLinkType> extUnitLinks = validation.getUnitLink();
-
-					String[] unitIDs = attrInfo.getUnit_ID().split(";|,|\\|");
-					for (String unitID : unitIDs) {
-						if (!"".equals(unitID) || !unitID.trim().isEmpty()) {
-							UnitLinkType unitLink = objectFactory.createUnitLinkType();
-							unitLink.setUnitID(unitID);
-							extUnitLinks.add(unitLink);
+					String[] unitIDs = null;
+					if(attrInfo.getUnit_ID() != null) {
+						unitIDs = attrInfo.getUnit_ID().split(";|,|\\|");
+						for (String unitID : unitIDs) {
+							if (!"".equals(unitID) || !unitID.trim().isEmpty()) {
+								UnitLinkType unitLink = objectFactory.createUnitLinkType();
+								unitLink.setUnitID(unitID);
+								extUnitLinks.add(unitLink);
+							}
 						}
 					}
 					attribute.setValidation(validation);
@@ -152,10 +154,12 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 
 //				attribute.setValueTemplate(attrInfo.getValueTemplate());
 
-				if (!attrInfo.getValueTemplate().trim().isEmpty() || !"".equals(attrInfo.getValueTemplate().trim())) {
-					ValueTemplateType templateType = objectFactory.createValueTemplateType();
-					templateType.setContent(attrInfo.getValueTemplate());
-					attribute.getValueTemplateOrUnitTemplate().add(templateType);
+				if(attrInfo.getValueTemplate() != null) {
+					if (!attrInfo.getValueTemplate().trim().isEmpty() || !"".equals(attrInfo.getValueTemplate().trim())) {
+						ValueTemplateType templateType = objectFactory.createValueTemplateType();
+						templateType.setContent(attrInfo.getValueTemplate());
+						attribute.getValueTemplateOrUnitTemplate().add(templateType);
+					}
 				}
 
 				List<AttributeGroupLinkType> extAttrGRP = attribute.getAttributeGroupLink();
@@ -189,28 +193,33 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 				////
 
 				List<DimensionLinkType> extDimensionLink = attribute.getDimensionLink();
-				String[] dimensions = attrInfo.getDimension_Dependencies().split(";|,|\\|");
-				for (String dimensionID : dimensions) {
-					if (!dimensionID.trim().isEmpty() || !"".equals(dimensionID)) {
-						DimensionLinkType dimensionLink = objectFactory.createDimensionLinkType();
-						dimensionLink.setDimensionID(dimensionID);
-						extDimensionLink.add(dimensionLink);
+				String[] dimensions = null;
+				if(attrInfo.getDimension_Dependencies() != null) {
+					dimensions = attrInfo.getDimension_Dependencies().split(";|,|\\|");
+					for (String dimensionID : dimensions) {
+						if (!dimensionID.trim().isEmpty() || !"".equals(dimensionID)) {
+							DimensionLinkType dimensionLink = objectFactory.createDimensionLinkType();
+							dimensionLink.setDimensionID(dimensionID);
+							extDimensionLink.add(dimensionLink);
+						}
 					}
 				}
-
 				////
 
 				List<LinkTypeType> extLinkType = attribute.getLinkType();
-				String[] linkTypes = attrInfo.getLinkType().split(";|,|\\|");
-				for (String linkTypeID : linkTypes) {
-					if (!linkTypeID.trim().isEmpty() || !"".equals(linkTypeID)) {
+				String[] linkTypes = null;
+				if(attrInfo.getLinkType() != null) {
+					linkTypes = attrInfo.getLinkType().split(";|,|\\|");
+					for (String linkTypeID : linkTypes) {
+						if (!linkTypeID.trim().isEmpty() || !"".equals(linkTypeID)) {
 
-						LinkTypeType linkType = objectFactory.createLinkTypeType();
-						linkType.setLinkTypeID(linkTypeID);
-						extLinkType.add(linkType);
+							LinkTypeType linkType = objectFactory.createLinkTypeType();
+							linkType.setLinkTypeID(linkTypeID);
+							extLinkType.add(linkType);
+						}
 					}
 				}
-
+				
 				attributeList1.add(attribute);
 			}
 
