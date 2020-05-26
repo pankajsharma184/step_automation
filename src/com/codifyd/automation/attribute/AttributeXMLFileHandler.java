@@ -27,7 +27,7 @@ import com.codifyd.automation.util.HandlerConstants;
 import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.automation.util.Utility;
-import com.codifyd.automation.util.XMLFileHandler;
+import com.codifyd.automation.util.FileConversionHandler;
 import com.codifyd.stepxsd.AttributeGroupLinkType;
 import com.codifyd.stepxsd.AttributeType;
 import com.codifyd.stepxsd.DimensionLinkType;
@@ -40,7 +40,7 @@ import com.codifyd.stepxsd.UserTypeLinkType;
 import com.codifyd.stepxsd.ValueTemplateType;
 import com.codifyd.stepxsd.ValueType;
 
-public class AttributeXMLFileHandler implements XMLFileHandler{
+public class AttributeXMLFileHandler implements FileConversionHandler{
 
 	// public static void main(String[] args) {
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {

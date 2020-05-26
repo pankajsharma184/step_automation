@@ -1,5 +1,5 @@
 package com.codifyd.automation.util;
 
-public interface XMLFileHandler {
+public interface FileConversionHandler {
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception;
 }

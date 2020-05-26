@@ -20,7 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.codifyd.automation.util.AutomationConstants;
-import com.codifyd.automation.util.ExcelFileHandler;
+import com.codifyd.automation.util.FileConversionHandler;
 import com.codifyd.automation.util.HandlerConstants;
 import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
@@ -41,7 +41,7 @@ import com.codifyd.stepxsd.ValidationType;
 import com.codifyd.stepxsd.ValueTemplateType;
 import com.codifyd.stepxsd.ValueType;
 
-public class AttributeExcelFileHandler implements ExcelFileHandler {
+public class AttributeExcelFileHandler implements FileConversionHandler {
 
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
