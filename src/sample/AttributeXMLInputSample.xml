@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Configuration:
+<STEP-ProductInformation ResolveInlineRefs="true">
+<AttributeGroupList ExportSize="Minimum"/>
+<AttributeList ExportSize="Minimum"/>
+</STEP-ProductInformation>
+
+Export from Primary Product Hierarchy
+Classifications All
+Products All
+Assets All
+-->
+<STEP-ProductInformation ExportTime="2020-04-30 01:11:43" ExportContext="Australia_AU_en_US" ContextID="Australia_AU_en_US" WorkspaceID="Main" UseContextLocale="false">
+
+  <AttributeGroupList>
+
+  <AttributeGroup ID="training" ShowInWorkbench="true" ManuallySorted="false">
+    <Name>Training</Name>
+    <AttributeGroup ID="fashion_jewellery_attr" ShowInWorkbench="true" ManuallySorted="false" Referenced="true">
+      <Name>fashion_jewellery</Name>
+      <MetaData>
+        <Value AttributeID="DisplaySequence">2</Value>
+      </MetaData>
+      <Configuration>H4sIAAAAAAAAAH2NOwqAMBAFe08RcgA/fRT8X0DsI66yoInsbvD6ioV2lgNv3phShHAKAj35cIwIZwMLOhT0TnWedisjEN+U6yxOdREpZb4Jq8HSCvLecG1dBe2MAnOuF7sx6OSRar+F3fENJvmrFtEFDSJ72JUAAAA=</Configuration>
+    </AttributeGroup>
+    <AttributeGroup ID="aa_computers" ShowInWorkbench="true" ManuallySorted="true" Selected="true" Referenced="true">
+      <Name>Computers</Name>
+      <MetaData>
+        <Value AttributeID="DisplaySequence">1</Value>
+      </MetaData>
+      <AttributeSequence>
+        <AttributeLink AttributeID="aa_brand"/>
+        <AttributeLink AttributeID="aa_rom"/>
+        <AttributeLink AttributeID="aa_manu"/>
+        <AttributeLink AttributeID="aa_ram"/>
+        <AttributeLink AttributeID="as_pagal"/>
+      </AttributeSequence>
+    </AttributeGroup>
+    <AttributeGroup ID="rp_sport" ShowInWorkbench="true" ManuallySorted="false" Referenced="true">
+      <Name>Sport</Name>
+    </AttributeGroup>
+  </AttributeGroup>
+  <AttributeGroup ID="Metadata" ShowInWorkbench="true" ManuallySorted="false" Referenced="true">
+    <Name>Metadata</Name>
+    <MetaData>
+      <Value AttributeID="Purpose">Used for attributes on classifications, entities, party data, users, attributes, units, etc. as well as for Description attributes on products.</Value>
+    </MetaData>
+    <Configuration>H4sIAAAAAAAAAH2OywrCMBBF9/2KkA9odJ8UtLXislC6lZFOZaBNJDNB/Hvrg7hzN+dyz2XsTiTSJQkeY0i3gfDe4ESehIJXbYgLyICRV3J6W250VShlfxVWPcQrSp7hGvweDyMJjk5PMDNq85bqMKfF8+teKQufWGU+NU73yHLuEngheXx1k31r/j1dFU/OWQjA1AAAAA==</Configuration>
+  </AttributeGroup>
+  </AttributeGroupList>
+
+  <AttributeList>
+
+    <Attribute ID="aa_manu" MultiValued="false" ProductMode="Normal" FullTextIndexed="false" ExternallyMaintained="false" Derived="false" Selected="true" Referenced="true">
+      <Name>Manufactured Date</Name>
+      <Validation BaseType="date" MinValue="" MaxValue="" MaxLength="" InputMask=""/>
+      <MetaData/>
+      <AttributeGroupLink AttributeGroupID="aa_computers"/>
+      <UserTypeLink UserTypeID="SubClass"/>
+      <UserTypeLink UserTypeID="Item_training"/>
+      <UserTypeLink UserTypeID="Class"/>
+    </Attribute>
+
+    <Attribute ID="AttributeHelpText" MultiValued="false" ProductMode="Property" FullTextIndexed="false" ExternallyMaintained="true" Derived="false" Referenced="true">
+      <Name>Attribute Help Text</Name>
+      <Validation BaseType="text" MinValue="" MaxValue="" MaxLength="10000" InputMask=""/>
+      <DimensionLink DimensionID="Language"/>
+      <MetaData>
+        <Value AttributeID="Purpose">Used to enter mouse-over help into product attributes for display to STEP users</Value>
+      </MetaData>
+      <AttributeGroupLink AttributeGroupID="Metadata"/>
+      <UserTypeLink UserTypeID="stibo.normalattribute"/>
+    </Attribute>
+
+    <Attribute ID="as_pagal" MultiValued="false" ProductMode="Normal" FullTextIndexed="false" ExternallyMaintained="false" Derived="false" Selected="true" Referenced="true">
+      <Name>Screen Size</Name>
+      <Validation BaseType="number" MinValue="" MaxValue="" MaxLength="" InputMask="">
+        <UnitLink UnitID="unece.unit.INH"/>
+      </Validation>
+      <MetaData/>
+      <AttributeGroupLink AttributeGroupID="rp_sport"/>
+      <AttributeGroupLink AttributeGroupID="aa_computers"/>
+      <UserTypeLink UserTypeID="Item_training"/>
+    </Attribute>
+
+    <Attribute ID="Completeness Score" MultiValued="false" ProductMode="Property" FullTextIndexed="false" ExternallyMaintained="true" Derived="false" Referenced="true">
+      <Name>Completeness Score</Name>
+      <Validation BaseType="integer" MinValue="" MaxValue="" MaxLength="" InputMask=""/>
+      <MetaData/>
+      <AttributeGroupLink AttributeGroupID="Metadata"/>
+      <UserTypeLink UserTypeID="Reference-Type user-type root"/>
+      <UserTypeLink UserTypeID="stibo.normalattribute"/>
+      <UserTypeLink UserTypeID="CP-Link-Type user-type root"/>
+      <LinkType LinkTypeID="CA"/>
+      <LinkType LinkTypeID="PA"/>
+    </Attribute>
+
+    <Attribute ID="aa_rom" MultiValued="false" ProductMode="Normal" FullTextIndexed="false" ExternallyMaintained="true" Derived="false" HierarchicalFiltering="false" ClassificationHierarchicalFiltering="false" Selected="true" Referenced="true" Mandatory="true">
+      <Name>HardDisk</Name>
+      <ListOfValueLink ListOfValueID="aa_rom"/>
+      <MetaData/>
+      <AttributeGroupLink AttributeGroupID="aa_computers"/>
+      <UserTypeLink UserTypeID="SubClass"/>
+      <UserTypeLink UserTypeID="Item_training"/>
+      <UserTypeLink UserTypeID="Class"/>
+    </Attribute>
+
+    <Attribute ID="aa_brand" MultiValued="false" ProductMode="Normal" FullTextIndexed="false" ExternallyMaintained="false" Derived="false" Selected="true" Referenced="true">
+      <Name>Brand</Name>
+      <Validation BaseType="text" MinValue="" MaxValue="" MaxLength="100" InputMask=""/>
+      <MetaData/>
+      <AttributeGroupLink AttributeGroupID="aa_computers"/>
+      <UserTypeLink UserTypeID="SubClass"/>
+      <UserTypeLink UserTypeID="Item_training"/>
+      <UserTypeLink UserTypeID="Class"/>
+    </Attribute>
+
+    <Attribute ID="DisplaySequence" MultiValued="false" ProductMode="Property" FullTextIndexed="false" ExternallyMaintained="false" Derived="false" Referenced="true">
+      <Name>Display Sequence</Name>
+      <Validation BaseType="number" MinValue="" MaxValue="" MaxLength="" InputMask=""/>
+      <MetaData>
+        <Value AttributeID="Purpose">Used to sequence attributes and attribute groups</Value>
+      </MetaData>
+      <AttributeGroupLink AttributeGroupID="Metadata"/>
+      <UserTypeLink UserTypeID="stibo.normalattribute"/>
+      <UserTypeLink UserTypeID="stibo.grouping attribute"/>
+      <LinkType LinkTypeID="CA"/>
+      <LinkType LinkTypeID="PA"/>
+    </Attribute>
+
+    <Attribute ID="smartsheetMandatory" MultiValued="false" ProductMode="Property" FullTextIndexed="false" ExternallyMaintained="false" Derived="true" Referenced="true" Mandatory="true">
+      <Name>smartsheetMandatory</Name>
+      <Validation BaseType="text" MinValue="" MaxValue="" MaxLength="" InputMask=""/>
+      <ValueTemplate>&lt;derive expr=&quot;VALUE('AttributeHelpText')&quot;/&gt;</ValueTemplate>
+      <MetaData>
+        <Value Derived="true" AttributeID="smartsheetMandatory">abc</Value>
+        <Value AttributeID="AttributeHelpText">abc</Value>
+      </MetaData>
+      <AttributeGroupLink AttributeGroupID="fashion_jewellery_attr"/>
+      <UserTypeLink UserTypeID="stibo.normalattribute"/>
+      <UserTypeLink UserTypeID="Item_training"/>
+    </Attribute>
+
+    <Attribute ID="aa_ram" MultiValued="false" ProductMode="Normal" FullTextIndexed="false" ExternallyMaintained="true" Derived="false" Completeness="100" HierarchicalFiltering="true" ClassificationHierarchicalFiltering="false" Selected="true" Referenced="true" Mandatory="true">
+      <Name>Ram</Name>
+      <ListOfValueLink ListOfValueID="aa_ram"/>
+      <MetaData>
+        <Value AttributeID="DisplaySequence">2</Value>
+        <Value AttributeID="Purpose">HELLO</Value>
+        <Value AttributeID="Completeness Score">100</Value>
+      </MetaData>
+      <AttributeGroupLink AttributeGroupID="aa_computers"/>
+      <UserTypeLink UserTypeID="SubClass"/>
+      <UserTypeLink UserTypeID="Item_training"/>
+      <UserTypeLink UserTypeID="Class"/>
+    </Attribute>
+
+    <Attribute ID="Purpose" MultiValued="false" ProductMode="Property" FullTextIndexed="false" ExternallyMaintained="false" Derived="false" Referenced="true">
+      <Name>Purpose</Name>
+      <Validation BaseType="text" MinValue="" MaxValue="" MaxLength="255" InputMask=""/>
+      <DimensionLink DimensionID="Language"/>
+      <MetaData>
+        <Value AttributeID="Purpose">Used to provide the purpose for various objects within the system</Value>
+      </MetaData>
+      <AttributeGroupLink AttributeGroupID="Metadata"/>
+      <UserTypeLink UserTypeID="AssetPushConfigurationsRoot"/>
+      <UserTypeLink UserTypeID="ExportConfigurationsLevel2"/>
+      <UserTypeLink UserTypeID="ExportConfigurationsRoot"/>
+      <UserTypeLink UserTypeID="PortalConfigurationsLevel1"/>
+      <UserTypeLink UserTypeID="ExportConfigurationsLevel1"/>
+      <UserTypeLink UserTypeID="ImportConfigurationsRoot"/>
+      <UserTypeLink UserTypeID="Reference-Type user-type root"/>
+      <UserTypeLink UserTypeID="ImportConfigurationsLevel1"/>
+      <UserTypeLink UserTypeID="ImportConfigurationsLevel2"/>
+      <UserTypeLink UserTypeID="PortalConfigurationsRoot"/>
+      <UserTypeLink UserTypeID="Real qualifier"/>
+      <UserTypeLink UserTypeID="SmartSheetConfigurationsRoot"/>
+      <UserTypeLink UserTypeID="Context qualifier"/>
+      <UserTypeLink UserTypeID="AutoClassificationRuleSetsRoot"/>
+      <UserTypeLink UserTypeID="VideoRoot"/>
+      <UserTypeLink UserTypeID="AssetRoot"/>
+      <UserTypeLink UserTypeID="ConfigurationsRoot"/>
+      <UserTypeLink UserTypeID="ProductImageRoot"/>
+      <UserTypeLink UserTypeID="MSDSRoot"/>
+      <UserTypeLink UserTypeID="OwnersManualRoot"/>
+      <UserTypeLink UserTypeID="InstallationManualRoot"/>
+      <UserTypeLink UserTypeID="BusinessRulesDownloadsRoot"/>
+      <UserTypeLink UserTypeID="IllustrationRoot"/>
+      <UserTypeLink UserTypeID="AssetLevel2"/>
+      <UserTypeLink UserTypeID="IconRoot"/>
+      <UserTypeLink UserTypeID="LogoRoot"/>
+      <UserTypeLink UserTypeID="stibo.grouping attribute"/>
+      <UserTypeLink UserTypeID="stibo.normalattribute"/>
+      <UserTypeLink UserTypeID="AssetLevel1"/>
+    </Attribute>
+
+    <Attribute ID="MetaData1" MultiValued="false" ProductMode="Property" FullTextIndexed="false" ExternallyMaintained="false" Derived="false" Referenced="true">
+      <Name>MetaData1</Name>
+      <Validation BaseType="text" MinValue="" MaxValue="" MaxLength="" InputMask=""/>
+      <MetaData/>
+      <AttributeGroupLink AttributeGroupID="fashion_jewellery_attr"/>
+      <UserTypeLink UserTypeID="stibo.normalattribute"/>
+    </Attribute>
+
+  </AttributeList>
+</STEP-ProductInformation>
