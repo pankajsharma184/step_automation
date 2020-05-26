@@ -20,7 +20,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.util.FileConversionHandler;
 import com.codifyd.automation.util.HandlerConstants;
+import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.AttributeLinkType;
 import com.codifyd.stepxsd.MetaDataType;
@@ -32,10 +34,13 @@ import com.codifyd.stepxsd.STEPProductInformation;
 import com.codifyd.stepxsd.TrueFalseType;
 import com.codifyd.stepxsd.ValueType;
 
-public class AttributeLinkExcelFileHandler {
+public class AttributeLinkExcelFileHandler implements FileConversionHandler{
 
-	public void handleFile(UserInputFileUtilDO userInput) {
+	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
 
+		// parse the input for errors
+		InputValidator.validateExcelToXML(userInput);
+		
 		try {
 			// Read the Excel and build the UOM Objects
 			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> excelinfo = new TreeMap<String, ArrayList<AttributeLinkExcelInfo>>();

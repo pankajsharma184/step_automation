@@ -19,7 +19,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.util.FileConversionHandler;
 import com.codifyd.automation.util.HandlerConstants;
+import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.stepxsd.ListOfValueType;
 import com.codifyd.stepxsd.ListsOfValuesType;
@@ -31,10 +33,13 @@ import com.codifyd.stepxsd.TrueFalseType;
 import com.codifyd.stepxsd.ValidationType;
 import com.codifyd.stepxsd.ValueType;
 
-public class LovExcelFileHandler {
+public class LovExcelFileHandler implements FileConversionHandler{
 
-	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) {
+	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
+		// parse the input for errors
+		InputValidator.validateExcelToXML(userInputFileUtilDO);
+		
 //		Runtime runtime = Runtime.getRuntime();
 //		long beforeUsedMem = runtime.totalMemory() - runtime.freeMemory();
 //		System.out.println(beforeUsedMem);

@@ -25,6 +25,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.util.FileConversionHandler;
+import com.codifyd.automation.util.InputValidator;
 import com.codifyd.automation.util.UserInputFileUtilDO;
 import com.codifyd.automation.util.Utility;
 import com.codifyd.stepxsd.ListOfValueType;
@@ -32,9 +34,12 @@ import com.codifyd.stepxsd.STEPProductInformation;
 import com.codifyd.stepxsd.TrueFalseType;
 import com.codifyd.stepxsd.ValueType;
 
-public class LovXMLFileHandler {
+public class LovXMLFileHandler implements FileConversionHandler {
 
-	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws FileNotFoundException, IOException {
+	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
+
+		// parse the input for errors
+		InputValidator.validateXMLToExcel(userInputFileUtilDO);
 
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
 		File outputFile = new File(
