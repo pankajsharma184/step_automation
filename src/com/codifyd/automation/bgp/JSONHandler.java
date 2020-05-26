@@ -1,9 +1,5 @@
 package com.codifyd.automation.bgp;
 
-import static com.codifyd.automation.bgp.Util.getAttributeID;
-import static com.codifyd.automation.bgp.Util.getErrorValue;
-import static com.codifyd.automation.bgp.Util.getProductID;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -35,15 +31,8 @@ import org.json.simple.parser.ParseException;
 
 public class JSONHandler {
 
-	public static void jsonHandler(List<JSONObject> list, String outputFileName, String outputPath)
-			throws IOException, ParseException {
-//		System.out.println(list.size());
-		String output = "";
-		if (outputPath.endsWith("\\")) {
-			output = outputPath + outputFileName;
-		} else {
-			output = outputPath + "\\" + outputFileName;
-		}
+	public static void writeJSONtoExcel(List<JSONObject> list, String outputFilePath) throws Exception, ParseException {		
+		//parse error rows to excel data
 		int i = 0;
 		TreeMap<Integer, ArrayList<String>> map = new TreeMap<Integer, ArrayList<String>>();
 		for (JSONObject obj : list) {
@@ -60,17 +49,41 @@ public class JSONHandler {
 
 			i++;
 		}
-
-		writeExcel(map, output);
+		//write to excel
+		writeToExcel(map, outputFilePath);
 
 	}
+	
 
-	@SuppressWarnings("deprecation")
-	private static void writeExcel(TreeMap<Integer, ArrayList<String>> map, String output) {
+	public static String getAttributeID(String entryText) {
+		int beginIndex = entryText.indexOf("step://attribute?id=") + "step://attribute?id=".length();
+		int endIndex = entryText.indexOf('\"', beginIndex);
+//		System.out.println(beginIndex + "  " + endIndex);
+		String attribute = entryText.substring(beginIndex, endIndex);
+		return attribute;
+	}
+
+	public static String getProductID(String entryText) {
+		int beginIndex = entryText.indexOf("step://product?id=") + "step://product?id=".length();
+		int endIndex = entryText.indexOf('\"', beginIndex);
+//		System.out.println(beginIndex + "  " + endIndex);
+		String product = entryText.substring(beginIndex, endIndex);
+		return product;
+	}
+
+	public static String getErrorValue(String entryText, String attributeID, String productID) {
+		int beginIndex = entryText.indexOf("isn\'t valid (") + "isn\'t valid (".length();
+		int endIndex = entryText.indexOf(")", beginIndex);
+		String errorValue = entryText.substring(beginIndex, endIndex);
+
+		return errorValue;
+	}
+
+	private static void writeToExcel(TreeMap<Integer, ArrayList<String>> map, String outputFilePath) throws Exception {
 		try {
 			XSSFWorkbook wb = new XSSFWorkbook();
 			// Create a blank sheet
-			XSSFSheet sheet = wb.createSheet("ErrorInfo");
+			XSSFSheet sheet = wb.createSheet("ErrorInformation");
 			// Create row object
 			XSSFRow row;
 			// Create cell object
@@ -125,68 +138,60 @@ public class JSONHandler {
 			}
 
 			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(output);
+			FileOutputStream out = new FileOutputStream(outputFilePath);
 			wb.write(out);
 			out.close();
 			wb.close();
-			System.out.println("File Generated in path : " + output);
-			System.out.println("=======================Error File Generated=======================\n\n");
+			System.out.println("File Generated in path : " + outputFilePath);			
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public static List<JSONObject> getErrorList(Set<String> urlList, String outputPath)
+	public static List<JSONObject> getErrorList(Set<String> urlList, Authenticator authenticator)
 			throws IOException, ParseException {
 
 		BufferedReader br = null;
-		String out = outputPath + "\\ErrorList.txt";
-		@SuppressWarnings("resource")
-		BufferedWriter bw = new BufferedWriter(new FileWriter(out));
 
 		JSONParser jsonParser = new JSONParser();
 		List<JSONObject> list = new ArrayList<JSONObject>();
 
-		Authenticator.setDefault(new MyAuthenticator());
+		Authenticator.setDefault(authenticator);
 
 		for (String urlString : urlList) {
-			System.out.println(urlString);
 			URL url = new URL(urlString);
-//			System.out.println(urlText[0] + bgpID + urlText[1]);
 			HttpsURLConnection http = (HttpsURLConnection) url.openConnection();
-
 			http.setAllowUserInteraction(true);
 			http.setRequestMethod("GET");
 			http.connect();
 			if (http.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP Error code : " + http.getResponseCode());
+				
+				throw new RuntimeException("Failed : HTTP Error code : " + http.getResponseCode()+ "with url -"+ urlString);
 			}
 			InputStreamReader in = new InputStreamReader(http.getInputStream());
 			br = new BufferedReader(in);
 
 			String str;
 			while ((str = br.readLine()) != null) {
-				bw.write(str);
 				JSONArray json = (JSONArray) jsonParser.parse(str);
-				json.forEach(err -> parseJsonObject((JSONObject) err, list));
+				for(Object eachjsonObject : json){
+					JSONObject jsonObject = (JSONObject) eachjsonObject;
+					String entryType = (String) jsonObject.get("entryType");
+					if (entryType.equals("error")) {
+						list.add(jsonObject);
+					}
+				}				
 			}
-			bw.flush();
+
 			http.disconnect();
 		}
 
+		if(br!=null){
 		br.close();
-		bw.close();
-
+		}
 		return list;
 
 	}
 
-	private static void parseJsonObject(JSONObject jsonObject, List<JSONObject> list) {
-		String entryType = (String) jsonObject.get("entryType");
-		if (entryType.equals("error")) {
-			list.add(jsonObject);
-		}
-	}
 }
