@@ -103,7 +103,7 @@ public class LovExcelFileHandler implements FileConversionHandler{
 				for (LovExcelInfo valueinfo : list) {
 					ValueType value = objectFactory.createValueType();
 
-					if (!valueinfo.getValueID().trim().equals("")) {
+					if (valueinfo.getValueID() != null && !valueinfo.getValueID().trim().equals("")) {
 						value.setID(valueinfo.getValueID());
 					}
 					value.setContent((valueinfo.getValueName()));
@@ -241,12 +241,12 @@ public class LovExcelFileHandler implements FileConversionHandler{
 
 			}
 
-			for (Entry<String, ArrayList<LovExcelInfo>> inf : excelinfo.entrySet()) {
-				ArrayList<LovExcelInfo> list = inf.getValue();
-				for (LovExcelInfo key : list) {
-					System.out.println(key.getValueID() + " -> " + key.getValueName());
-				}
-			}
+//			for (Entry<String, ArrayList<LovExcelInfo>> inf : excelinfo.entrySet()) {
+//				ArrayList<LovExcelInfo> list = inf.getValue();
+//				for (LovExcelInfo key : list) {
+//					System.out.println(key.getValueID() + " -> " + key.getValueName());
+//				}
+//			}
 			workbook.close();
 
 		} catch (Exception e) {

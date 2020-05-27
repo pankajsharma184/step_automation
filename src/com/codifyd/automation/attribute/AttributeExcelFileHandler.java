@@ -90,10 +90,10 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 						Boolean.parseBoolean(attrInfo.getExternallyMaitained()) ? TrueFalseType.TRUE
 								: TrueFalseType.FALSE);
 				attribute.setFullTextIndexed(
-						Boolean.parseBoolean(attrInfo.getFullTextIndexed().toLowerCase()) ? TrueFalseType.TRUE
+						Boolean.parseBoolean(attrInfo.getFullTextIndexed()) ? TrueFalseType.TRUE
 								: TrueFalseType.FALSE);
 				attribute.setDefaultUnitID(attrInfo.getDefault_Unit_ID());
-				attribute.setMandatory(Boolean.parseBoolean(attrInfo.getMandatory().toLowerCase()) ? TrueFalseType.TRUE
+				attribute.setMandatory(Boolean.parseBoolean(attrInfo.getMandatory()) ? TrueFalseType.TRUE
 						: TrueFalseType.FALSE);
 				attribute.setMultiValued(
 						Boolean.parseBoolean(attrInfo.getMulti_Valued()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
