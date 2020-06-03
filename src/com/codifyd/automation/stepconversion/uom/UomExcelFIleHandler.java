@@ -31,14 +31,12 @@ import com.codifyd.stepxsd.UnitType;
 
 public class UomExcelFIleHandler {
 
-	public void handleFile(UserInputFileUtilDO userInput) {
+	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
 
 		try {
 			// Read the Excel and build the UOM Objects
 			TreeMap<String, ArrayList<UomExcelInfo>> excelinfo = new TreeMap<String, ArrayList<UomExcelInfo>>();
 			readExcel(new File(userInput.getInputPath()), excelinfo);
-
-			// System.out.println(excelValues.size());
 
 			File file = new File(userInput.getOutputPath() + "\\" + userInput.getFilename());
 
@@ -70,16 +68,15 @@ public class UomExcelFIleHandler {
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			jaxbMarshaller.marshal(stepProductInformation, file);
-			// jaxbMarshaller.marshal(stepProductInformation, System.out);
 
 			System.out.println("File Generated in path : " + file.getAbsolutePath());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
-	private void readExcel(File inputFile, TreeMap<String, ArrayList<UomExcelInfo>> excelinfo) {
+	private void readExcel(File inputFile, TreeMap<String, ArrayList<UomExcelInfo>> excelinfo) throws Exception {
 		try {
 			List<String> headerList = null;
 			InputStream fs = new FileInputStream(inputFile);
@@ -145,7 +142,7 @@ public class UomExcelFIleHandler {
 			}
 			workbook.close();
 		} catch (Exception e) {
-			System.out.println(e);
+			throw new Exception(e.getMessage());
 		}
 
 	}

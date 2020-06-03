@@ -1,7 +1,6 @@
 package com.codifyd.automation.stepconversion.util;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.codifyd.automation.stepconversion.attributelink.AttributeLinkExcelFileHandler;
@@ -17,7 +16,7 @@ public class SharedHelper {
 
 	// class used to testing. Should mimic what we call from website
 
-	public static UserInputFileUtilDO getUserInput(BufferedReader reader, String propertiesString) throws IOException {
+	public static UserInputFileUtilDO getUserInput(BufferedReader reader, String propertiesString) throws Exception {
 		UserInputFileUtilDO userInputFileUtilDO = new UserInputFileUtilDO();
 		try {
 			System.out.print("Please enter the input file path : ");
@@ -57,8 +56,7 @@ public class SharedHelper {
 			
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(0);
+			throw new Exception(e.getMessage());
 		}
 		return userInputFileUtilDO;
 	}

@@ -5,9 +5,7 @@ import static com.codifyd.automation.stepconversion.uom.UomXMLReader.getMetaData
 import static com.codifyd.automation.stepconversion.uom.UomXMLReader.unitHandler;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,7 +35,6 @@ import com.codifyd.stepxsd.ValueType;
 public class UomXMLFileHandler {
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
-//		Map<String, AttributeXMLInfo> inputValues = new HashMap();
 		File inputFile = new File(userInputFileUtilDO.getInputPath());
 		File outputFile = new File(
 				Paths.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
@@ -51,126 +48,125 @@ public class UomXMLFileHandler {
 
 			writeExcel(objectFactory, outputFile, properties, delimeter);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties,
-			String delim) throws FileNotFoundException, IOException {
+			String delim) throws Exception {
+		try {
 
-		// Create blank workbook
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		// Create a blank sheet
-		XSSFSheet spreadsheet = workbook.createSheet("UOMInfo");
-		// Create row object
-		XSSFRow row;
-		// Excel cell color
-		XSSFCellStyle cellStyle = null;
+			// Create blank workbook
+			XSSFWorkbook workbook = new XSSFWorkbook();
+			// Create a blank sheet
+			XSSFSheet spreadsheet = workbook.createSheet("UOMInfo");
+			// Create row object
+			XSSFRow row;
+			// Excel cell color
+			XSSFCellStyle cellStyle = null;
 
-		/*
-		 * // Create Property Object and Load Properties File Properties properties =
-		 * new Properties(); properties.load(inStream);
-		 */
+			/*
+			 * // Create Property Object and Load Properties File Properties properties =
+			 * new Properties(); properties.load(inStream);
+			 */
 
-		// Create Header List From Properties File
-		TreeMap<Integer, String> propertyMap = new TreeMap<Integer, String>();
-		for (String key : properties.stringPropertyNames()) {
-			propertyMap.put(Integer.parseInt(key), properties.getProperty(key));
-		}
+			// Create Header List From Properties File
+			TreeMap<Integer, String> propertyMap = new TreeMap<Integer, String>();
+			for (String key : properties.stringPropertyNames()) {
+				propertyMap.put(Integer.parseInt(key), properties.getProperty(key));
+			}
 
-		ArrayList<String> headerList = new ArrayList<String>();
-		for (Entry<Integer, String> ent : propertyMap.entrySet()) {
-			headerList.add(ent.getValue().toString());
-		}
+			ArrayList<String> headerList = new ArrayList<String>();
+			for (Entry<Integer, String> ent : propertyMap.entrySet()) {
+				headerList.add(ent.getValue().toString());
+			}
 
-		// Metadata Header List
-		HashSet<String> metaHeader = new HashSet<String>();
-		List<Object> unitList = objectFactory.getUnitList().getUnitFamilyOrUnit();
-		for (Object object1 : unitList) {
-			if (object1 instanceof UnitFamilyType) {
-				List<UnitType> unitType = ((UnitFamilyType) object1).getUnit();
-				for (UnitType unit : unitType) {
-					if (unit.getMetaData() != null && unit.getMetaData().getValueOrMultiValueOrValueGroup() != null) {
-						for (Object value : unit.getMetaData().getValueOrMultiValueOrValueGroup()) {
+			// Metadata Header List
+			HashSet<String> metaHeader = new HashSet<String>();
+			List<Object> unitList = objectFactory.getUnitList().getUnitFamilyOrUnit();
+			for (Object object1 : unitList) {
+				if (object1 instanceof UnitFamilyType) {
+					List<UnitType> unitType = ((UnitFamilyType) object1).getUnit();
+					for (UnitType unit : unitType) {
+						if (unit.getMetaData() != null
+								&& unit.getMetaData().getValueOrMultiValueOrValueGroup() != null) {
+							for (Object value : unit.getMetaData().getValueOrMultiValueOrValueGroup()) {
+								metaHeader.add(((ValueType) value).getAttributeID());
+							}
+						}
+					}
+				} else if (object1 instanceof UnitType) {
+					if (((UnitType) object1).getMetaData() != null
+							&& ((UnitType) object1).getMetaData().getValueOrMultiValueOrValueGroup() != null) {
+						for (Object value : ((UnitType) object1).getMetaData().getValueOrMultiValueOrValueGroup()) {
 							metaHeader.add(((ValueType) value).getAttributeID());
 						}
 					}
 				}
-			} else if (object1 instanceof UnitType) {
-				if (((UnitType) object1).getMetaData() != null
-						&& ((UnitType) object1).getMetaData().getValueOrMultiValueOrValueGroup() != null) {
-					for (Object value : ((UnitType) object1).getMetaData().getValueOrMultiValueOrValueGroup()) {
-						metaHeader.add(((ValueType) value).getAttributeID());
+			}
+
+			// Add metadata header list into headerList
+			headerList.addAll(metaHeader);
+
+			// Create metadata map
+			TreeMap<String, Map<String, String>> metadataMap = new TreeMap<String, Map<String, String>>();
+			int i = 0;
+
+			// Create UomMap Store Uom Info
+			TreeMap<Integer, List<String>> uomMap = new TreeMap<Integer, List<String>>();
+			uomMap.put(i, headerList);
+
+			List<Object> unitListType = objectFactory.getUnitList().getUnitFamilyOrUnit();
+			Object[] args = new Object[] { i, (List<Object>) unitListType, headerList, uomMap, metadataMap, delim };
+			i = familyHandler(args);
+			Object[] args2 = new Object[] { i, (List<Object>) unitListType, headerList, uomMap, metadataMap, delim, "",
+					"" };
+			i = unitHandler(args2);
+
+			for (Entry<Integer, List<String>> entrySet : uomMap.entrySet()) {
+				Integer rowNum = entrySet.getKey();
+				if (rowNum > 0) {
+					List<String> obj = entrySet.getValue();
+					String key1 = (String) obj.get(0) + obj.get(2);
+
+					if (metadataMap.containsKey(key1)) {
+						Map<String, String> metadataValues = metadataMap.get(key1);
+						List<String> uomData = entrySet.getValue();
+						getMetaDataValue(metadataValues, uomData, headerList);
+
 					}
 				}
 			}
-		}
 
-		// Add metadata header list into headerList
-		headerList.addAll(metaHeader);
+			Set<Integer> keyid = uomMap.keySet();
+			int rowid = 0;
+			for (Integer key : keyid) {
+				row = spreadsheet.createRow(rowid++);
+				List<String> objArr = uomMap.get(key);
+				int cellid = 0;
+				for (String obj : objArr) {
+					Cell cell = row.createCell(cellid++);
+					cell.setCellValue(obj);
+					if (rowid == 1 && cell.getColumnIndex() < propertyMap.size()) {
+						cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
+						cellStyle = null;
+					} else if (rowid == 1 && cell.getColumnIndex() >= propertyMap.size()) {
+						cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
+						cellStyle = null;
+					}
 
-		// Create metadata map
-		TreeMap<String, Map<String, String>> metadataMap = new TreeMap<String, Map<String, String>>();
-		int i = 0;
-
-		// Create UomMap Store Uom Info
-		TreeMap<Integer, List<String>> uomMap = new TreeMap<Integer, List<String>>();
-		uomMap.put(i, headerList);
-
-		List<Object> unitListType = objectFactory.getUnitList().getUnitFamilyOrUnit();
-		Object[] args = new Object[] { i, (List<Object>) unitListType, headerList, uomMap, metadataMap, delim };
-		i = familyHandler(args);
-		System.out.println(i);
-		Object[] args2 = new Object[] { i, (List<Object>) unitListType, headerList, uomMap, metadataMap, delim, "",
-				"" };
-		i = unitHandler(args2);
-		System.out.println(i);
-
-		for (Entry<Integer, List<String>> entrySet : uomMap.entrySet()) {
-			Integer rowNum = entrySet.getKey();
-			if (rowNum > 0) {
-				List<String> obj = entrySet.getValue();
-				String key1 = (String) obj.get(0) + obj.get(2);
-//				String key2 = (String) entrySet.getValue().get(0);
-				if (metadataMap.containsKey(key1)) {
-					Map<String, String> metadataValues = metadataMap.get(key1);
-					List<String> uomData = entrySet.getValue();
-					getMetaDataValue(metadataValues, uomData, headerList);
-
-//				} else if (metadataMap.containsKey(key2)) {
-//					Map<String, String> metadataValues = metadataMap.get(key1);
-//					List<String> uomData = entrySet.getValue();
-//					getMetaDataValue(metadataValues, uomData, headerList);
 				}
 			}
+
+			// Write the workbook in file system
+			FileOutputStream out = new FileOutputStream(outputFile);
+			workbook.write(out);
+			out.close();
+			workbook.close();
+			System.out.println("File Generated in path : " + outputFile);
+
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
 		}
-
-		Set<Integer> keyid = uomMap.keySet();
-		int rowid = 0;
-		for (Integer key : keyid) {
-			row = spreadsheet.createRow(rowid++);
-			List<String> objArr = uomMap.get(key);
-			int cellid = 0;
-			for (String obj : objArr) {
-				Cell cell = row.createCell(cellid++);
-				cell.setCellValue(obj);
-				if (rowid == 1 && cell.getColumnIndex() < propertyMap.size()) {
-					cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
-					cellStyle = null;
-				} else if (rowid == 1 && cell.getColumnIndex() >= propertyMap.size()) {
-					cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
-					cellStyle = null;
-				}
-
-			}
-		}
-
-		// Write the workbook in file system
-		FileOutputStream out = new FileOutputStream(outputFile);
-		workbook.write(out);
-		out.close();
-		workbook.close();
-		System.out.println("File Generated in path : " + outputFile);
-
 	}
 }

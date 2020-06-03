@@ -11,10 +11,11 @@ import java.util.Set;
 public class BGPRestAPI {
 //	String str = "https://grandandtoy-dev.scloud.stibo.com/restapiv2/background-processes/BGP_136302/execution-report?context=Context1&workspace=Main";
 
-	public static Set<String> getValidURLsFromInput(File inputFile, String serverURL,String contextID) throws Exception {
+	public static Set<String> getValidURLsFromInput(File inputFile, String serverURL, String contextID)
+			throws Exception {
 		if (serverURL.endsWith("/")) {
 			serverURL = serverURL + "restapiv2/background-processes/";
-		}else {
+		} else {
 			serverURL = serverURL + "/restapiv2/background-processes/";
 		}
 		Set<String> urlSet = new HashSet<String>();
@@ -25,7 +26,7 @@ public class BGPRestAPI {
 				List<String> list = Arrays.asList(prop.split(" "));
 				for (String id : list)
 					if (id.startsWith("BGP_")) {
-						urlSet.add(serverURL + id + "/execution-report?context="+contextID);
+						urlSet.add(serverURL + id + "/execution-report?context=" + contextID);
 					}
 			}
 		} catch (Exception e) {
@@ -38,7 +39,6 @@ public class BGPRestAPI {
 	public static String getAttributeID(String entryText) {
 		int beginIndex = entryText.indexOf("step://attribute?id=") + "step://attribute?id=".length();
 		int endIndex = entryText.indexOf('\"', beginIndex);
-//		System.out.println(beginIndex + "  " + endIndex);
 		String attribute = entryText.substring(beginIndex, endIndex);
 		return attribute;
 	}
@@ -46,7 +46,6 @@ public class BGPRestAPI {
 	public static String getProductID(String entryText) {
 		int beginIndex = entryText.indexOf("step://product?id=") + "step://product?id=".length();
 		int endIndex = entryText.indexOf('\"', beginIndex);
-//		System.out.println(beginIndex + "  " + endIndex);
 		String product = entryText.substring(beginIndex, endIndex);
 		return product;
 	}

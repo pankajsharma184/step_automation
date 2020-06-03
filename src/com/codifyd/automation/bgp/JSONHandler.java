@@ -31,8 +31,8 @@ import org.json.simple.parser.ParseException;
 
 public class JSONHandler {
 
-	public static void writeJSONtoExcel(List<JSONObject> list, String outputFilePath) throws Exception, ParseException {		
-		//parse error rows to excel data
+	public static void writeJSONtoExcel(List<JSONObject> list, String outputFilePath) throws Exception, ParseException {
+		// parse error rows to excel data
 		int i = 0;
 		TreeMap<Integer, ArrayList<String>> map = new TreeMap<Integer, ArrayList<String>>();
 		for (JSONObject obj : list) {
@@ -49,16 +49,14 @@ public class JSONHandler {
 
 			i++;
 		}
-		//write to excel
+		// write to excel
 		writeToExcel(map, outputFilePath);
 
 	}
-	
 
 	public static String getAttributeID(String entryText) {
 		int beginIndex = entryText.indexOf("step://attribute?id=") + "step://attribute?id=".length();
 		int endIndex = entryText.indexOf('\"', beginIndex);
-//		System.out.println(beginIndex + "  " + endIndex);
 		String attribute = entryText.substring(beginIndex, endIndex);
 		return attribute;
 	}
@@ -66,7 +64,6 @@ public class JSONHandler {
 	public static String getProductID(String entryText) {
 		int beginIndex = entryText.indexOf("step://product?id=") + "step://product?id=".length();
 		int endIndex = entryText.indexOf('\"', beginIndex);
-//		System.out.println(beginIndex + "  " + endIndex);
 		String product = entryText.substring(beginIndex, endIndex);
 		return product;
 	}
@@ -142,7 +139,7 @@ public class JSONHandler {
 			wb.write(out);
 			out.close();
 			wb.close();
-			System.out.println("File Generated in path : " + outputFilePath);			
+			System.out.println("File Generated in path : " + outputFilePath);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
@@ -166,8 +163,9 @@ public class JSONHandler {
 			http.setRequestMethod("GET");
 			http.connect();
 			if (http.getResponseCode() != 200) {
-				
-				throw new RuntimeException("Failed : HTTP Error code : " + http.getResponseCode()+ "with url -"+ urlString);
+
+				throw new RuntimeException(
+						"Failed : HTTP Error code : " + http.getResponseCode() + "with url -" + urlString);
 			}
 			InputStreamReader in = new InputStreamReader(http.getInputStream());
 			br = new BufferedReader(in);
@@ -175,20 +173,20 @@ public class JSONHandler {
 			String str;
 			while ((str = br.readLine()) != null) {
 				JSONArray json = (JSONArray) jsonParser.parse(str);
-				for(Object eachjsonObject : json){
+				for (Object eachjsonObject : json) {
 					JSONObject jsonObject = (JSONObject) eachjsonObject;
 					String entryType = (String) jsonObject.get("entryType");
 					if (entryType.equals("error")) {
 						list.add(jsonObject);
 					}
-				}				
+				}
 			}
 
 			http.disconnect();
 		}
 
-		if(br!=null){
-		br.close();
+		if (br != null) {
+			br.close();
 		}
 		return list;
 

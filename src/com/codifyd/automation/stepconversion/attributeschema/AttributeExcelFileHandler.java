@@ -45,14 +45,9 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
-		// parse the input for errors
-		InputValidator.validateExcelToXML(userInputFileUtilDO);
-
-//		Runtime runtime = Runtime.getRuntime();
-//		long beforeUsedMem = runtime.totalMemory() - runtime.freeMemory();
-//		System.out.println(beforeUsedMem);
-
 		try {
+			// parse the input for errors
+			InputValidator.validateExcelToXML(userInputFileUtilDO);
 
 			// Read the Excel and build the UOM Objects
 			ArrayList<AttributeExcelInfo> excelValues = new ArrayList<AttributeExcelInfo>();
@@ -90,11 +85,10 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 						Boolean.parseBoolean(attrInfo.getExternallyMaitained()) ? TrueFalseType.TRUE
 								: TrueFalseType.FALSE);
 				attribute.setFullTextIndexed(
-						Boolean.parseBoolean(attrInfo.getFullTextIndexed()) ? TrueFalseType.TRUE
-								: TrueFalseType.FALSE);
+						Boolean.parseBoolean(attrInfo.getFullTextIndexed()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 				attribute.setDefaultUnitID(attrInfo.getDefault_Unit_ID());
-				attribute.setMandatory(Boolean.parseBoolean(attrInfo.getMandatory()) ? TrueFalseType.TRUE
-						: TrueFalseType.FALSE);
+				attribute.setMandatory(
+						Boolean.parseBoolean(attrInfo.getMandatory()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 				attribute.setMultiValued(
 						Boolean.parseBoolean(attrInfo.getMulti_Valued()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 
@@ -126,7 +120,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 
 					List<UnitLinkType> extUnitLinks = validation.getUnitLink();
 					String[] unitIDs = null;
-					if(attrInfo.getUnit_ID() != null) {
+					if (attrInfo.getUnit_ID() != null) {
 						unitIDs = attrInfo.getUnit_ID().split(";|,|\\|");
 						for (String unitID : unitIDs) {
 							if (!"".equals(unitID) || !unitID.trim().isEmpty()) {
@@ -152,10 +146,9 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 					}
 				}
 
-//				attribute.setValueTemplate(attrInfo.getValueTemplate());
-
-				if(attrInfo.getValueTemplate() != null) {
-					if (!attrInfo.getValueTemplate().trim().isEmpty() || !"".equals(attrInfo.getValueTemplate().trim())) {
+				if (attrInfo.getValueTemplate() != null) {
+					if (!attrInfo.getValueTemplate().trim().isEmpty()
+							|| !"".equals(attrInfo.getValueTemplate().trim())) {
 						ValueTemplateType templateType = objectFactory.createValueTemplateType();
 						templateType.setContent(attrInfo.getValueTemplate());
 						attribute.getValueTemplateOrUnitTemplate().add(templateType);
@@ -194,7 +187,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 
 				List<DimensionLinkType> extDimensionLink = attribute.getDimensionLink();
 				String[] dimensions = null;
-				if(attrInfo.getDimension_Dependencies() != null) {
+				if (attrInfo.getDimension_Dependencies() != null) {
 					dimensions = attrInfo.getDimension_Dependencies().split(";|,|\\|");
 					for (String dimensionID : dimensions) {
 						if (!dimensionID.trim().isEmpty() || !"".equals(dimensionID)) {
@@ -208,7 +201,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 
 				List<LinkTypeType> extLinkType = attribute.getLinkType();
 				String[] linkTypes = null;
-				if(attrInfo.getLinkType() != null) {
+				if (attrInfo.getLinkType() != null) {
 					linkTypes = attrInfo.getLinkType().split(";|,|\\|");
 					for (String linkTypeID : linkTypes) {
 						if (!linkTypeID.trim().isEmpty() || !"".equals(linkTypeID)) {
@@ -219,7 +212,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 						}
 					}
 				}
-				
+
 				attributeList1.add(attribute);
 			}
 
@@ -232,23 +225,12 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			jaxbMarshaller.marshal(stepProductInformation, outputFile);
-			// jaxbMarshaller.marshal(stepProductInformation, System.out);
 
 			System.out.println("File Generated in path : " + outputFile.getAbsolutePath());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
-
-//		long afterUsedMem = runtime.totalMemory() - runtime.freeMemory();
-//		System.out.println(afterUsedMem);
-//		long actualMemUsed = afterUsedMem - beforeUsedMem;
-//		System.out.println(actualMemUsed);
-//
-//		System.out.println("max memory: " + runtime.maxMemory() / 1024);
-//		System.out.println("allocated memory: " + runtime.totalMemory() / 1024);
-//		System.out.println("free memory: " + runtime.freeMemory() / 1024);
-
 	}
 
 	private void readExcel(File inputFIle, List<AttributeExcelInfo> excelValues) throws Exception {
@@ -348,7 +330,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 			workbook.close();
 			fs.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 }

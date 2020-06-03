@@ -39,16 +39,13 @@ import com.codifyd.stepxsd.ValueType;
 public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 
 	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
-
-		// parse the input for errors
-		InputValidator.validateExcelToXML(userInput);
-
 		try {
+			// parse the input for errors
+			InputValidator.validateExcelToXML(userInput);
+
 			// Read the Excel and build the UOM Objects
 			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> excelinfo = new TreeMap<String, ArrayList<AttributeLinkExcelInfo>>();
 			readExcel(new File(userInput.getInputPath()), excelinfo);
-
-			// System.out.println(excelValues.size());
 
 			URI outputUri = Paths.get(new File(userInput.getOutputPath()).getPath(), userInput.getFilename()).toUri();
 			File outputFile = new File(outputUri);
@@ -118,7 +115,6 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			jaxbMarshaller.marshal(stepProductInformation, outputFile);
-			// jaxbMarshaller.marshal(stepProductInformation, System.out);
 
 			System.out.println("File Generated in path : " + outputFile.getAbsolutePath());
 
@@ -191,7 +187,6 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 
 			}
 			workbook.close();
-//			System.out.println(headerList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

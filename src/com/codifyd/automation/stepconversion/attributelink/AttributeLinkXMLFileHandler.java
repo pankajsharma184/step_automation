@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -27,35 +26,35 @@ import com.codifyd.stepxsd.MultiValueType;
 import com.codifyd.stepxsd.NameType;
 import com.codifyd.stepxsd.ProductType;
 import com.codifyd.stepxsd.STEPProductInformation;
-import com.codifyd.stepxsd.TrueFalseType;
 import com.codifyd.stepxsd.ValueType;
 
 public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
-
-		// parse the input for errors
-		InputValidator.validateXMLToExcel(userInputFileUtilDO);
-
-//		Map<String, AttributeXMLInfo> inputValues = new HashMap();
-		File inputFile = new File(userInputFileUtilDO.getInputPath());
-		File outputFile = new File(
-				Paths.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
-						.toUri());
-		Properties properties = userInputFileUtilDO.getPropertiesFile();
 		try {
+			// parse the input for errors
+			InputValidator.validateXMLToExcel(userInputFileUtilDO);
+
+			File inputFile = new File(userInputFileUtilDO.getInputPath());
+			File outputFile = new File(Paths
+					.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
+					.toUri());
+			Properties properties = userInputFileUtilDO.getPropertiesFile();
+
+			String delimiter = userInputFileUtilDO.getDelimiters();
+
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, properties);
+			writeExcel(objectFactory, outputFile, properties, delimiter);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
-	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties)
-			throws Exception {
+	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties,
+			String delimiter) throws Exception {
 
 		// Create blank workbook
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -101,13 +100,17 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 				ProductType product = (ProductType) object;
 				for (AttributeLinkType link : product.getAttributeLink())
 					if (null != link.getMetaData())
-						for (Object value : link.getMetaData().getValueOrMultiValueOrValueGroup())
+						for (Object value : link.getMetaData().getValueOrMultiValueOrValueGroup()) {
 							if (value instanceof ValueType)
 								prodMetaHeader.add(((ValueType) value).getAttributeID());
+							else if (value instanceof MultiValueType)
+								prodMetaHeader.add(((ValueType) ((MultiValueType) value).getValueOrValueGroup().get(0))
+										.getAttributeID());
+						}
 			} else if (object instanceof ClassificationType) {
 				ClassificationType classification = (ClassificationType) object;
 				for (Object link : classification.getNameOrAttributeLinkOrSequenceProduct())
-					if (link instanceof AttributeLinkType) {
+					if (link instanceof AttributeLinkType)
 						if (null != ((AttributeLinkType) link).getMetaData())
 							for (Object value : ((AttributeLinkType) link).getMetaData()
 									.getValueOrMultiValueOrValueGroup()) {
@@ -118,137 +121,107 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 											.add(((ValueType) ((MultiValueType) value).getValueOrValueGroup().get(0))
 													.getAttributeID());
 							}
-					}
+
 			}
+		}
+		// Add metadata header list into headerList
+		List<String> prodHeaderList = new ArrayList<String>();
+		List<String> classHeaderList = new ArrayList<String>();
+		prodHeaderList.addAll(headerList);
+		prodHeaderList.addAll(prodMetaHeader);
+		classHeaderList.addAll(headerList);
+		classHeaderList.addAll(classMetaHeader);
 
-			// Add metadata header list into headerList
-			List<String> prodHeaderList = new ArrayList<String>();
-			List<String> classHeaderList = new ArrayList<String>();
-			prodHeaderList.addAll(headerList);
-			prodHeaderList.addAll(prodMetaHeader);
-			classHeaderList.addAll(headerList);
-			classHeaderList.addAll(classMetaHeader);
+		// Create metadata map
+		TreeMap<String, Map<String, String>> metadataMap = new TreeMap<String, Map<String, String>>();
+		int i = 0, j = 0;
 
-			// Create metadata map
-			TreeMap<String, Map<String, String>> metadataMap = new TreeMap<String, Map<String, String>>();
-			int i = 0, j = 0;
+		// Create attributeLinkMap Store attributeLink Info
+		Map<Integer, List<String>> productAttributeLinkMap = new TreeMap<Integer, List<String>>();
+		productAttributeLinkMap.put(i, headerList);
+		Map<Integer, List<String>> classificationAttributeLinkMap = new TreeMap<Integer, List<String>>();
+		classificationAttributeLinkMap.put(j, headerList);
 
-			// Create attributeLinkMap Store attributeLink Info
-			Map<Integer, List<String>> productAttributeLinkMap = new TreeMap<Integer, List<String>>();
-			productAttributeLinkMap.put(i, headerList);
-			Map<Integer, List<String>> classificationAttributeLinkMap = new TreeMap<Integer, List<String>>();
-			classificationAttributeLinkMap.put(j, headerList);
+		for (Object object2 : objectList) {
 
-			for (Object object2 : objectList) {
+			if (object2 instanceof ProductType) {
+				ProductType product = (ProductType) object2;
+				String productId = product.getID();
+				String productName = product.getName().get(0).getContent();
+				String objectType = product.getUserTypeID();
+				String parentID = null != product.getParentID() ? product.getParentID() : "";
 
-				if (object2 instanceof ProductType) {
-					ProductType product = (ProductType) object2;
-					String productId = product.getID();
-					String productName = product.getName().get(0).getContent();
-					String objectType = product.getUserTypeID();
-					String parentID = null != product.getParentID() ? product.getParentID() : "";
+				if (null != product.getAttributeLink()) {
 
-					if (null != product.getAttributeLink()) {
+					List<AttributeLinkType> listAttLink = product.getAttributeLink();
+					for (AttributeLinkType link : listAttLink) {
+						i++;
+						List<String> data = new ArrayList<String>();
 
-						List<AttributeLinkType> listAttLink = product.getAttributeLink();
-						for (AttributeLinkType link : listAttLink) {
-							i++;
+						data.add(productId);
+						data.add(productName);
+						data.add(objectType);
+						data.add(parentID);
+
+						AttributeLinkHandlerUtil.getAttributeLinkInfo(data, link, metadataMap, productId, delimiter);
+
+						for (int index = data.size(); index <= prodHeaderList.size(); index++) {
+							data.add("");
+						}
+
+						productAttributeLinkMap.put(i, data);
+					}
+				}
+			} else if (object2 instanceof ClassificationType) {
+
+				ClassificationType classification = (ClassificationType) object2;
+				String classificationId = classification.getID();
+				String classificationName = ((NameType) classification.getNameOrAttributeLinkOrSequenceProduct().get(0))
+						.getContent();
+				String objectType = classification.getUserTypeID();
+				String parentID = null != classification.getParentID() ? classification.getParentID() : "";
+
+				if (null != classification.getNameOrAttributeLinkOrSequenceProduct()) {
+					List<Object> classObjectList = classification.getNameOrAttributeLinkOrSequenceProduct();
+					for (Object link : classObjectList) {
+						if (link instanceof AttributeLinkType) {
+							j++;
 							List<String> data = new ArrayList<String>();
 
-							data.add(productId);
-							data.add(productName);
+							data.add(classificationId);
+							data.add(classificationName);
 							data.add(objectType);
 							data.add(parentID);
 
-							getAttributeLinkInfo(data, link, metadataMap, productId);
+							AttributeLinkHandlerUtil.getAttributeLinkInfo(data, (AttributeLinkType) link, metadataMap,
+									classificationId, delimiter);
 
-							for (int index = data.size(); index <= prodHeaderList.size(); index++) {
+							for (int index = data.size(); index <= classHeaderList.size(); index++) {
 								data.add("");
 							}
 
-							productAttributeLinkMap.put(i, data);
+							classificationAttributeLinkMap.put(j, data);
 						}
 					}
-				} else if (object2 instanceof ClassificationType) {
-
-					ClassificationType classification = (ClassificationType) object2;
-					String classificationId = classification.getID();
-					String classificationName = ((NameType) classification.getNameOrAttributeLinkOrSequenceProduct()
-							.get(0)).getContent();
-					String objectType = classification.getUserTypeID();
-					String parentID = null != classification.getParentID() ? classification.getParentID() : "";
-
-					if (null != classification.getNameOrAttributeLinkOrSequenceProduct()) {
-
-						List<Object> classObjectList = classification.getNameOrAttributeLinkOrSequenceProduct();
-						for (Object link : classObjectList) {
-							if (link instanceof AttributeLinkType) {
-								j++;
-								List<String> data = new ArrayList<String>();
-
-								data.add(classificationId);
-								data.add(classificationName);
-								data.add(objectType);
-								data.add(parentID);
-
-								getAttributeLinkInfo(data, (AttributeLinkType) link, metadataMap, classificationId);
-
-								for (int index = data.size(); index <= classHeaderList.size(); index++) {
-									data.add("");
-								}
-
-								classificationAttributeLinkMap.put(j, data);
-							}
-						}
-					}
-
 				}
 			}
-
-			// Adding metadata value in attributelink info map
-			AttributeLinkHandlerUtil.addMetaDataValues(productAttributeLinkMap, metadataMap, prodHeaderList);
-			AttributeLinkHandlerUtil.addMetaDataValues(classificationAttributeLinkMap, metadataMap, classHeaderList);
-
-			AttributeLinkHandlerUtil.writeToWorkbook(workbook, productSpreadsheet, productAttributeLinkMap,
-					propertyMap);
-			AttributeLinkHandlerUtil.writeToWorkbook(workbook, classificationSpreadsheet,
-					classificationAttributeLinkMap, propertyMap);
-
-			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(outputFile);
-			workbook.write(out);
-			out.close();
-			workbook.close();
-			System.out.println("File Generated in path : " + outputFile);
-
-		}
-	}
-
-	static void getAttributeLinkInfo(List<String> data, AttributeLinkType link,
-			TreeMap<String, Map<String, String>> metadataMap, String prod_classId) {
-		String attributeId = link.getAttributeID();
-		String mandatory = null != link.getMandatory() ? link.getMandatory().toString()
-				: TrueFalseType.FALSE.toString();
-		String qualifierId = null != link.getQualifierID() ? link.getQualifierID() : TrueFalseType.FALSE.toString();
-		String inherited = null != link.getInherited() ? link.getInherited().toString() : "";
-		String referenced = link.isReferenced() ? TrueFalseType.TRUE.toString() : TrueFalseType.FALSE.toString();
-
-		if (null != link.getMetaData()) {
-			Map<String, String> map = new HashMap<String, String>();
-			for (Object value : link.getMetaData().getValueOrMultiValueOrValueGroup()) {
-				if (value instanceof ValueType) {
-					String key = ((ValueType) value).getAttributeID();
-					String val = ((ValueType) value).getContent();
-					map.put(key, val);
-				}
-			}
-			metadataMap.put(prod_classId + attributeId, map);
 		}
 
-		data.add(attributeId);
-		data.add(mandatory);
-		data.add(qualifierId);
-		data.add(inherited);
-		data.add(referenced);
+		// Adding metadata value in attributelink info map
+		AttributeLinkHandlerUtil.addMetaDataValues(productAttributeLinkMap, metadataMap, prodHeaderList);
+		AttributeLinkHandlerUtil.addMetaDataValues(classificationAttributeLinkMap, metadataMap, classHeaderList);
+
+		AttributeLinkHandlerUtil.writeToWorkbook(workbook, productSpreadsheet, productAttributeLinkMap,
+				propertyMap);
+		AttributeLinkHandlerUtil.writeToWorkbook(workbook, classificationSpreadsheet,
+				classificationAttributeLinkMap, propertyMap);
+
+		// Write the workbook in file system
+		FileOutputStream out = new FileOutputStream(outputFile);
+		workbook.write(out);
+		out.close();
+		workbook.close();
+		System.out.println("File Generated in path : " + outputFile);
+
 	}
 }

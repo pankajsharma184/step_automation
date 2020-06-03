@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import javax.xml.bind.JAXBContext;
@@ -33,18 +32,14 @@ import com.codifyd.stepxsd.TrueFalseType;
 import com.codifyd.stepxsd.ValidationType;
 import com.codifyd.stepxsd.ValueType;
 
-public class LovExcelFileHandler implements FileConversionHandler{
+public class LovExcelFileHandler implements FileConversionHandler {
 
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
-		// parse the input for errors
-		InputValidator.validateExcelToXML(userInputFileUtilDO);
-		
-//		Runtime runtime = Runtime.getRuntime();
-//		long beforeUsedMem = runtime.totalMemory() - runtime.freeMemory();
-//		System.out.println(beforeUsedMem);
-
 		try {
+
+			// parse the input for errors
+			InputValidator.validateExcelToXML(userInputFileUtilDO);
 
 			// Read the Excel and build the UOM Objects
 			TreeMap<String, ArrayList<LovExcelInfo>> excelinfo = new TreeMap<String, ArrayList<LovExcelInfo>>();
@@ -138,26 +133,15 @@ public class LovExcelFileHandler implements FileConversionHandler{
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
 			jaxbMarshaller.marshal(stepProductInformation, file);
-			// jaxbMarshaller.marshal(stepProductInformation, System.out);
 
 			System.out.println("File Generated in path : " + file.getAbsolutePath());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
-
-//		long afterUsedMem = runtime.totalMemory() - runtime.freeMemory();
-//		System.out.println(afterUsedMem);
-//		long actualMemUsed = afterUsedMem - beforeUsedMem;
-//		System.out.println(actualMemUsed);
-//
-//		System.out.println("max memory: " + runtime.maxMemory() / 1024);
-//		System.out.println("allocated memory: " + runtime.totalMemory() / 1024);
-//		System.out.println("free memory: " + runtime.freeMemory() / 1024);
-
 	}
 
-	private void readExcel(File inputFile, TreeMap<String, ArrayList<LovExcelInfo>> excelinfo) {
+	private void readExcel(File inputFile, TreeMap<String, ArrayList<LovExcelInfo>> excelinfo) throws Exception {
 		try {
 			InputStream fs = new FileInputStream(inputFile);
 
@@ -240,19 +224,11 @@ public class LovExcelFileHandler implements FileConversionHandler{
 				}
 
 			}
-
-//			for (Entry<String, ArrayList<LovExcelInfo>> inf : excelinfo.entrySet()) {
-//				ArrayList<LovExcelInfo> list = inf.getValue();
-//				for (LovExcelInfo key : list) {
-//					System.out.println(key.getValueID() + " -> " + key.getValueName());
-//				}
-//			}
 			workbook.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
-
 	}
 
 }
