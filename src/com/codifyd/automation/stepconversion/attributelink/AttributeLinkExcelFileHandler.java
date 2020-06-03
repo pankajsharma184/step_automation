@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.net.URI;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,13 +36,13 @@ import com.codifyd.stepxsd.STEPProductInformation;
 import com.codifyd.stepxsd.TrueFalseType;
 import com.codifyd.stepxsd.ValueType;
 
-public class AttributeLinkExcelFileHandler implements FileConversionHandler{
+public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 
 	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
 
 		// parse the input for errors
 		InputValidator.validateExcelToXML(userInput);
-		
+
 		try {
 			// Read the Excel and build the UOM Objects
 			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> excelinfo = new TreeMap<String, ArrayList<AttributeLinkExcelInfo>>();
@@ -48,7 +50,8 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler{
 
 			// System.out.println(excelValues.size());
 
-			File outputFile = new File(userInput.getOutputPath() + "\\" + userInput.getFilename());
+			URI outputUri = Paths.get(new File(userInput.getOutputPath()).getPath(), userInput.getFilename()).toUri();
+			File outputFile = new File(outputUri);
 
 			// Initialize object factory and add unit values
 			ObjectFactory objectFactory = new ObjectFactory();
