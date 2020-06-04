@@ -6,7 +6,7 @@ public class SampleFileHelperUtil {
 
 	public static InputStream getSamplePropertiesFile(String str) {
 		InputStream inStream = null;
-		ClassLoader classLoader = SampleFileHelperUtil.class.getClassLoader();
+		Class<SampleFileHelperUtil> classLoader = SampleFileHelperUtil.class;
 		if (str.equals(AutomationConstants.ATTRIBUTE)) {
 			inStream = classLoader.getResourceAsStream("resources/Attribute-Config.properties");
 		} else if (str.equals(AutomationConstants.ATTRIBUTELINK)) {
@@ -17,14 +17,15 @@ public class SampleFileHelperUtil {
 			inStream = classLoader.getResourceAsStream("resources/UOM-Config.properties");
 		} else if (str.equals(AutomationConstants.TAXONOMY)) {
 			inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
-		}
-
+		} else if (str.equals(AutomationConstants.MIL_CONFIG)) {
+			inStream = classLoader.getResourceAsStream("resources/stepTomilconversion-config.properties");
+		} 
 		return inStream;
 	}
 
 	public static InputStream getSampleXMLFile(String str) {
 		InputStream inStream = null;
-		ClassLoader classLoader = SampleFileHelperUtil.class.getClassLoader();
+		Class<SampleFileHelperUtil> classLoader = SampleFileHelperUtil.class;
 		if (str.equals(AutomationConstants.ATTRIBUTE)) {
 			inStream = classLoader.getResourceAsStream("sample/AttributeXMLInputSample.xml");
 		} else if (str.equals(AutomationConstants.ATTRIBUTELINK)) {
@@ -42,7 +43,7 @@ public class SampleFileHelperUtil {
 
 	public static InputStream getSampleExcelFile(String str) {
 		InputStream inStream = null;
-		ClassLoader classLoader = SampleFileHelperUtil.class.getClassLoader();
+		Class<SampleFileHelperUtil> classLoader = SampleFileHelperUtil.class;
 		if (str.equals(AutomationConstants.ATTRIBUTE)) {
 			inStream = classLoader.getResourceAsStream("sample/AttributeXMLInputSample.xlsx");
 		} else if (str.equals(AutomationConstants.ATTRIBUTELINK)) {
@@ -56,6 +57,15 @@ public class SampleFileHelperUtil {
 		}
 		return inStream;
 
+	}
+	
+	public static InputStream getSampleInputFile(String str){
+		InputStream inStream = null;
+		Class<SampleFileHelperUtil> classLoader = SampleFileHelperUtil.class;
+		if (str.equals(AutomationConstants.BGP)) {
+			inStream = classLoader.getResourceAsStream("sample/BGPReportInputSample.txt");
+		} 
+		return inStream;
 	}
 
 }
