@@ -53,7 +53,7 @@ public class AttributeLinkHandlerUtil {
 	}
 
 	public static void writeToWorkbook(XSSFWorkbook workbook, XSSFSheet spreadSheet,
-			Map<Integer, List<String>> attributeLinkMap, Map<Integer, String> propertyMap) {
+			Map<Integer, List<String>> attributeLinkMap, int sizeofProperties) {
 		// Iterating over the array, create rows and columns
 		XSSFRow row = null;
 		XSSFCellStyle cellStyle = null;
@@ -66,9 +66,9 @@ public class AttributeLinkHandlerUtil {
 			for (String obj : objArr) {
 				Cell cell = row.createCell(cellid++);
 				cell.setCellValue(obj);
-				if (rowid == 1 && cell.getColumnIndex() < propertyMap.size()) {
+				if (rowid == 1 && cell.getColumnIndex() < sizeofProperties) {
 					cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
-				} else if (rowid == 1 && cell.getColumnIndex() >= propertyMap.size()) {
+				} else if (rowid == 1 && cell.getColumnIndex() >= sizeofProperties) {
 					cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
 				}
 
