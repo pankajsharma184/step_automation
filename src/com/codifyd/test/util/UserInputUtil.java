@@ -12,7 +12,7 @@ public class UserInputUtil {
 	
 	public static Integer getUserSelectedOptionFromMap(Map<Integer, String> options) throws IOException {		
 		Scanner userInput = new Scanner( System.in );		
-		System.out.println("Please enter the kind of get sample files ");
+		System.out.println("Please enter the options ");
 		options.forEach((k,v)->System.out.println( k +" : " + v));
 		Integer choice = userInput.nextInt();	
 		userInput.close();
