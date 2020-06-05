@@ -1,5 +1,5 @@
 package com.codifyd.test.conversion;
 
-public class TestAttributeXMLFileHandler {
+public class TestConversionXMLFileHandler {
 
 }
