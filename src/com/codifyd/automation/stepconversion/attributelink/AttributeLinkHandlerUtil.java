@@ -97,7 +97,8 @@ public class AttributeLinkHandlerUtil {
 
 	// Handle AttributeLink Data From the XML
 	public static void getAttributeLinkInfo(List<String> data, AttributeLinkType link,
-			TreeMap<String, Map<String, String>> metadataMap, String prod_classId, String delim) {
+			TreeMap<String, Map<String, String>> metadataMap, String prod_classId, String delim,
+			List<String> headerList2) {
 		String attributeId = link.getAttributeID();
 		String mandatory = null != link.getMandatory() ? link.getMandatory().toString()
 				: TrueFalseType.FALSE.toString();
@@ -129,10 +130,10 @@ public class AttributeLinkHandlerUtil {
 			metadataMap.put(prod_classId + attributeId, map);
 		}
 
-		data.add(attributeId);
-		data.add(mandatory);
-		data.add(qualifierId);
-		data.add(inherited);
-		data.add(referenced);
+		data.set(headerList2.indexOf("Attribute_Link"), attributeId);
+		data.set(headerList2.indexOf("Mandatory"), mandatory);
+		data.set(headerList2.indexOf("Qualifier_ID"), qualifierId);
+		data.set(headerList2.indexOf("Inherited"), inherited);
+		data.set(headerList2.indexOf("Referenced"), referenced);
 	}
 }

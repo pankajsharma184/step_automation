@@ -6,10 +6,10 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -22,6 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.stepconversion.util.ConfigHandler;
 import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.InputValidator;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
@@ -42,20 +43,20 @@ public class LovXMLFileHandler implements FileConversionHandler {
 		File outputFile = new File(
 				Paths.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
 						.toUri());
-		Properties properties = userInputFileUtilDO.getPropertiesFile();
+		ConfigHandler configFile = userInputFileUtilDO.getConfigFile();
 
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, properties);
+			writeExcel(objectFactory, outputFile, configFile);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
 	}
 
-	public static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties)
+	public static void writeExcel(STEPProductInformation objectFactory, File outputFile, ConfigHandler configFile)
 			throws Exception {
 		try {
 			// Create blank workbook
@@ -68,15 +69,12 @@ public class LovXMLFileHandler implements FileConversionHandler {
 			XSSFCellStyle cellStyle = null;
 
 			// Create Header List From Properties File
-			TreeMap<Integer, String> propertyMap = new TreeMap<Integer, String>();
-			for (String key : properties.stringPropertyNames()) {
-				int i = Integer.parseInt(key);
-				propertyMap.put(i, properties.getProperty(key));
-			}
-
-			ArrayList<String> headerList = new ArrayList<String>();
-			for (Entry<Integer, String> ent : propertyMap.entrySet()) {
-				headerList.add(ent.getValue().toString());
+			LinkedList<String> headerList1 = new LinkedList<String>();
+			LinkedList<String> headerList2 = new LinkedList<String>();
+			System.out.println(configFile);
+			for (String key : configFile.keySet()) {
+				headerList1.add(configFile.get(key));
+				headerList2.add(key);
 			}
 
 			// Metadata Header List
@@ -87,7 +85,7 @@ public class LovXMLFileHandler implements FileConversionHandler {
 						if (value instanceof ValueType)
 							metaHeader.add(((ValueType) value).getAttributeID());
 
-			headerList.addAll(metaHeader);
+			headerList1.addAll(metaHeader);
 
 			// Create metadata map
 			TreeMap<String, Map<String, String>> metadataMap = new TreeMap<String, Map<String, String>>();
@@ -96,7 +94,7 @@ public class LovXMLFileHandler implements FileConversionHandler {
 
 			// Creating Lov map for storing
 			Map<Integer, List<String>> lovMap = new TreeMap<Integer, List<String>>();
-			lovMap.put(i, headerList);
+			lovMap.put(i, headerList1);
 
 			for (ListOfValueType listOfValue : objectFactory.getListsOfValues().getListOfValue()) {
 
@@ -138,27 +136,29 @@ public class LovXMLFileHandler implements FileConversionHandler {
 
 				List<ValueType> valuelist = listOfValue.getValue();
 				for (ValueType value : valuelist) {
+
 					i++;
 					ArrayList<String> lovinfo = new ArrayList<String>();
-					String valueId = (null != value.getID()) ? value.getID() : "";
-					String valueName = value.getContent();
-					lovinfo.add(lovID);
-					lovinfo.add(lovName);
-					lovinfo.add(parentID);
-					lovinfo.add(referenced);
-					lovinfo.add(allowUserValueAdd);
-					lovinfo.add(userValueId);
-					lovinfo.add(validation);
-					lovinfo.add(inputMask);
-					lovinfo.add(maxValue);
-					lovinfo.add(minValue);
-					lovinfo.add(maxLength);
-					lovinfo.add(valueId);
-					lovinfo.add(valueName);
-
-					for (int index = lovinfo.size(); index <= headerList.size(); index++) {
+					for (int index = lovinfo.size(); index <= headerList1.size(); index++) {
 						lovinfo.add("");
 					}
+
+					String valueId = (null != value.getID()) ? value.getID() : "";
+					String valueName = value.getContent();
+
+					lovinfo.set(headerList2.indexOf("LOV_ID"), lovID);
+					lovinfo.set(headerList2.indexOf("LOV_Name"), lovName);
+					lovinfo.set(headerList2.indexOf("LOV_Group_ID"), parentID);
+					lovinfo.set(headerList2.indexOf("Referenced"), referenced);
+					lovinfo.set(headerList2.indexOf("Allow_User_Value_Addition"), allowUserValueAdd);
+					lovinfo.set(headerList2.indexOf("User_Value_ID"), userValueId);
+					lovinfo.set(headerList2.indexOf("Validation_BaseType"), validation);
+					lovinfo.set(headerList2.indexOf("Minimum_Value"), inputMask);
+					lovinfo.set(headerList2.indexOf("Maximum_Value"), maxValue);
+					lovinfo.set(headerList2.indexOf("Maximum_Length"), minValue);
+					lovinfo.set(headerList2.indexOf("Input_Mask"), maxLength);
+					lovinfo.set(headerList2.indexOf("Value_ID"), valueId);
+					lovinfo.set(headerList2.indexOf("Value_Name"), valueName);
 
 					lovMap.put(i, lovinfo);
 				}
@@ -176,7 +176,7 @@ public class LovXMLFileHandler implements FileConversionHandler {
 						for (Entry<String, String> itr : metadataValues.entrySet()) {
 							String metaAttrID = itr.getKey();
 							String metaAttrValue = itr.getValue();
-							int index = headerList.indexOf(metaAttrID);
+							int index = headerList1.indexOf(metaAttrID);
 							lovData.add(index, metaAttrValue);
 						}
 					}
@@ -195,10 +195,10 @@ public class LovXMLFileHandler implements FileConversionHandler {
 					if (obj instanceof String) {
 						cell.setCellValue((String) obj);
 
-						if (rowid == 1 && cell.getColumnIndex() < propertyMap.size()) {
+						if (rowid == 1 && cell.getColumnIndex() < headerList2.size()) {
 							cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
 							cellStyle = null;
-						} else if (rowid == 1 && cell.getColumnIndex() >= propertyMap.size()) {
+						} else if (rowid == 1 && cell.getColumnIndex() >= headerList2.size()) {
 							cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
 							cellStyle = null;
 						}

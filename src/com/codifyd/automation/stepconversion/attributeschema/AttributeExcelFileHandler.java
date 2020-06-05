@@ -43,6 +43,7 @@ import com.codifyd.stepxsd.ValueType;
 
 public class AttributeExcelFileHandler implements FileConversionHandler {
 
+	@Override
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 
 		try {
@@ -245,12 +246,12 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 			XSSFSheet sheet = workbook.getSheetAt(0);
 
 			for (Iterator<Row> iterator = sheet.iterator(); iterator.hasNext();) {
-				Row row = (Row) iterator.next();
+				Row row = iterator.next();
 
 				if (row.getRowNum() == 0) {
 					headerList = new ArrayList<String>();
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
-						Cell cell = (Cell) iterator2.next();
+						Cell cell = iterator2.next();
 						headerList.add(cell.getStringCellValue());
 					}
 				}
@@ -259,7 +260,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 					AttributeExcelInfo attributeInfo = new AttributeExcelInfo();
 					DataFormatter df = new DataFormatter();
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
-						Cell cell = (Cell) iterator2.next();
+						Cell cell = iterator2.next();
 
 						if (cell.getColumnIndex() == 0) {
 							attributeInfo.setAttributeID(df.formatCellValue(cell));

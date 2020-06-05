@@ -5,10 +5,9 @@ import java.io.FileOutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.TreeMap;
 
 import javax.xml.bind.JAXBContext;
@@ -17,6 +16,7 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.stepconversion.util.ConfigHandler;
 import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.InputValidator;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
@@ -30,6 +30,7 @@ import com.codifyd.stepxsd.ValueType;
 
 public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 
+	@Override
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 		try {
 			// parse the input for errors
@@ -39,7 +40,7 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 			File outputFile = new File(Paths
 					.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
 					.toUri());
-			Properties properties = userInputFileUtilDO.getPropertiesFile();
+			ConfigHandler configFile = userInputFileUtilDO.getConfigFile();
 
 			String delimiter = userInputFileUtilDO.getDelimiters();
 
@@ -47,14 +48,14 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, properties, delimiter);
+			writeExcel(objectFactory, outputFile, configFile, delimiter);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
 
-	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties,
+	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, ConfigHandler configFile,
 			String delimiter) throws Exception {
 		try {
 			// Create blank workbook
@@ -83,24 +84,22 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 			objectList.addAll(classificationTypeList);
 
 			// Create Header List From Properties File
-			Map<Integer, String> propertyMap = new TreeMap<Integer, String>();
-			for (String key : properties.stringPropertyNames()) {
-				propertyMap.put(Integer.parseInt(key), properties.getProperty(key));
+			LinkedList<String> headerList1 = new LinkedList<String>();
+			LinkedList<String> headerList2 = new LinkedList<String>();
+
+			for (String key : configFile.keySet()) {
+				headerList1.add(configFile.get(key));
+				headerList2.add(key);
 			}
 
-			ArrayList<String> headerList = new ArrayList<String>();
-
-			for (Entry<Integer, String> ent : propertyMap.entrySet()) {
-				headerList.add(ent.getValue().toString());
-			}
 			List<String> prodHeaderList = new ArrayList<String>();
-			prodHeaderList.addAll(headerList);
-			prodHeaderList.remove(1);
-			prodHeaderList.remove(2);
+			prodHeaderList.addAll(headerList1);
+			prodHeaderList.remove(configFile.get("Classification_ID"));
+			prodHeaderList.remove(configFile.get("Classification_Name"));
 			List<String> classHeaderList = new ArrayList<String>();
-			classHeaderList.addAll(headerList);
-			classHeaderList.remove(0);
-			classHeaderList.remove(1);
+			classHeaderList.addAll(headerList1);
+			classHeaderList.remove(configFile.get("Product_ID"));
+			classHeaderList.remove(configFile.get("Product_Name"));
 
 			// Metadata Header List
 			HashSet<String> prodMetaHeader = new HashSet<String>();
@@ -165,17 +164,17 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 							i++;
 							List<String> data = new ArrayList<String>();
 
-							data.add(productId);
-							data.add(productName);
-							data.add(objectType);
-							data.add(parentID);
-
-							AttributeLinkHandlerUtil.getAttributeLinkInfo(data, link, metadataMap, productId,
-									delimiter);
-
 							for (int index = data.size(); index <= prodHeaderList.size(); index++) {
 								data.add("");
 							}
+
+							data.set(headerList2.indexOf("Product_ID"), productId);
+							data.set(headerList2.indexOf("Product_Name"), productName);
+							data.set(headerList2.indexOf("Object_Type"), objectType);
+							data.set(headerList2.indexOf("Parent_ID"), parentID);
+
+							AttributeLinkHandlerUtil.getAttributeLinkInfo(data, link, metadataMap, productId, delimiter,
+									headerList2);
 
 							productAttributeLinkMap.put(i, data);
 						}
@@ -196,17 +195,17 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 								j++;
 								List<String> data = new ArrayList<String>();
 
-								data.add(classificationId);
-								data.add(classificationName);
-								data.add(objectType);
-								data.add(parentID);
-
-								AttributeLinkHandlerUtil.getAttributeLinkInfo(data, (AttributeLinkType) link,
-										metadataMap, classificationId, delimiter);
-
 								for (int index = data.size(); index <= classHeaderList.size(); index++) {
 									data.add("");
 								}
+
+								data.set(headerList2.indexOf("Classification_ID"), classificationId);
+								data.set(headerList2.indexOf("Classification_Name"), classificationName);
+								data.set(headerList2.indexOf("Object_Type"), objectType);
+								data.set(headerList2.indexOf("Parent_ID"), parentID);
+
+								AttributeLinkHandlerUtil.getAttributeLinkInfo(data, (AttributeLinkType) link,
+										metadataMap, classificationId, delimiter, headerList2);
 
 								classificationAttributeLinkMap.put(j, data);
 							}
@@ -218,7 +217,7 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 			// Adding metadata value in attributelink info map
 			AttributeLinkHandlerUtil.addMetaDataValues(productAttributeLinkMap, metadataMap, prodHeaderList);
 			AttributeLinkHandlerUtil.addMetaDataValues(classificationAttributeLinkMap, metadataMap, classHeaderList);
-			int sizeofProperties = propertyMap.size() - 2;
+			int sizeofProperties = headerList2.size() - 2;
 			AttributeLinkHandlerUtil.writeToWorkbook(workbook, productSpreadsheet, productAttributeLinkMap,
 					sizeofProperties);
 			AttributeLinkHandlerUtil.writeToWorkbook(workbook, classificationSpreadsheet,

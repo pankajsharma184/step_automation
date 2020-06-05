@@ -38,6 +38,7 @@ import com.codifyd.stepxsd.ValueType;
 
 public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 
+	@Override
 	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
 		try {
 			// parse the input for errors
@@ -135,12 +136,12 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 			XSSFSheet sheet = workbook.getSheetAt(0);
 
 			for (Iterator<Row> iterator = sheet.iterator(); iterator.hasNext();) {
-				Row row = (Row) iterator.next();
+				Row row = iterator.next();
 
 				if (row.getRowNum() == 0) {
 					headerList = new ArrayList<String>();
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
-						Cell cell = (Cell) iterator2.next();
+						Cell cell = iterator2.next();
 						headerList.add(cell.getStringCellValue());
 					}
 				} else {
@@ -148,7 +149,7 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 					DataFormatter df = new DataFormatter();
 					String id = df.formatCellValue(row.getCell(0));
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
-						Cell cell = (Cell) iterator2.next();
+						Cell cell = iterator2.next();
 						if (cell.getColumnIndex() == 0) {
 							attributeLinkInfo.setProductID(df.formatCellValue(cell));
 						} else if (cell.getColumnIndex() == 1) {

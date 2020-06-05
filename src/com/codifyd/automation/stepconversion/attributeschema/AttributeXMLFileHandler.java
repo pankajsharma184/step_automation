@@ -4,14 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
@@ -23,6 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.stepconversion.util.ConfigHandler;
 import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
@@ -43,6 +42,7 @@ import com.codifyd.stepxsd.ValueType;
 public class AttributeXMLFileHandler implements FileConversionHandler {
 
 	// public static void main(String[] args) {
+	@Override
 	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
 		try {
 			// parse the input for errors
@@ -52,34 +52,35 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 			File outputFile = new File(Paths
 					.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
 					.toUri());
-			Properties properties = userInputFileUtilDO.getPropertiesFile();
+			ConfigHandler configFile = userInputFileUtilDO.getConfigFile();
 			String delimiter = userInputFileUtilDO.getDelimiters();
 
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, properties, delimiter);
+			writeExcel(objectFactory, outputFile, configFile, delimiter);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
 
-	private static void writeExcel(STEPProductInformation objectFactory, File file, Properties properties,
+	private static void writeExcel(STEPProductInformation objectFactory, File file, ConfigHandler configFile,
 			String delimiter) throws Exception {
 
 		try {
 
 			Set<String> metaDataHeaderAttributes = new HashSet<String>();
-			ArrayList<Integer> al = new ArrayList<Integer>();
-			for (String key : properties.stringPropertyNames()) {
-				al.add(Integer.parseInt(key));
+
+			LinkedList<String> headerList1 = new LinkedList<String>();
+			LinkedList<String> headerList2 = new LinkedList<String>();
+
+			for (String key : configFile.keySet()) {
+				headerList1.add(configFile.get(key));
+				headerList2.add(key);
 			}
-			Collections.sort(al);
-			LinkedList<String> list = new LinkedList<String>();
-			for (Object j : al) {
-				list.add(properties.getProperty(j.toString()));
-			}
+
 			if (null != objectFactory.getAttributeList()) {
 				List<AttributeType> attributeList1 = objectFactory.getAttributeList().getAttribute();
 				for (AttributeType attribute : attributeList1) {
@@ -97,7 +98,7 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 					}
 				}
 
-				list.addAll(metaDataHeaderAttributes);
+				headerList1.addAll(metaDataHeaderAttributes);
 				// Create blank workbook
 				XSSFWorkbook workbook = new XSSFWorkbook();
 				// Create a blank sheet
@@ -110,7 +111,7 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 				Map<String, List<String>> attributeMap = new LinkedHashMap<String, List<String>>();
 				Map<String, Map<String, String>> metadataAttribute = new HashMap<String, Map<String, String>>();
 				int i = 0;
-				attributeMap.put(String.valueOf(i), list);
+				attributeMap.put(String.valueOf(i), headerList1);
 
 				if (objectFactory.getUnitList() != null) {
 					List<Object> unitList = objectFactory.getUnitList().getUnitFamilyOrUnit();
@@ -128,6 +129,10 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 				for (AttributeType attribute : attributeList) {
 					i++;
 					List<String> attributeInfo = new ArrayList<String>();
+					for (int index = attributeInfo.size(); index <= headerList1.size(); index++) {
+						attributeInfo.add("");
+					}
+
 					String id = attribute.getID();
 					String name = attribute.getName().get(0).getContent();
 
@@ -263,36 +268,35 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 						}
 						metadataAttribute.put(id, map);
 					}
-					attributeInfo.add(id);
-					attributeInfo.add(name);
-					attributeInfo.add(validationBase);
-					attributeInfo.add(listOfValueID);
-					attributeInfo.add(minValue);
-					attributeInfo.add(maxValue);
-					attributeInfo.add(maxLength);
-					attributeInfo.add(inputMask);
-					attributeInfo.add(type);
-					attributeInfo.add(mandatory);
-					attributeInfo.add(multiVlaued);
-					attributeInfo.add(externallyMaintained);
-					attributeInfo.add(calculated);
-					attributeInfo.add(valueTemplate);
-					attributeInfo.add(userTypeID);
-					attributeInfo.add(linkType);
-					attributeInfo.add(unitID);
-					attributeInfo.add(unitName);
-					attributeInfo.add(defaultUnitID);
-					attributeInfo.add(defaultUnitName);
-					attributeInfo.add(attributeGroup);
-					attributeInfo.add("");
-					attributeInfo.add(fullTextIndexible);
-					attributeInfo.add(completenessScore);
-					attributeInfo.add(hierarchicalFilter);
-					attributeInfo.add(classificationHierarchicalFilter);
-					attributeInfo.add(dimensionLink);
-					for (int index = attributeInfo.size(); index <= list.size(); index++) {
-						attributeInfo.add("");
-					}
+					attributeInfo.set(headerList2.indexOf("STEP_ID"), id);
+					attributeInfo.set(headerList2.indexOf("STEP_Name"), name);
+					attributeInfo.set(headerList2.indexOf("Validation_Base_Type"), validationBase);
+					attributeInfo.set(headerList2.indexOf("List_of_Values"), listOfValueID);
+					attributeInfo.set(headerList2.indexOf("Minimum_Value"), minValue);
+					attributeInfo.set(headerList2.indexOf("Maximum_Value"), maxValue);
+					attributeInfo.set(headerList2.indexOf("Maximum_Length"), maxLength);
+					attributeInfo.set(headerList2.indexOf("Mask"), inputMask);
+					attributeInfo.set(headerList2.indexOf("Type"), type);
+					attributeInfo.set(headerList2.indexOf("Mandatory"), mandatory);
+					attributeInfo.set(headerList2.indexOf("Multi_Valued"), multiVlaued);
+					attributeInfo.set(headerList2.indexOf("Externally_Maintained"), externallyMaintained);
+					attributeInfo.set(headerList2.indexOf("Calculated"), calculated);
+					attributeInfo.set(headerList2.indexOf("Value_Template"), valueTemplate);
+					attributeInfo.set(headerList2.indexOf("Validity"), userTypeID);
+					attributeInfo.set(headerList2.indexOf("LinkType"), linkType);
+					attributeInfo.set(headerList2.indexOf("Unit_ID"), unitID);
+					attributeInfo.set(headerList2.indexOf("Unit_Name"), unitName);
+					attributeInfo.set(headerList2.indexOf("Default_Unit_ID"), defaultUnitID);
+					attributeInfo.set(headerList2.indexOf("Default_Unit_Name"), defaultUnitName);
+					attributeInfo.set(headerList2.indexOf("Attribute_Group_Reference_ID"), attributeGroup);
+					attributeInfo.set(headerList2.indexOf("Attribute_Group_Reference_Name"), "");
+					attributeInfo.set(headerList2.indexOf("Full_Text_Indexible"), fullTextIndexible);
+					attributeInfo.set(headerList2.indexOf("Completeness_Score"), completenessScore);
+					attributeInfo.set(headerList2.indexOf("Hierarchical_Filtering"), hierarchicalFilter);
+					attributeInfo.set(headerList2.indexOf("Classification_Hierarchical_Filtering"),
+							classificationHierarchicalFilter);
+					attributeInfo.set(headerList2.indexOf("Dimension_Dependencies"), dimensionLink);
+
 					attributeMap.put(String.valueOf(i++), attributeInfo);
 				}
 
@@ -306,7 +310,7 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 							for (Map.Entry<String, String> itr : metadataValues.entrySet()) {
 								String metaAttrID = itr.getKey();
 								String metaAttrValue = itr.getValue();
-								int index = list.indexOf(metaAttrID);
+								int index = headerList1.indexOf(metaAttrID);
 								attributeData.add(index, metaAttrValue);
 							}
 						}
@@ -325,10 +329,10 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 							Cell cell = row.createCell(cellid++);
 							cell.setCellValue((String) obj);
 
-							if (rowid == 1 && cell.getColumnIndex() < al.size()) {
+							if (rowid == 1 && cell.getColumnIndex() < headerList2.size()) {
 								cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
 								cellStyle = null;
-							} else if (rowid == 1 && cell.getColumnIndex() >= al.size()) {
+							} else if (rowid == 1 && cell.getColumnIndex() >= headerList2.size()) {
 								cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
 								cellStyle = null;
 							}
@@ -347,6 +351,7 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 				throw new Exception("Invalid XML File For Attribute");
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 

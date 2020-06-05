@@ -12,8 +12,9 @@ public class UserInputFileUtilDO {
 	private String inputPath;
 	private String outputPath;
 	private String filename;
+	private ConfigHandler configFile;
+	private String delimiters;
 	private Properties propertiesFile;
-	private String delimeters;
 
 	public String getInputPath() {
 		return inputPath;
@@ -39,12 +40,12 @@ public class UserInputFileUtilDO {
 		this.filename = filename;
 	}
 
-	public Properties getPropertiesFile() {
-		return propertiesFile;
+	public ConfigHandler getConfigFile() {
+		return configFile;
 	}
 
-	public void setPropertiesFile(Properties propertiesFile) {
-		this.propertiesFile = propertiesFile;
+	public void setConfigFile(ConfigHandler configFile) {
+		this.configFile = configFile;
 	}
 
 	/**
@@ -54,11 +55,11 @@ public class UserInputFileUtilDO {
 	 * @throws FileNotFoundException
 	 * @set propertiesFile
 	 */
-	public void setPropertiesFile(String propertiesFile, String str) throws FileNotFoundException, IOException {
-		ClassLoader classLoader = this.getClass().getClassLoader();
-		Properties properties = new Properties();
+	public void setConfigFile(String propertiesFile, String str) throws FileNotFoundException, IOException {
+		ClassLoader classLoader = getClass().getClassLoader();
+		ConfigHandler config = new ConfigHandler();
 		if (propertiesFile != null && !"".equals(propertiesFile.trim())) {
-			properties.load(new FileInputStream(propertiesFile));
+			config.load(new FileInputStream(propertiesFile));
 
 		} else {
 			InputStream inStream = null;
@@ -75,26 +76,78 @@ public class UserInputFileUtilDO {
 			}
 
 			if (inStream != null) {
-				properties.load(inStream);
+				config.load(inStream);
 			}
-			this.propertiesFile = properties;
+		}
+		if (config != null) {
+			this.configFile = config;
 		}
 	}
 
 	public String getDelimiters() {
-		return delimeters;
+		return delimiters;
 	}
 
 	public void setDelimeters(String delimeters) {
 		if (delimeters != null && delimeters.trim().equals("")) {
 			if (delimeters.trim().matches(";|,|\\|")) {
-				this.delimeters = delimeters.trim();
+				this.delimiters = delimeters.trim();
 			} else {
 				System.out.println("Invalid Delimeter : Setting Default Delimeter \';\'");
-				this.delimeters = ";";
+				this.delimiters = ";";
 			}
 		} else {
-			this.delimeters = ";";
+			this.delimiters = ";";
+		}
+	}
+
+	/**
+	 * @return the properties
+	 */
+	public Properties getPropertiesFile() {
+		return propertiesFile;
+	}
+
+	/**
+	 * @param properties the properties to set
+	 */
+	public void setPropertiesFile(Properties properties) {
+		this.propertiesFile = properties;
+	}
+
+	/**
+	 * @throws InvalidFileException
+	 * 
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @set propertiesFile
+	 */
+	public void setPropertiesFile(String properties, String str) throws FileNotFoundException, IOException {
+		ClassLoader classLoader = getClass().getClassLoader();
+		Properties property = new Properties();
+		if (properties != null && !"".equals(properties.trim())) {
+			property.load(new FileInputStream(properties));
+
+		} else {
+			InputStream inStream = null;
+			if (str.equals(AutomationConstants.ATTRIBUTE)) {
+				inStream = classLoader.getResourceAsStream("resources/Attribute-Config.properties");
+			} else if (str.equals(AutomationConstants.ATTRIBUTELINK)) {
+				inStream = classLoader.getResourceAsStream("resources/AttributeLink-Config.properties");
+			} else if (str.equals(AutomationConstants.LOV)) {
+				inStream = classLoader.getResourceAsStream("resources/LOV-Config.properties");
+			} else if (str.equals(AutomationConstants.UOM)) {
+				inStream = classLoader.getResourceAsStream("resources/UOM-Config.properties");
+			} else if (str.equals(AutomationConstants.TAXONOMY)) {
+				inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
+			}
+
+			if (inStream != null) {
+				property.load(inStream);
+			}
+		}
+		if (property != null) {
+			this.propertiesFile = property;
 		}
 	}
 

@@ -46,8 +46,8 @@ public class SharedHelper {
 			userInputFileUtilDO.setFilename(outputFileName.trim());
 
 			System.out.print("Please enter the config File path if any: ");
-			String propertiesFile = reader.readLine();
-			userInputFileUtilDO.setPropertiesFile(propertiesFile, propertiesString);
+			String configFile = reader.readLine();
+			userInputFileUtilDO.setConfigFile(configFile, propertiesString);
 
 			System.out.print("Please enter the Multi Field Seperator (Can be only \",\" \";\" \"|\"): ");
 			String delimeter = reader.readLine();

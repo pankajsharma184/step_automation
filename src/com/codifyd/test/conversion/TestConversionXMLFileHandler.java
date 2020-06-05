@@ -76,13 +76,18 @@ public class TestConversionXMLFileHandler {
 		String ouputDir = tmpFile.getParentFile().getAbsolutePath();
 
 		String fileName = tmpFile.getName();
-		int pos = fileName.lastIndexOf(".");
-		if (pos > 0 && pos < (fileName.length() - 1)) {
-			// If '.' is not the first or last character.
-			fileName = fileName.substring(0, pos);
+		if (!fileName.trim().startsWith("\\.")) {
+			fileName = fileName.split("\\.")[0];
+		} else {
+			fileName = fileName.split("\\.")[1];
 		}
+//		int pos = fileName.lastIndexOf(".");
+//		if (pos > 0 && pos < (fileName.length() - 1)) {
+//			// If '.' is not the first or last character.
+//			fileName = fileName.substring(0, pos);
+//		}
 		DateFormat df = new SimpleDateFormat("yyyyMMdd_hhmmss");
-		String outputFilename = "Converted_" + fileName + "_" + df.format(new Date()) + ".xml";
+		String outputFilename = "Converted_" + fileName + "_" + df.format(new Date()) + ".xlsx";
 
 		defaultObject.setInputPath(inputFilePath);
 		defaultObject.setOutputPath(ouputDir);

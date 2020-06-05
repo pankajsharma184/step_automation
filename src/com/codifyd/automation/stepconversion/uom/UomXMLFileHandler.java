@@ -7,12 +7,11 @@ import static com.codifyd.automation.stepconversion.uom.UomXMLReader.unitHandler
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -25,6 +24,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.stepconversion.util.ConfigHandler;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
 import com.codifyd.automation.stepconversion.util.Utility;
 import com.codifyd.stepxsd.STEPProductInformation;
@@ -39,20 +39,20 @@ public class UomXMLFileHandler {
 		File outputFile = new File(
 				Paths.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
 						.toUri());
-		Properties properties = userInputFileUtilDO.getPropertiesFile();
+		ConfigHandler configFile = userInputFileUtilDO.getConfigFile();
 		String delimeter = userInputFileUtilDO.getDelimiters();
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(STEPProductInformation.class);
 			Unmarshaller jaxbUnMarshaller = jaxbContext.createUnmarshaller();
 			STEPProductInformation objectFactory = (STEPProductInformation) jaxbUnMarshaller.unmarshal(inputFile);
 
-			writeExcel(objectFactory, outputFile, properties, delimeter);
+			writeExcel(objectFactory, outputFile, configFile, delimeter);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
 	}
 
-	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, Properties properties,
+	private static void writeExcel(STEPProductInformation objectFactory, File outputFile, ConfigHandler configFile,
 			String delim) throws Exception {
 		try {
 
@@ -71,14 +71,12 @@ public class UomXMLFileHandler {
 			 */
 
 			// Create Header List From Properties File
-			TreeMap<Integer, String> propertyMap = new TreeMap<Integer, String>();
-			for (String key : properties.stringPropertyNames()) {
-				propertyMap.put(Integer.parseInt(key), properties.getProperty(key));
-			}
-
-			ArrayList<String> headerList = new ArrayList<String>();
-			for (Entry<Integer, String> ent : propertyMap.entrySet()) {
-				headerList.add(ent.getValue().toString());
+			LinkedList<String> headerList1 = new LinkedList<String>();
+			LinkedList<String> headerList2 = new LinkedList<String>();
+			System.out.println(configFile);
+			for (String key : configFile.keySet()) {
+				headerList1.add(configFile.get(key));
+				headerList2.add(key);
 			}
 
 			// Metadata Header List
@@ -106,7 +104,7 @@ public class UomXMLFileHandler {
 			}
 
 			// Add metadata header list into headerList
-			headerList.addAll(metaHeader);
+			headerList1.addAll(metaHeader);
 
 			// Create metadata map
 			TreeMap<String, Map<String, String>> metadataMap = new TreeMap<String, Map<String, String>>();
@@ -114,13 +112,14 @@ public class UomXMLFileHandler {
 
 			// Create UomMap Store Uom Info
 			TreeMap<Integer, List<String>> uomMap = new TreeMap<Integer, List<String>>();
-			uomMap.put(i, headerList);
+			uomMap.put(i, headerList1);
 
 			List<Object> unitListType = objectFactory.getUnitList().getUnitFamilyOrUnit();
-			Object[] args = new Object[] { i, (List<Object>) unitListType, headerList, uomMap, metadataMap, delim };
+			Object[] args = new Object[] { i, (List<Object>) unitListType, headerList1, headerList2, uomMap,
+					metadataMap, delim };
 			i = familyHandler(args);
-			Object[] args2 = new Object[] { i, (List<Object>) unitListType, headerList, uomMap, metadataMap, delim, "",
-					"" };
+			Object[] args2 = new Object[] { i, (List<Object>) unitListType, headerList1, headerList2, uomMap,
+					metadataMap, delim, "", "" };
 			i = unitHandler(args2);
 
 			for (Entry<Integer, List<String>> entrySet : uomMap.entrySet()) {
@@ -132,7 +131,7 @@ public class UomXMLFileHandler {
 					if (metadataMap.containsKey(key1)) {
 						Map<String, String> metadataValues = metadataMap.get(key1);
 						List<String> uomData = entrySet.getValue();
-						getMetaDataValue(metadataValues, uomData, headerList);
+						getMetaDataValue(metadataValues, uomData, headerList1);
 
 					}
 				}
@@ -147,10 +146,10 @@ public class UomXMLFileHandler {
 				for (String obj : objArr) {
 					Cell cell = row.createCell(cellid++);
 					cell.setCellValue(obj);
-					if (rowid == 1 && cell.getColumnIndex() < propertyMap.size()) {
+					if (rowid == 1 && cell.getColumnIndex() < headerList2.size()) {
 						cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
 						cellStyle = null;
-					} else if (rowid == 1 && cell.getColumnIndex() >= propertyMap.size()) {
+					} else if (rowid == 1 && cell.getColumnIndex() >= headerList2.size()) {
 						cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
 						cellStyle = null;
 					}

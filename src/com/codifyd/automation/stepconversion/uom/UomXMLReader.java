@@ -17,10 +17,11 @@ public class UomXMLReader {
 		int i = (int) args[0];
 		try {
 			List<Object> unitListType = (List<Object>) args[1];
-			ArrayList<String> headerList = (ArrayList<String>) args[2];
-			TreeMap<Integer, List<String>> uomMap = (TreeMap<Integer, List<String>>) args[3];
-			TreeMap<String, Map<String, String>> metadataMap = (TreeMap<String, Map<String, String>>) args[4];
-			String delim = (String) args[5];
+			ArrayList<String> headerList1 = (ArrayList<String>) args[2];
+			ArrayList<String> headerList2 = (ArrayList<String>) args[3];
+			TreeMap<Integer, List<String>> uomMap = (TreeMap<Integer, List<String>>) args[4];
+			TreeMap<String, Map<String, String>> metadataMap = (TreeMap<String, Map<String, String>>) args[5];
+			String delim = (String) args[6];
 
 			for (Object family : unitListType) {
 				if (family instanceof UnitFamilyType) {
@@ -30,8 +31,8 @@ public class UomXMLReader {
 							: "";
 
 					List<?> unitList = ((UnitFamilyType) family).getUnit();
-					Object[] args2 = new Object[] { i, (List<Object>) unitList, headerList, uomMap, metadataMap, delim,
-							unitGroupId, unitGroupName };
+					Object[] args2 = new Object[] { i, (List<Object>) unitList, headerList1, headerList2, uomMap,
+							metadataMap, delim, unitGroupId, unitGroupName };
 					i = unitHandler(args2);
 				}
 			}
@@ -45,12 +46,13 @@ public class UomXMLReader {
 		int i = (int) args[0];
 		try {
 			List<Object> unitListType = (List<Object>) args[1];
-			ArrayList<String> headerList = (ArrayList<String>) args[2];
-			TreeMap<Integer, List<String>> uomMap = (TreeMap<Integer, List<String>>) args[3];
-			TreeMap<String, Map<String, String>> metadataMap = (TreeMap<String, Map<String, String>>) args[4];
-			String delim = (String) args[5];
-			String unitGroupID = (String) args[6];
-			String unitGroupName = (String) args[7];
+			ArrayList<String> headerList1 = (ArrayList<String>) args[2];
+			ArrayList<String> headerList2 = (ArrayList<String>) args[3];
+			TreeMap<Integer, List<String>> uomMap = (TreeMap<Integer, List<String>>) args[4];
+			TreeMap<String, Map<String, String>> metadataMap = (TreeMap<String, Map<String, String>>) args[5];
+			String delim = (String) args[6];
+			String unitGroupID = (String) args[7];
+			String unitGroupName = (String) args[8];
 
 			for (Object unit : unitListType) {
 				if (unit instanceof UnitType) {
@@ -108,7 +110,7 @@ public class UomXMLReader {
 					data.add(conversionFactor);
 					data.add(conversionoffset);
 
-					for (int index = data.size(); index <= headerList.size(); index++) {
+					for (int index = data.size(); index <= headerList1.size(); index++) {
 						data.add("");
 					}
 
