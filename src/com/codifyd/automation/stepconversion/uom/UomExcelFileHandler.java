@@ -29,7 +29,7 @@ import com.codifyd.stepxsd.UnitFamilyType;
 import com.codifyd.stepxsd.UnitListType;
 import com.codifyd.stepxsd.UnitType;
 
-public class UomExcelFIleHandler {
+public class UomExcelFileHandler {
 
 	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
 
