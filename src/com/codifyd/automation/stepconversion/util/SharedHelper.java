@@ -9,7 +9,7 @@ import com.codifyd.automation.stepconversion.attributeschema.AttributeExcelFileH
 import com.codifyd.automation.stepconversion.attributeschema.AttributeXMLFileHandler;
 import com.codifyd.automation.stepconversion.lovschema.LovExcelFileHandler;
 import com.codifyd.automation.stepconversion.lovschema.LovXMLFileHandler;
-import com.codifyd.automation.stepconversion.uom.UomExcelFIleHandler;
+import com.codifyd.automation.stepconversion.uom.UomExcelFileHandler;
 import com.codifyd.automation.stepconversion.uom.UomXMLFileHandler;
 
 public class SharedHelper {
@@ -141,7 +141,7 @@ public class SharedHelper {
 				break;
 
 			case "4":
-				UomExcelFIleHandler uomxmlHandler = new UomExcelFIleHandler();
+				UomExcelFileHandler uomxmlHandler = new UomExcelFileHandler();
 				uomxmlHandler.handleFile(getUserInput(reader, AutomationConstants.ATTRIBUTE));
 				break;
 

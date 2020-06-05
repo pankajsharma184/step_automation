@@ -3,7 +3,6 @@ package com.codifyd.automation.bgp;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -13,10 +12,10 @@ public class ReportGenerator {
 	public static void generateReport(BGPReportInputUtil userinput) throws Exception {
 
 		// Get File Input
-		
+
 		File inputFile = userinput.getInputFile();
 		String inputFilePath = inputFile.getAbsolutePath();
-		if (getFileExtension(inputFilePath).trim().equals("txt")) {			
+		if (getFileExtension(inputFilePath).trim().equals("txt")) {
 			if (!new File(inputFilePath).isFile()) {
 				throw new Exception("Input file not found. Given value - " + inputFilePath);
 			}
@@ -25,9 +24,7 @@ public class ReportGenerator {
 		}
 
 		// Get Output Path
-		DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
-		String outputFilePath = inputFile.getParentFile().getAbsolutePath() + File.separator + "BGPErrorFile_"
-				+ df.format(new Date()) + ".xlsx";
+		File outputFile = userinput.getOutputFile();
 
 		// Get Host Url
 		String urlText = userinput.getInputServerPath();
@@ -36,9 +33,11 @@ public class ReportGenerator {
 			throw new Exception("Input Server path is invalid. Given value - " + urlText);
 		}
 
-		Set<String> urls = BGPRestAPI.getValidURLsFromInput(inputFile, urlText, userinput.getContextID());
-		List<JSONObject> list = JSONHandler.getErrorList(urls, new StepAuthenticator(userinput.getUsername(),userinput.getPassword()));
-		JSONHandler.writeJSONtoExcel(list, outputFilePath);		
+		Set<String> urls = BGPRestAPI.getValidURLsFromInput(inputFile, urlText, userinput.getContextID(),
+				userinput.getWorkspaceID());
+		List<JSONObject> list = JSONHandler.getErrorList(urls,
+				new StepAuthenticator(userinput.getUsername(), userinput.getPassword()));
+		JSONHandler.writeJSONtoExcel(list, outputFile);
 	}
 
 	private static String getFileExtension(String file) {

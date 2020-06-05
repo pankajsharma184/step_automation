@@ -1,9 +1,8 @@
 package com.codifyd.automation.bgp;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Authenticator;
@@ -31,7 +30,7 @@ import org.json.simple.parser.ParseException;
 
 public class JSONHandler {
 
-	public static void writeJSONtoExcel(List<JSONObject> list, String outputFilePath) throws Exception, ParseException {
+	public static void writeJSONtoExcel(List<JSONObject> list, File outputFile) throws Exception, ParseException {
 		// parse error rows to excel data
 		int i = 0;
 		TreeMap<Integer, ArrayList<String>> map = new TreeMap<Integer, ArrayList<String>>();
@@ -50,7 +49,7 @@ public class JSONHandler {
 			i++;
 		}
 		// write to excel
-		writeToExcel(map, outputFilePath);
+		writeToExcel(map, outputFile);
 
 	}
 
@@ -76,7 +75,7 @@ public class JSONHandler {
 		return errorValue;
 	}
 
-	private static void writeToExcel(TreeMap<Integer, ArrayList<String>> map, String outputFilePath) throws Exception {
+	private static void writeToExcel(TreeMap<Integer, ArrayList<String>> map, File outputFile) throws Exception {
 		try {
 			XSSFWorkbook wb = new XSSFWorkbook();
 			// Create a blank sheet
@@ -135,11 +134,11 @@ public class JSONHandler {
 			}
 
 			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(outputFilePath);
+			FileOutputStream out = new FileOutputStream(outputFile);
 			wb.write(out);
 			out.close();
 			wb.close();
-			System.out.println("File Generated in path : " + outputFilePath);
+			System.out.println("File Generated in path : " + outputFile);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}

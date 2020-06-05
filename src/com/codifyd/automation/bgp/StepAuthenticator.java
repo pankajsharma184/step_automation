@@ -20,6 +20,7 @@ class StepAuthenticator extends Authenticator {
 	 *         is provided.
 	 */
 
+	@Override
 	protected PasswordAuthentication getPasswordAuthentication() {
 		return new PasswordAuthentication(username, password.toCharArray());
 //		return new PasswordAuthentication("stepsys", "stepsys".toCharArray());

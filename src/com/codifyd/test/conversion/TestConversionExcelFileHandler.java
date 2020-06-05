@@ -2,6 +2,7 @@ package com.codifyd.test.conversion;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Map;
 import com.codifyd.automation.stepconversion.attributelink.AttributeLinkExcelFileHandler;
 import com.codifyd.automation.stepconversion.attributeschema.AttributeExcelFileHandler;
 import com.codifyd.automation.stepconversion.lovschema.LovExcelFileHandler;
-import com.codifyd.automation.stepconversion.uom.UomExcelFIleHandler;
+import com.codifyd.automation.stepconversion.uom.UomExcelFileHandler;
 import com.codifyd.automation.stepconversion.util.AutomationConstants;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
 import com.codifyd.test.util.UserInputUtil;
@@ -48,7 +49,7 @@ public class TestConversionExcelFileHandler {
 				break;
 
 			case 4:
-				UomExcelFIleHandler uomExcelFIleHandler = new UomExcelFIleHandler();
+				UomExcelFileHandler uomExcelFIleHandler = new UomExcelFileHandler();
 				uomExcelFIleHandler.handleFile(UserInputUtil.getUserInput(AutomationConstants.UOM, defaultObject));
 				break;
 			default:
@@ -67,7 +68,7 @@ public class TestConversionExcelFileHandler {
 
 	static UserInputFileUtilDO getDefaultUserInputDO() {
 		UserInputFileUtilDO defaultObject = new UserInputFileUtilDO();
-		String inputFilePath = "C:\\Users\\Aks\\Downloads\\test\\test.xlsx";
+		String inputFilePath = Paths.get(System.getProperty("user.home"), "Desktop", "test", "test.xlsx").toString();
 
 		File tmpFile = new File(inputFilePath);
 		String ouputDir = tmpFile.getParentFile().getAbsolutePath();

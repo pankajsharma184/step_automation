@@ -11,8 +11,8 @@ import java.util.Set;
 public class BGPRestAPI {
 //	String str = "https://grandandtoy-dev.scloud.stibo.com/restapiv2/background-processes/BGP_136302/execution-report?context=Context1&workspace=Main";
 
-	public static Set<String> getValidURLsFromInput(File inputFile, String serverURL, String contextID)
-			throws Exception {
+	public static Set<String> getValidURLsFromInput(File inputFile, String serverURL, String contextID,
+			String workspaceID) throws Exception {
 		if (serverURL.endsWith("/")) {
 			serverURL = serverURL + "restapiv2/background-processes/";
 		} else {
@@ -26,7 +26,8 @@ public class BGPRestAPI {
 				List<String> list = Arrays.asList(prop.split(" "));
 				for (String id : list)
 					if (id.startsWith("BGP_")) {
-						urlSet.add(serverURL + id + "/execution-report?context=" + contextID);
+						urlSet.add(serverURL + id + "/execution-report?context=" + contextID + "&workspace="
+								+ workspaceID);
 					}
 			}
 		} catch (Exception e) {
