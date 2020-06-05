@@ -6,7 +6,7 @@ public class SampleFileHelperUtil {
 
 	public static InputStream getSamplePropertiesFile(String str) {
 		InputStream inStream = null;
-		Class<SampleFileHelperUtil> classLoader = SampleFileHelperUtil.class;
+		ClassLoader classLoader = SampleFileHelperUtil.class.getClassLoader();
 		if (str.equals(AutomationConstants.ATTRIBUTE)) {
 			inStream = classLoader.getResourceAsStream("resources/Attribute-Config.properties");
 		} else if (str.equals(AutomationConstants.ATTRIBUTELINK)) {
@@ -25,7 +25,7 @@ public class SampleFileHelperUtil {
 
 	public static InputStream getSampleXMLFile(String str) {
 		InputStream inStream = null;
-		Class<SampleFileHelperUtil> classLoader = SampleFileHelperUtil.class;
+		ClassLoader classLoader = SampleFileHelperUtil.class.getClassLoader();
 		if (str.equals(AutomationConstants.ATTRIBUTE)) {
 			inStream = classLoader.getResourceAsStream("sample/AttributeXMLInputSample.xml");
 		} else if (str.equals(AutomationConstants.ATTRIBUTELINK)) {
@@ -43,7 +43,7 @@ public class SampleFileHelperUtil {
 
 	public static InputStream getSampleExcelFile(String str) {
 		InputStream inStream = null;
-		Class<SampleFileHelperUtil> classLoader = SampleFileHelperUtil.class;
+		ClassLoader classLoader = SampleFileHelperUtil.class.getClassLoader();
 		if (str.equals(AutomationConstants.ATTRIBUTE)) {
 			inStream = classLoader.getResourceAsStream("sample/AttributeXMLInputSample.xlsx");
 		} else if (str.equals(AutomationConstants.ATTRIBUTELINK)) {
