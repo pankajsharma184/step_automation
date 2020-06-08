@@ -92,14 +92,18 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 				headerList2.add(key);
 			}
 
+			int indexOfID = headerList2.indexOf("Product_Classification_ID");
+			int indexOfName = headerList2.indexOf("Product_Classification_Name");
+
 			List<String> prodHeaderList = new ArrayList<String>();
 			prodHeaderList.addAll(headerList1);
-			prodHeaderList.remove(configFile.get("Classification_ID"));
-			prodHeaderList.remove(configFile.get("Classification_Name"));
+			prodHeaderList.set(indexOfID, headerList1.get(indexOfID).split("\\")[0]);
+			prodHeaderList.set(indexOfName, headerList1.get(indexOfName).split("\\")[0]);
+
 			List<String> classHeaderList = new ArrayList<String>();
 			classHeaderList.addAll(headerList1);
-			classHeaderList.remove(configFile.get("Product_ID"));
-			classHeaderList.remove(configFile.get("Product_Name"));
+			classHeaderList.set(indexOfID, headerList1.get(indexOfID).split("\\")[1]);
+			classHeaderList.set(indexOfName, headerList1.get(indexOfName).split("\\")[1]);
 
 			// Metadata Header List
 			HashSet<String> prodMetaHeader = new HashSet<String>();
@@ -168,8 +172,8 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 								data.add("");
 							}
 
-							data.set(headerList2.indexOf("Product_ID"), productId);
-							data.set(headerList2.indexOf("Product_Name"), productName);
+							data.set(headerList2.indexOf("Product_Classification_ID"), productId);
+							data.set(headerList2.indexOf("Product_Classification_Name"), productName);
 							data.set(headerList2.indexOf("Object_Type"), objectType);
 							data.set(headerList2.indexOf("Parent_ID"), parentID);
 
@@ -195,12 +199,12 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 								j++;
 								List<String> data = new ArrayList<String>();
 
-								for (int index = data.size(); index <= classHeaderList.size(); index++) {
+								for (int index = 0; index <= classHeaderList.size(); index++) {
 									data.add("");
 								}
 
-								data.set(headerList2.indexOf("Classification_ID"), classificationId);
-								data.set(headerList2.indexOf("Classification_Name"), classificationName);
+								data.set(headerList2.indexOf("Product_Classification_ID"), classificationId);
+								data.set(headerList2.indexOf("Product_Classification_Name"), classificationName);
 								data.set(headerList2.indexOf("Object_Type"), objectType);
 								data.set(headerList2.indexOf("Parent_ID"), parentID);
 
@@ -215,8 +219,8 @@ public class AttributeLinkXMLFileHandler implements FileConversionHandler {
 			}
 
 			// Adding metadata value in attributelink info map
-			AttributeLinkHandlerUtil.addMetaDataValues(productAttributeLinkMap, metadataMap, prodHeaderList);
-			AttributeLinkHandlerUtil.addMetaDataValues(classificationAttributeLinkMap, metadataMap, classHeaderList);
+			AttributeLinkHandlerUtil.getMetaDataValues(productAttributeLinkMap, metadataMap, prodHeaderList);
+			AttributeLinkHandlerUtil.getMetaDataValues(classificationAttributeLinkMap, metadataMap, classHeaderList);
 			int sizeofProperties = headerList2.size() - 2;
 			AttributeLinkHandlerUtil.writeToWorkbook(workbook, productSpreadsheet, productAttributeLinkMap,
 					sizeofProperties);

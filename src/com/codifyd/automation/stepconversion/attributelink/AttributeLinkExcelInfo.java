@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class AttributeLinkExcelInfo {
 	
-	private String productID;
-	private String productName;
+	private String product_class_ID;
+	private String product_class_Name;
 	private String parentID;
 	private String objectType;
 	private String attributeLink;
@@ -20,36 +20,52 @@ public class AttributeLinkExcelInfo {
 		return new LinkedHashMap<String, String>();
 	}
 	
+	
+
 	/**
-	 * @return the productID
+	 * @return the product_class_ID
 	 */
-	public String getProductID() {
-		return productID;
+	public String getProduct_class_ID() {
+		return product_class_ID;
 	}
+
+
+
 	/**
-	 * @param productID the productID to set
+	 * @param product_class_ID the product_class_ID to set
 	 */
-	public void setProductID(String productID) {
-		this.productID = productID;
+	public void setProduct_class_ID(String product_class_ID) {
+		this.product_class_ID = product_class_ID;
 	}
+
+
+
 	/**
-	 * @return the productName
+	 * @return the product_class_Name
 	 */
-	public String getProductName() {
-		return productName;
+	public String getProduct_class_Name() {
+		return product_class_Name;
 	}
+
+
+
 	/**
-	 * @param productName the productName to set
+	 * @param product_class_Name the product_class_Name to set
 	 */
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setProduct_class_Name(String product_class_Name) {
+		this.product_class_Name = product_class_Name;
 	}
+
+
+
 	/**
 	 * @return the parentID
 	 */
 	public String getParentID() {
 		return parentID;
 	}
+
+
 
 	/**
 	 * @param parentID the parentID to set
@@ -58,12 +74,16 @@ public class AttributeLinkExcelInfo {
 		this.parentID = parentID;
 	}
 
+
+
 	/**
 	 * @return the objectType
 	 */
 	public String getObjectType() {
 		return objectType;
 	}
+
+
 
 	/**
 	 * @param objectType the objectType to set
@@ -72,66 +92,97 @@ public class AttributeLinkExcelInfo {
 		this.objectType = objectType;
 	}
 
+
+
 	/**
 	 * @return the attributeLink
 	 */
 	public String getAttributeLink() {
 		return attributeLink;
 	}
+
+
+
 	/**
 	 * @param attributeLink the attributeLink to set
 	 */
 	public void setAttributeLink(String attributeLink) {
 		this.attributeLink = attributeLink;
 	}
+
+
+
 	/**
 	 * @return the mandatory
 	 */
 	public String getMandatory() {
 		return mandatory;
 	}
+
+
+
 	/**
 	 * @param mandatory the mandatory to set
 	 */
 	public void setMandatory(String mandatory) {
 		this.mandatory = mandatory;
 	}
+
+
+
 	/**
 	 * @return the qualifierID
 	 */
 	public String getQualifierID() {
 		return qualifierID;
 	}
+
+
+
 	/**
 	 * @param qualifierID the qualifierID to set
 	 */
 	public void setQualifierID(String qualifierID) {
 		this.qualifierID = qualifierID;
 	}
+
+
+
 	/**
 	 * @return the inherited
 	 */
 	public String getInherited() {
 		return inherited;
 	}
+
+
+
 	/**
 	 * @param inherited the inherited to set
 	 */
 	public void setInherited(String inherited) {
 		this.inherited = inherited;
 	}
+
+
+
 	/**
 	 * @return the referenced
 	 */
 	public String getReferenced() {
 		return referenced;
 	}
+
+
+
 	/**
 	 * @param referenced the referenced to set
 	 */
 	public void setReferenced(String referenced) {
 		this.referenced = referenced;
 	}
+
+
 
 	/**
 	 * @return the attributeLinkMetadata

@@ -3,7 +3,6 @@ package com.codifyd.automation.stepconversion.attributelink;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.math.BigInteger;
 import java.net.URI;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -26,15 +25,12 @@ import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
-import com.codifyd.stepxsd.AttributeLinkType;
-import com.codifyd.stepxsd.MetaDataType;
-import com.codifyd.stepxsd.NameType;
+import com.codifyd.stepxsd.ClassificationType;
+import com.codifyd.stepxsd.ClassificationsType;
 import com.codifyd.stepxsd.ObjectFactory;
 import com.codifyd.stepxsd.ProductType;
 import com.codifyd.stepxsd.ProductsType;
 import com.codifyd.stepxsd.STEPProductInformation;
-import com.codifyd.stepxsd.TrueFalseType;
-import com.codifyd.stepxsd.ValueType;
 
 public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 
@@ -45,8 +41,9 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 			InputValidator.validateExcelToXML(userInput);
 
 			// Read the Excel and build the UOM Objects
-			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> excelinfo = new TreeMap<String, ArrayList<AttributeLinkExcelInfo>>();
-			readExcel(new File(userInput.getInputPath()), excelinfo);
+			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> prodExcelInfo = new TreeMap<String, ArrayList<AttributeLinkExcelInfo>>();
+			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> classExcelInfo = new TreeMap<String, ArrayList<AttributeLinkExcelInfo>>();
+			readExcel(new File(userInput.getInputPath()), prodExcelInfo, classExcelInfo);
 
 			URI outputUri = Paths.get(new File(userInput.getOutputPath()).getPath(), userInput.getFilename()).toUri();
 			File outputFile = new File(outputUri);
@@ -60,55 +57,27 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 			ProductsType products = objectFactory.createProductsType();
 			List<ProductType> productList = products.getProduct();
 
-			Set<String> set = excelinfo.keySet();
-			for (String key : set) {
-
-				ProductType product = objectFactory.createProductType();
-
-				NameType nameType = objectFactory.createNameType();
-
-				product.setID(key);
-				nameType.setContent(excelinfo.get(key).get(0).getProductName());
-				product.getName().add(nameType);
-				product.setParentID(excelinfo.get(key).get(0).getParentID());
-				product.setUserTypeID(excelinfo.get(key).get(0).getObjectType());
-
-				List<AttributeLinkType> attributeLinkList = product.getAttributeLink();
-
-				ArrayList<AttributeLinkExcelInfo> list = new ArrayList<AttributeLinkExcelInfo>();
-				list.addAll(excelinfo.get(key));
-				for (AttributeLinkExcelInfo info : list) {
-					AttributeLinkType attributeLink = objectFactory.createAttributeLinkType();
-
-					attributeLink.setAttributeID(info.getAttributeLink());
-					if (!info.getInherited().trim().equals("")) {
-						attributeLink.setInherited(new BigInteger(info.getInherited()));
-					}
-					if (Boolean.parseBoolean(info.getMandatory().toLowerCase())) {
-						attributeLink.setMandatory(TrueFalseType.TRUE);
-					}
-
-					if (null != info.getAttributeLinkMetadata()) {
-						Map<String, String> map = info.getAttributeLinkMetadata();
-						MetaDataType meta = objectFactory.createMetaDataType();
-						List<Object> valueList = meta.getValueOrMultiValueOrValueGroup();
-						for (String key2 : map.keySet()) {
-							if (!map.get(key2).equals("")) {
-								ValueType value = objectFactory.createValueType();
-								value.setAttributeID(key2);
-								value.setContent(map.get(key2));
-								valueList.add(value);
-							}
-						}
-						attributeLink.setMetaData(meta);
-					}
-
-					attributeLinkList.add(attributeLink);
+			if (!prodExcelInfo.isEmpty()) {
+				Set<String> prodSet = prodExcelInfo.keySet();
+				for (String key : prodSet) {
+					AttributeLinkHandlerUtil.setProducts(objectFactory, prodExcelInfo, productList, key);
 				}
-				productList.add(product);
+
+				stepProductInformation.setProducts(products);
 			}
 
-			stepProductInformation.setProducts(products);
+			if (!classExcelInfo.isEmpty()) {
+				ClassificationsType classificationsType = objectFactory.createClassificationsType();
+				List<ClassificationType> classificationList = classificationsType.getClassification();
+
+				Set<String> classSet = classExcelInfo.keySet();
+				for (String key : classSet) {
+					AttributeLinkHandlerUtil.setClassifications(objectFactory, classExcelInfo, classificationList, key);
+				}
+
+				stepProductInformation.setClassifications(classificationsType);
+			}
+
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
@@ -120,11 +89,13 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 			System.out.println("File Generated in path : " + outputFile.getAbsolutePath());
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
-	public static void readExcel(File inputFile, TreeMap<String, ArrayList<AttributeLinkExcelInfo>> excelinfo) {
+	public static void readExcel(File inputFile, TreeMap<String, ArrayList<AttributeLinkExcelInfo>> prodExcelInfo,
+			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> classExcelInfo) {
 		try {
 			List<String> headerList = null;
 			InputStream fs = new FileInputStream(inputFile);
@@ -132,60 +103,74 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 			// Create Workbook instance holding reference to .xlsx file
 			XSSFWorkbook workbook = new XSSFWorkbook(fs);
 
-			// Get first/desired sheet from the workbook
-			XSSFSheet sheet = workbook.getSheetAt(0);
+			// Get desired sheet from the workbook
+			for (int sheetAt = 0; sheetAt < workbook.getNumberOfSheets(); sheetAt++) {
 
-			for (Iterator<Row> iterator = sheet.iterator(); iterator.hasNext();) {
-				Row row = iterator.next();
+				XSSFSheet sheet = workbook.getSheetAt(sheetAt);
 
-				if (row.getRowNum() == 0) {
-					headerList = new ArrayList<String>();
-					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
-						Cell cell = iterator2.next();
-						headerList.add(cell.getStringCellValue());
-					}
-				} else {
-					AttributeLinkExcelInfo attributeLinkInfo = new AttributeLinkExcelInfo();
-					DataFormatter df = new DataFormatter();
-					String id = df.formatCellValue(row.getCell(0));
-					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
-						Cell cell = iterator2.next();
-						if (cell.getColumnIndex() == 0) {
-							attributeLinkInfo.setProductID(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 1) {
-							attributeLinkInfo.setProductName(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 2) {
-							attributeLinkInfo.setObjectType(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 3) {
-							attributeLinkInfo.setParentID(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 4) {
-							attributeLinkInfo.setAttributeLink(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 5) {
-							attributeLinkInfo.setMandatory(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 6) {
-							attributeLinkInfo.setQualifierID(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 7) {
-							attributeLinkInfo.setInherited(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 8) {
-							attributeLinkInfo.setReferenced(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() > 8 && cell.getColumnIndex() < headerList.size()) {
-							Map<String, String> map = attributeLinkInfo.getAttributeLinkMetadata();
-							if (map == null) {
-								map = attributeLinkInfo.createMetadatMap();
-							}
-							map.put(headerList.get(cell.getColumnIndex()), df.formatCellValue(cell));
-							attributeLinkInfo.setAttributeLinkMetadata(map);
+				for (Iterator<Row> iterator = sheet.iterator(); iterator.hasNext();) {
+					Row row = iterator.next();
+
+					if (row.getRowNum() == 0) {
+						headerList = new ArrayList<String>();
+						for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
+							Cell cell = iterator2.next();
+							headerList.add(cell.getStringCellValue());
 						}
-					}
-					if (!excelinfo.containsKey(id)) {
-						ArrayList<AttributeLinkExcelInfo> list = new ArrayList<AttributeLinkExcelInfo>();
-						list.add(attributeLinkInfo);
-						excelinfo.put(id, list);
 					} else {
-						excelinfo.get(id).add(attributeLinkInfo);
-					}
-				}
+						AttributeLinkExcelInfo attributeLinkInfo = new AttributeLinkExcelInfo();
+						DataFormatter df = new DataFormatter();
+						String id = df.formatCellValue(row.getCell(0));
+						for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
+							Cell cell = iterator2.next();
+							if (cell.getColumnIndex() == 0) {
+								attributeLinkInfo.setProduct_class_ID(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() == 1) {
+								attributeLinkInfo.setProduct_class_Name(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() == 2) {
+								attributeLinkInfo.setObjectType(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() == 3) {
+								attributeLinkInfo.setParentID(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() == 4) {
+								attributeLinkInfo.setAttributeLink(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() == 5) {
+								attributeLinkInfo.setMandatory(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() == 6) {
+								attributeLinkInfo.setQualifierID(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() == 7) {
+								attributeLinkInfo.setInherited(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() == 8) {
+								attributeLinkInfo.setReferenced(df.formatCellValue(cell));
+							} else if (cell.getColumnIndex() > 8 && cell.getColumnIndex() < headerList.size()) {
+								Map<String, String> map = attributeLinkInfo.getAttributeLinkMetadata();
+								if (map == null) {
+									map = attributeLinkInfo.createMetadatMap();
+								}
+								map.put(headerList.get(cell.getColumnIndex()), df.formatCellValue(cell));
+								attributeLinkInfo.setAttributeLinkMetadata(map);
+							}
+						}
+						if (sheetAt == 0) {
+							if (!prodExcelInfo.containsKey(id)) {
+								ArrayList<AttributeLinkExcelInfo> list = new ArrayList<AttributeLinkExcelInfo>();
+								list.add(attributeLinkInfo);
+								prodExcelInfo.put(id, list);
+							} else {
+								prodExcelInfo.get(id).add(attributeLinkInfo);
+							}
+						} else if (sheetAt == 1) {
+							if (!classExcelInfo.containsKey(id)) {
+								ArrayList<AttributeLinkExcelInfo> list = new ArrayList<AttributeLinkExcelInfo>();
+								list.add(attributeLinkInfo);
+								classExcelInfo.put(id, list);
+							} else {
+								classExcelInfo.get(id).add(attributeLinkInfo);
+							}
+						}
 
+					}
+
+				}
 			}
 			workbook.close();
 		} catch (Exception e) {
