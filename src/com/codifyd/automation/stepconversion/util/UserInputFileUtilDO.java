@@ -73,6 +73,8 @@ public class UserInputFileUtilDO {
 				inStream = classLoader.getResourceAsStream("resources/UOM-Config.properties");
 			} else if (str.equals(AutomationConstants.TAXONOMY)) {
 				inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
+			} else if (str.equals(AutomationConstants.MIL_CONFIG)) {
+				inStream = classLoader.getResourceAsStream("resources/stepTomilconversion-config.properties");
 			}
 
 			if (inStream != null) {

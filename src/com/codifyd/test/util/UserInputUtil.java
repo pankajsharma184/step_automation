@@ -1,6 +1,7 @@
 package com.codifyd.test.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Map;
@@ -42,8 +43,9 @@ public class UserInputUtil {
 
 		System.out.print("Please enter the output file path : ");
 		String outFilePath = reader.readLine();
-		if (outFilePath == null || outFilePath.trim().isEmpty()) {
-			outFilePath = defaultObject.getOutputPath();
+		if (outFilePath == null || outFilePath.trim().isEmpty()) {			
+			File tmpFile = new File(inputFilePath);
+			outFilePath = tmpFile.getParentFile().getAbsolutePath();
 			System.out.println("Using default output path -" + outFilePath);
 		}
 		userInputFileUtilDO.setOutputPath(outFilePath.trim());

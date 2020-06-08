@@ -9,12 +9,13 @@ import java.nio.file.Paths;
 import org.apache.commons.io.FileUtils;
 
 import com.codifyd.automation.stepconversion.util.AutomationConstants;
+import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.SampleFileHelperUtil;
 
-public class BGPReportConfigInfo {
+public class BGPReportSampleInfo {
 
 	public File getSampleInputFile() throws IOException {
-		InputStream inStream = SampleFileHelperUtil.getSampleInputFile(AutomationConstants.BGP);
+		InputStream inStream = SampleFileHelperUtil.getSampleInputFile(HandlerConstants.BGP);
 		URI outputUri = Paths.get(System.getProperty("java.io.tmpdir"), "BGPReportInput.txt")
 				.toUri();
 		File outputFile = new File(outputUri);

@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<properties>
+<entry key="eventID">1099957</entry>
+<entry key="eventType">1</entry>
+<entry key="nodeID">Item1</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-08 15:11:41.0</entry>
+<entry key="eventRevision">0.22</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100962</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102815</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-13 20:19:47.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100964</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102816</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-13 20:19:47.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100966</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102825</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-13 20:19:47.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100968</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102829</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-13 20:19:47.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100972</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102864</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-14 18:35:28.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100973</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102866</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-14 18:38:45.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100975</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102833</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-14 18:47:50.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100977</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102800</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-14 18:49:59.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100980</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102870</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-14 20:41:38.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100990</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">TestItem</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-15 05:04:32.0</entry>
+<entry key="eventRevision">0.1</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1100996</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102441</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-15 05:07:07.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1101002</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102796</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-15 05:11:07.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.746</entry>
+<entry key="eventID">1101016</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102808</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-15 16:12:19.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.747</entry>
+<entry key="eventID">1101019</entry>
+<entry key="eventType">0</entry>
+<entry key="nodeID">Item_102855</entry>
+<entry key="nodeType">product</entry>
+<entry key="eventCreationTime">2020-04-15 16:17:38.0</entry>
+<entry key="eventRevision">0.2</entry>
+<entry key="messageCreationTime">2020-04-15 18:08:20.747</entry>
+</properties>
+-->
+<!-- Configuration:
+<?xml version='1.0'?>
+<STEP-ProductInformation ResolveInlineRefs="true" FollowOverrideSubProducts="true">
+   <Products ExportSize="Selected" FlattenHierarchy="true">
+      <Product>
+         <Name />
+         <ProductCrossReference/>
+		 
+         <Values IncludeInherited="true" IncludeInheritedAttributes="*">
+            <Value AttributeID="BridgeGlobalInclude" />
+            <Value AttributeID="BridgeIntegrationAttributes" />
+            <Value AttributeID="MILMatchingAttributes" />
+            <Value AttributeID="MILReportingAttributes" />
+             <Value AttributeID="SKU" />
+         </Values>
+
+      </Product>
+   </Products>
+</STEP-ProductInformation>
+Export from Test Item_MG(2)
+Effective date: 2020-04-15 18:08:20
+Classifications All
+Products "Item1" "Item_102815" "Item_102816" "Item_102825" "Item_102829" "Item_102864" "Item_102866" "Item_102833" "Item_102800" "Item_102870" "TestItem" ...
+Assets All
+
+Exported by database exporter.
+-->
+<STEP-ProductInformation ExportTime="2020-04-15 18:08:20" ExportContext="Context1" ContextID="Context1" WorkspaceID="Approved" UseContextLocale="false">
+  <Products>
+    <Product ID="Item1" UserTypeID="Item" ParentID="PF_102118">
+      <Name Changed="true">Item 1 - Test</Name>
+      <Values>
+        <MultiValue AttributeID="MILTARGET">
+          <Value ID="BRIDGE">Bridge</Value>
+        </MultiValue>
+        <MultiValue AttributeID="EcoConscious" Changed="true">
+          <Value ID="EF" Changed="true">Energy Efficient</Value>
+        </MultiValue>
+        <Value AttributeID="MfrPartNum">Test</Value>
+        <Value AttributeID="ErrorCounter">123</Value>
+        <Value AttributeID="SupplierPartNum">Test</Value>
+        <Value AttributeID="ItemStatus" ID="A">Approved</Value>
+        <MultiValue AttributeID="GTIN">
+          <Value>Test</Value>
+        </MultiValue>
+        <Value AttributeID="ContentRequired" Derived="true" DerivedContextID="Context1">No</Value>
+        <Value AttributeID="ContentStatus" Derived="true" DerivedContextID="Context1">Active</Value>
+      </Values>
+    </Product>
+    <Product ID="TestItem" UserTypeID="Item" ParentID="PF_102118" Changed="true">
+      <Name Changed="true">Test Item</Name>
+      <Values/>
+    </Product>
+    <Product ID="Item_102441" UserTypeID="Item" ParentID="PF_102388" Changed="true">
+      <Name Changed="true">New Item</Name>
+      <Values>
+        <Value AttributeID="3PCopy" Inherited="1">3pCopy</Value>
+        <Value AttributeID="Subheader" Inherited="1">Subheader</Value>
+        <MultiValue AttributeID="FamilyCopyBullets" Inherited="1">
+          <Value>copyvalue</Value>
+        </MultiValue>
+      </Values>
+    </Product>
+    <Product ID="Item_102796" UserTypeID="Item" ParentID="PF_102388" Changed="true">
+      <Name Changed="true">Item 30</Name>
+      <Values>
+        <Value AttributeID="WebProdDesc" Changed="true">gxszs</Value>
+        <Value AttributeID="BrandName" Changed="true">BrandName</Value>
+        <Value AttributeID="3PCopy" Inherited="1">3pCopy</Value>
+        <Value AttributeID="PPHSubclassName" Changed="true">TF3</Value>
+        <Value AttributeID="brandname_global" ID="BRD_5035493" Changed="true">1850</Value>
+        <Value AttributeID="SellQuantity" Changed="true">fsdfsdf</Value>
+        <Value AttributeID="LIMITDESCRIPTION45" Changed="true">test</Value>
+        <Value AttributeID="Subheader" Changed="true">ttty</Value>
+        <Value AttributeID="LIMITDESCRIPTION80" Changed="true">dvsdsd</Value>
+        <MultiValue AttributeID="FamilyCopyBullets" Changed="true">
+          <Value Changed="true">AB</Value>
+        </MultiValue>
+      </Values>
+    </Product>
+    <Product ID="Item_102800" UserTypeID="Item" ParentID="PF_102388" Changed="true">
+      <Name Changed="true">Item 40</Name>
+      <Values>
+        <Value AttributeID="3PCopy" Inherited="1">3pCopy</Value>
+        <Value AttributeID="Subheader" Inherited="1">Subheader</Value>
+        <MultiValue AttributeID="FamilyCopyBullets" Inherited="1">
+          <Value>copyvalue</Value>
+        </MultiValue>
+      </Values>
+    </Product>
+    <Product ID="Item_102808" UserTypeID="Item" ParentID="PF_102807" Changed="true">
+      <Name Changed="true">Test Item_MG</Name>
+      <Values>
+        <Value AttributeID="WebProdDesc" Changed="true">gxszs</Value>
+        <Value AttributeID="BrandName" Changed="true">Bic</Value>
+        <Value AttributeID="3PCopy" Inherited="1">Test Copy</Value>
+        <Value AttributeID="PPHSubclassName" Changed="true">TF3</Value>
+        <Value AttributeID="brandname_global" ID="BRD_5035493" Changed="true">1850</Value>
+        <Value AttributeID="SellQuantity" Changed="true">fsdfsdf</Value>
+        <Value AttributeID="LIMITDESCRIPTION45" Changed="true">Item description test</Value>
+        <Value AttributeID="Subheader" Changed="true">ttty</Value>
+        <Value AttributeID="LIMITDESCRIPTION80" Changed="true">dvsdsd</Value>
+        <MultiValue AttributeID="FamilyCopyBullets" Changed="true">
+          <Value Changed="true">AB</Value>
+        </MultiValue>
+      </Values>
+    </Product>
+    <Product ID="Item_102855" UserTypeID="Item" ParentID="PF_102807" Changed="true">
+      <Name Changed="true">Test Item_MG(2)</Name>
+      <Values>
+        <Value AttributeID="WebProdDesc" Changed="true">gxszs</Value>
+        <Value AttributeID="BrandName" Changed="true">Bic</Value>
+        <Value AttributeID="3PCopy" Inherited="1">Test Copy</Value>
+        <Value AttributeID="PPHSubclassName" Changed="true">TF3</Value>
+        <Value AttributeID="brandname_global" ID="BRD_5035493" Changed="true">1850</Value>
+        <Value AttributeID="SellQuantity" Changed="true">fsdfsdf</Value>
+        <Value AttributeID="LIMITDESCRIPTION45" Changed="true">Test description</Value>
+        <Value AttributeID="Subheader" Changed="true">ttty</Value>
+        <Value AttributeID="LIMITDESCRIPTION80" Changed="true">dvsdsd</Value>
+        <MultiValue AttributeID="FamilyCopyBullets" Changed="true">
+          <Value Changed="true">AB</Value>
+        </MultiValue>
+      </Values>
+    </Product>
+	<Product ID="BU5BB" UserTypeID="Item" ParentID="UnclassifiedItems">
+      <Name>COSY SOCIAL CHAIR, 5-STAR BASE</Name>
+      <Values>
+        <Value AttributeID="ATT_gtin_upc">198860786124</Value>
+        <Value AttributeID="ATT_material_safety_status">N</Value>
+        <Value AttributeID="ATT_manufacturer_name">SAFCO PRODUCTS COMPANY</Value>
+        <Value AttributeID="ATT_priority">A</Value>
+        <Value AttributeID="ATT_item_type_description">REGULAR ITEM</Value>
+        <Value AttributeID="ATT_product_subgroup_1_description">Guest Seating</Value>
+        <Value AttributeID="ATT_product_subgroup_1">040</Value>
+        <Value AttributeID="ATT_item_type">2</Value>
+        <Value AttributeID="ATT_discontinued_flag_yn">N</Value>
+        <Value AttributeID="ATT_itemapprovaldate">2020-04-14</Value>
+        <Value AttributeID="ATT_inventory_unit_of_measure_ium">EA</Value>
+        <Value AttributeID="ATT_manual_intervention_flag">Y</Value>
+        <Value AttributeID="ATT_itemcreatedate">2020-04-14</Value>
+        <Value AttributeID="ATT_package_qty">1</Value>
+        <Value AttributeID="ATT_country_of_origin_description">CANADA</Value>
+        <Value AttributeID="ATT_desc_1_french">COSY SOCIAL CHAIR, 5-STAR BASE</Value>
+        <Value AttributeID="ATT_perc_post_consumer_waste">.00</Value>
+        <Value AttributeID="ATT_category_manager_name">RON THOMSON</Value>
+        <Value AttributeID="ATT_product_number_sku_code">BU5BB</Value>
+        <Value AttributeID="ATT_gt_vendor_name">SAFCO PRODUCTS COMPANY</Value>
+        <Value AttributeID="ATT_product_class">03</Value>
+        <Value AttributeID="ATT_gt_vendor_number">72377</Value>
+        <Value AttributeID="ATT_product_status_code_description">FURNITURE           - NOT STOCKED</Value>
+        <Value AttributeID="ATT_product_status_code">8</Value>
+        <Value AttributeID="ATT_vendor_product_number">BU5BB</Value>
+        <Value AttributeID="ATT_gt_branded_flag">N</Value>
+        <Value AttributeID="ATT_product_line_description">Office Seating</Value>
+        <Value AttributeID="ATT_manufacturers_part_number">BU5BB</Value>
+        <Value AttributeID="ATT_product_line">Y3</Value>
+        <Value AttributeID="ATT_step_supplier_name_consolidated">SAFCO PRODUCTS COMPANY</Value>
+        <Value AttributeID="ATT_category_manager_email">RONTHOMSON@grandandtoy.com</Value>
+        <Value AttributeID="ATT_desc_1_english">COSY SOCIAL CHAIR, 5-STAR BASE</Value>
+        <Value AttributeID="ATT_step_supplier_code_consolidated">SAFCO</Value>
+        <Value AttributeID="ATT_product_class_description">FURNITURE</Value>
+        <Value AttributeID="LookupTableProvider" Derived="true">Item</Value>
+      </Values>
+    </Product>
+    <Product ID="Item_102815" UserTypeID="Item" ParentID="UnclassifiedItems" Changed="true">
+      <Name Changed="true">TestCNET1</Name>
+      <Values/>
+    </Product>
+    <Product ID="Item_102816" UserTypeID="Item" ParentID="UnclassifiedItems" Changed="true">
+      <Name Changed="true">TestCNET2</Name>
+      <Values/>
+    </Product>
+    <Product ID="Item_102825" UserTypeID="Item" ParentID="UnclassifiedItems" Changed="true">
+      <Name Changed="true">TestCNET3</Name>
+      <Values/>
+    </Product>
+    <Product ID="Item_102829" UserTypeID="Item" ParentID="UnclassifiedItems" Changed="true">
+      <Name Changed="true">TestCNET4</Name>
+      <Values/>
+    </Product>
+    <Product ID="Item_102833" UserTypeID="Item" ParentID="UnclassifiedItems" Changed="true">
+      <Name Changed="true">T</Name>
+      <Values>
+        <Value AttributeID="ActionCode" ID="ADD" Changed="true">Add</Value>
+      </Values>
+    </Product>
+    <Product ID="Item_102864" UserTypeID="Item" ParentID="UnclassifiedItems" Changed="true">
+      <Name Changed="true">Test1</Name>
+      <Values/>
+    </Product>
+    <Product ID="Item_102866" UserTypeID="Item" ParentID="UnclassifiedItems" Changed="true">
+      <Name Changed="true">Test Item 2</Name>
+      <Values/>
+    </Product>
+    <Product ID="Item_102870" UserTypeID="Item" ParentID="UnclassifiedItems" Changed="true">
+      <Name Changed="true">T1</Name>
+      <Values>
+        <MultiValue AttributeID="GTIN" Changed="true">
+          <Value Changed="true">1234</Value>
+        </MultiValue>
+        <Value AttributeID="BridgePublish" ID="1" Changed="true">Yes</Value>
+      </Values>
+    </Product>
+  </Products>
+</STEP-ProductInformation>

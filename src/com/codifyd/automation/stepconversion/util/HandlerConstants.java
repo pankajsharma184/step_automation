@@ -16,4 +16,7 @@ public class HandlerConstants {
 	public static final String LOV = "lov";
 	public static final String UOM = "UOM";
 	public static final String TAXONOMY = "Taxonomy";
+	
+	public static final String MIL = "Mil";
+	public static final String BGP = "bgp";
 }
