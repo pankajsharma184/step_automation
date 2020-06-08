@@ -40,7 +40,7 @@ public class ConfigHandler extends LinkedHashMap<String, String> {
 					String[] stArr = st.split("=");
 					String key = stArr[0] != null ? stArr[0].trim() : "";
 
-					String val = stArr.length > 1 ? stArr[1].trim() : null;
+					String val = stArr.length > 1 ? stArr[1].trim() : "";
 
 					this.put(key, val);
 				}
