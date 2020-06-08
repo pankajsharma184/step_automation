@@ -1,11 +1,11 @@
 package com.codifyd.test.conversion;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import com.codifyd.automation.stepconversion.mil.PIMDataXMLHandler;
 import com.codifyd.automation.stepconversion.util.AutomationConstants;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
@@ -23,11 +23,7 @@ public class TestMilConversionXMLFileHandler {
 			pimDataXMLHandler.handleFile(UserInputUtil.getUserInput(AutomationConstants.MIL_CONFIG, defaultObject),
 					false);
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

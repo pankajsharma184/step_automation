@@ -106,6 +106,7 @@ public class UserInputFileUtilDO {
 	/**
 	 * @return the properties
 	 */
+	@Deprecated
 	public Properties getPropertiesFile() {
 		return propertiesFile;
 	}
@@ -113,6 +114,7 @@ public class UserInputFileUtilDO {
 	/**
 	 * @param properties the properties to set
 	 */
+	@Deprecated
 	public void setPropertiesFile(Properties properties) {
 		this.propertiesFile = properties;
 	}
@@ -124,6 +126,7 @@ public class UserInputFileUtilDO {
 	 * @throws FileNotFoundException
 	 * @set propertiesFile
 	 */
+	@Deprecated
 	public void setPropertiesFile(String properties, String str) throws FileNotFoundException, IOException {
 		ClassLoader classLoader = getClass().getClassLoader();
 		Properties property = new Properties();
