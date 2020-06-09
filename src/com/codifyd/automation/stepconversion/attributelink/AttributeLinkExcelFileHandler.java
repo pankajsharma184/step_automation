@@ -21,6 +21,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.stepconversion.util.ConfigHandler;
 import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
@@ -40,10 +41,19 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 			// parse the input for errors
 			InputValidator.validateExcelToXML(userInput);
 
-			// Read the Excel and build the UOM Objects
+			ConfigHandler configFile = userInput.getConfigFile();
+			List<String> headerList = new ArrayList<String>();
+			for (String key : configFile.keySet())
+				headerList.add(key);
+
+			// Map for Product Attribute Link Info
 			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> prodExcelInfo = new TreeMap<String, ArrayList<AttributeLinkExcelInfo>>();
+
+			// Map for Classification Attribute Link Info
 			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> classExcelInfo = new TreeMap<String, ArrayList<AttributeLinkExcelInfo>>();
-			readExcel(new File(userInput.getInputPath()), prodExcelInfo, classExcelInfo);
+
+			// Read the Excel and build the UOM Objects
+			readExcel(new File(userInput.getInputPath()), prodExcelInfo, classExcelInfo, headerList);
 
 			URI outputUri = Paths.get(new File(userInput.getOutputPath()).getPath(), userInput.getFilename()).toUri();
 			File outputFile = new File(outputUri);
@@ -62,7 +72,6 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 				for (String key : prodSet) {
 					AttributeLinkHandlerUtil.setProducts(objectFactory, prodExcelInfo, productList, key);
 				}
-
 				stepProductInformation.setProducts(products);
 			}
 
@@ -74,7 +83,6 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 				for (String key : classSet) {
 					AttributeLinkHandlerUtil.setClassifications(objectFactory, classExcelInfo, classificationList, key);
 				}
-
 				stepProductInformation.setClassifications(classificationsType);
 			}
 
@@ -95,9 +103,10 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 	}
 
 	public static void readExcel(File inputFile, TreeMap<String, ArrayList<AttributeLinkExcelInfo>> prodExcelInfo,
-			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> classExcelInfo) {
+			TreeMap<String, ArrayList<AttributeLinkExcelInfo>> classExcelInfo, List<String> headerList)
+			throws Exception {
 		try {
-			List<String> headerList = null;
+			List<String> columnHeader = null;
 			InputStream fs = new FileInputStream(inputFile);
 
 			// Create Workbook instance holding reference to .xlsx file
@@ -112,56 +121,66 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 					Row row = iterator.next();
 
 					if (row.getRowNum() == 0) {
-						headerList = new ArrayList<String>();
+						columnHeader = new ArrayList<String>();
 						for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 							Cell cell = iterator2.next();
-							headerList.add(cell.getStringCellValue());
+							columnHeader.add(cell.getStringCellValue());
 						}
 					} else {
 						AttributeLinkExcelInfo attributeLinkInfo = new AttributeLinkExcelInfo();
 						DataFormatter df = new DataFormatter();
-						String id = df.formatCellValue(row.getCell(0));
+						String id = df.formatCellValue(row.getCell(headerList.indexOf("Product_Classification_ID")));
 						for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 							Cell cell = iterator2.next();
-							if (cell.getColumnIndex() == 0) {
+
+							if (cell.getColumnIndex() == headerList.indexOf("Product_Classification_ID")) {
 								attributeLinkInfo.setProduct_class_ID(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() == 1) {
+
+							} else if (cell.getColumnIndex() == headerList.indexOf("Product_Classification_Name")) {
 								attributeLinkInfo.setProduct_class_Name(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() == 2) {
+
+							} else if (cell.getColumnIndex() == headerList.indexOf("Object_Type")) {
 								attributeLinkInfo.setObjectType(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() == 3) {
+
+							} else if (cell.getColumnIndex() == headerList.indexOf("Parent_ID")) {
 								attributeLinkInfo.setParentID(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() == 4) {
+
+							} else if (cell.getColumnIndex() == headerList.indexOf("Attribute_Link")) {
 								attributeLinkInfo.setAttributeLink(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() == 5) {
+
+							} else if (cell.getColumnIndex() == headerList.indexOf("Mandatory")) {
 								attributeLinkInfo.setMandatory(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() == 6) {
+
+							} else if (cell.getColumnIndex() == headerList.indexOf("Qualifier_ID")) {
 								attributeLinkInfo.setQualifierID(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() == 7) {
+
+							} else if (cell.getColumnIndex() == headerList.indexOf("Inherited")) {
 								attributeLinkInfo.setInherited(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() == 8) {
+
+							} else if (cell.getColumnIndex() == headerList.indexOf("Referenced")) {
 								attributeLinkInfo.setReferenced(df.formatCellValue(cell));
-							} else if (cell.getColumnIndex() > 8 && cell.getColumnIndex() < headerList.size()) {
+
+							} else if (cell.getColumnIndex() > 8 && cell.getColumnIndex() < columnHeader.size()) {
 								Map<String, String> map = attributeLinkInfo.getAttributeLinkMetadata();
 								if (map == null) {
 									map = attributeLinkInfo.createMetadatMap();
 								}
-								map.put(headerList.get(cell.getColumnIndex()), df.formatCellValue(cell));
+								map.put(columnHeader.get(cell.getColumnIndex()), df.formatCellValue(cell));
 								attributeLinkInfo.setAttributeLinkMetadata(map);
 							}
 						}
+
+						ArrayList<AttributeLinkExcelInfo> list = new ArrayList<AttributeLinkExcelInfo>();
+						list.add(attributeLinkInfo);
+
 						if (sheetAt == 0) {
 							if (!prodExcelInfo.containsKey(id)) {
-								ArrayList<AttributeLinkExcelInfo> list = new ArrayList<AttributeLinkExcelInfo>();
-								list.add(attributeLinkInfo);
 								prodExcelInfo.put(id, list);
 							} else {
 								prodExcelInfo.get(id).add(attributeLinkInfo);
 							}
 						} else if (sheetAt == 1) {
 							if (!classExcelInfo.containsKey(id)) {
-								ArrayList<AttributeLinkExcelInfo> list = new ArrayList<AttributeLinkExcelInfo>();
-								list.add(attributeLinkInfo);
 								classExcelInfo.put(id, list);
 							} else {
 								classExcelInfo.get(id).add(attributeLinkInfo);
@@ -175,6 +194,7 @@ public class AttributeLinkExcelFileHandler implements FileConversionHandler {
 			workbook.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 
 	}
