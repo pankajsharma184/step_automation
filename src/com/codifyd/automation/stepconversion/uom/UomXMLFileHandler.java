@@ -26,7 +26,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.codifyd.automation.stepconversion.util.ConfigHandler;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
-import com.codifyd.automation.stepconversion.util.Utility;
+import com.codifyd.automation.stepconversion.util.ExcelWorkbookUtility;
 import com.codifyd.stepxsd.STEPProductInformation;
 import com.codifyd.stepxsd.UnitFamilyType;
 import com.codifyd.stepxsd.UnitType;
@@ -147,10 +147,10 @@ public class UomXMLFileHandler {
 					Cell cell = row.createCell(cellid++);
 					cell.setCellValue(obj);
 					if (rowid == 1 && cell.getColumnIndex() < headerList2.size()) {
-						cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
+						cell.setCellStyle(ExcelWorkbookUtility.getHeaderStyle(workbook, cellStyle));
 						cellStyle = null;
 					} else if (rowid == 1 && cell.getColumnIndex() >= headerList2.size()) {
-						cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
+						cell.setCellStyle(ExcelWorkbookUtility.getMetaDataHeaderStyle(workbook, cellStyle));
 						cellStyle = null;
 					}
 

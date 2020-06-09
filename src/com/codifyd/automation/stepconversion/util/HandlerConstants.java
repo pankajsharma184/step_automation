@@ -10,13 +10,6 @@ public class HandlerConstants {
 
 	public static final String SPECIFICATION = "Specification";
 	public static final String DESCRIPTION = "Description";
-
-	public static final String ATTRIBUTE = "Attribute";
-	public static final String ATTRIBUTELINK = "Attributelink";
-	public static final String LOV = "lov";
-	public static final String UOM = "UOM";
-	public static final String TAXONOMY = "Taxonomy";
-	
-	public static final String MIL = "Mil";
-	public static final String BGP = "bgp";
+	//used in validation basetype, different from automation constant lov
+	public static final String LOV = "LOV";
 }

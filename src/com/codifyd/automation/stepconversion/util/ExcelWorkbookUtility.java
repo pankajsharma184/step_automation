@@ -6,7 +6,7 @@ import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class Utility {
+public class ExcelWorkbookUtility {
 
 	// MetaData Header Cell Styling
 	public static XSSFCellStyle getMetaDataHeaderStyle(XSSFWorkbook workbook, XSSFCellStyle cellStyle) {

@@ -8,13 +8,13 @@ import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 
-import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.SampleFileHelperUtil;
+import com.codifyd.automation.util.AutomationConstants;
 
 public class AttributeLinkSampleInfo {
 
 	public File getSamplePropertiesFile() throws IOException {
-		InputStream inStream = SampleFileHelperUtil.getSamplePropertiesFile(HandlerConstants.ATTRIBUTELINK);
+		InputStream inStream = SampleFileHelperUtil.getSamplePropertiesFile(AutomationConstants.ATTRIBUTELINK);
 		URI outputUri = Paths.get(System.getProperty("java.io.tmpdir"), "AttributeLinkConfigInputSample.properties")
 				.toUri();
 		File outputFile = new File(outputUri);
@@ -24,7 +24,7 @@ public class AttributeLinkSampleInfo {
 	}
 
 	public File getSampleInputExcelFile() throws IOException {
-		InputStream inStream = SampleFileHelperUtil.getSampleExcelFile(HandlerConstants.ATTRIBUTELINK);
+		InputStream inStream = SampleFileHelperUtil.getSampleExcelFile(AutomationConstants.ATTRIBUTELINK);
 		URI outputUri = Paths.get(System.getProperty("java.io.tmpdir"), "AttributeLinkExcelSampleInput.xlsx").toUri();
 		File outputFile = new File(outputUri);
 		FileUtils.copyToFile(inStream, outputFile);
@@ -33,7 +33,7 @@ public class AttributeLinkSampleInfo {
 	}
 
 	public File getSampleInputXMLFile() throws IOException {
-		InputStream inStream = SampleFileHelperUtil.getSampleXMLFile(HandlerConstants.ATTRIBUTELINK);
+		InputStream inStream = SampleFileHelperUtil.getSampleXMLFile(AutomationConstants.ATTRIBUTELINK);
 		URI outputUri = Paths.get(System.getProperty("java.io.tmpdir"), "AttributeLinkXMLInputSample.xml").toUri();
 		File outputFile = new File(outputUri);
 		FileUtils.copyToFile(inStream, outputFile);

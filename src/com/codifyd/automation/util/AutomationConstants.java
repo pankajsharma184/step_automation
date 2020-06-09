@@ -1,4 +1,4 @@
-package com.codifyd.automation.stepconversion.util;
+package com.codifyd.automation.util;
 
 //shared constants class - between jar and website
 public class AutomationConstants {
@@ -9,6 +9,7 @@ public class AutomationConstants {
 	public static final String LOV = "LOV";
 	public static final String UOM = "UOM";
 	public static final String TAXONOMY = "Taxonomy";	
-	public static final String MIL_CONFIG = "MilConfig";
+	public static final String MIL = "Mil";
+	public static final String BGP = "bgp";
 
 }

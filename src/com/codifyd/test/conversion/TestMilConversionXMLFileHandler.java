@@ -7,8 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.codifyd.automation.stepconversion.mil.PIMDataXMLHandler;
-import com.codifyd.automation.stepconversion.util.AutomationConstants;
+
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
+import com.codifyd.automation.util.AutomationConstants;
 import com.codifyd.test.util.UserInputUtil;
 
 public class TestMilConversionXMLFileHandler {
@@ -20,7 +21,7 @@ public class TestMilConversionXMLFileHandler {
 		try {
 
 			PIMDataXMLHandler pimDataXMLHandler = new PIMDataXMLHandler();
-			pimDataXMLHandler.handleFile(UserInputUtil.getUserInput(AutomationConstants.MIL_CONFIG, defaultObject),
+			pimDataXMLHandler.handleFile(UserInputUtil.getUserInput(AutomationConstants.MIL, defaultObject),
 					false);
 
 		} catch (Exception e) {

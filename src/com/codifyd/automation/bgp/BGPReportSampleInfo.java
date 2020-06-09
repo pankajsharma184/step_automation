@@ -7,15 +7,13 @@ import java.net.URI;
 import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
-
-import com.codifyd.automation.stepconversion.util.AutomationConstants;
-import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.SampleFileHelperUtil;
+import com.codifyd.automation.util.AutomationConstants;
 
 public class BGPReportSampleInfo {
 
 	public File getSampleInputFile() throws IOException {
-		InputStream inStream = SampleFileHelperUtil.getSampleInputFile(HandlerConstants.BGP);
+		InputStream inStream = SampleFileHelperUtil.getSampleInputFile(AutomationConstants.BGP);
 		URI outputUri = Paths.get(System.getProperty("java.io.tmpdir"), "BGPReportInput.txt")
 				.toUri();
 		File outputFile = new File(outputUri);

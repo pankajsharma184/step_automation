@@ -8,8 +8,8 @@ import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 
-import com.codifyd.automation.stepconversion.util.AutomationConstants;
 import com.codifyd.automation.stepconversion.util.SampleFileHelperUtil;
+import com.codifyd.automation.util.AutomationConstants;
 
 public class UomSampleInfo {
 

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.codifyd.automation.util.AutomationConstants;
+
 //pojo class for user input, will only set defaults
 public class UserInputFileUtilDO {
 
@@ -73,7 +75,7 @@ public class UserInputFileUtilDO {
 				inStream = classLoader.getResourceAsStream("resources/UOM-Config.properties");
 			} else if (str.equals(AutomationConstants.TAXONOMY)) {
 				inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
-			} else if (str.equals(AutomationConstants.MIL_CONFIG)) {
+			} else if (str.equals(AutomationConstants.MIL)) {
 				inStream = classLoader.getResourceAsStream("resources/stepTomilconversion-config.properties");
 			}
 

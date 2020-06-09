@@ -13,8 +13,8 @@ import com.codifyd.automation.stepconversion.attributelink.AttributeLinkExcelFil
 import com.codifyd.automation.stepconversion.attributeschema.AttributeExcelFileHandler;
 import com.codifyd.automation.stepconversion.lovschema.LovExcelFileHandler;
 import com.codifyd.automation.stepconversion.uom.UomExcelFileHandler;
-import com.codifyd.automation.stepconversion.util.AutomationConstants;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
+import com.codifyd.automation.util.AutomationConstants;
 import com.codifyd.test.util.UserInputUtil;
 
 public class TestConversionExcelFileHandler {

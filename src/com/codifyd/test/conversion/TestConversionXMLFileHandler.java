@@ -13,8 +13,8 @@ import com.codifyd.automation.stepconversion.attributelink.AttributeLinkXMLFileH
 import com.codifyd.automation.stepconversion.attributeschema.AttributeXMLFileHandler;
 import com.codifyd.automation.stepconversion.lovschema.LovXMLFileHandler;
 import com.codifyd.automation.stepconversion.uom.UomXMLFileHandler;
-import com.codifyd.automation.stepconversion.util.AutomationConstants;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
+import com.codifyd.automation.util.AutomationConstants;
 import com.codifyd.test.util.UserInputUtil;
 
 public class TestConversionXMLFileHandler {

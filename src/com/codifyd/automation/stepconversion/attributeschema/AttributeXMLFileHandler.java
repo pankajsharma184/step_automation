@@ -26,7 +26,7 @@ import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
-import com.codifyd.automation.stepconversion.util.Utility;
+import com.codifyd.automation.stepconversion.util.ExcelWorkbookUtility;
 import com.codifyd.stepxsd.AttributeGroupLinkType;
 import com.codifyd.stepxsd.AttributeType;
 import com.codifyd.stepxsd.DimensionLinkType;
@@ -330,10 +330,10 @@ public class AttributeXMLFileHandler implements FileConversionHandler {
 							cell.setCellValue((String) obj);
 
 							if (rowid == 1 && cell.getColumnIndex() < headerList2.size()) {
-								cell.setCellStyle(Utility.getHeaderStyle(workbook, cellStyle));
+								cell.setCellStyle(ExcelWorkbookUtility.getHeaderStyle(workbook, cellStyle));
 								cellStyle = null;
 							} else if (rowid == 1 && cell.getColumnIndex() >= headerList2.size()) {
-								cell.setCellStyle(Utility.getMetaDataHeaderStyle(workbook, cellStyle));
+								cell.setCellStyle(ExcelWorkbookUtility.getMetaDataHeaderStyle(workbook, cellStyle));
 								cellStyle = null;
 							}
 

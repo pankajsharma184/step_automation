@@ -19,7 +19,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.codifyd.automation.stepconversion.util.AutomationConstants;
 import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
@@ -103,7 +102,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 				attribute.setDerived(
 						Boolean.parseBoolean(attrInfo.getCalculated()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 
-				if (attrInfo.getValidation_Base_Type().equalsIgnoreCase(AutomationConstants.LOV)
+				if (attrInfo.getValidation_Base_Type().equalsIgnoreCase(HandlerConstants.LOV)
 						&& !attrInfo.getList_of_Values().isEmpty()) {
 
 					ListOfValueLinkType listOfValueLink = objectFactory.createListOfValueLinkType();
