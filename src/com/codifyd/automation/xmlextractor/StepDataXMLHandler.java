@@ -15,17 +15,33 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import com.codifyd.stepxsd.AttributeGroupListType;
+import com.codifyd.stepxsd.AttributeGroupType;
 import com.codifyd.stepxsd.AttributeListType;
+import com.codifyd.stepxsd.AttributeType;
 import com.codifyd.stepxsd.BusinessLibrariesType;
+import com.codifyd.stepxsd.BusinessRuleType;
 import com.codifyd.stepxsd.BusinessRulesType;
+import com.codifyd.stepxsd.EventQueueType;
+import com.codifyd.stepxsd.EventQueuesType;
+import com.codifyd.stepxsd.ExportConfigurationType;
+import com.codifyd.stepxsd.ExportConfigurationsType;
+import com.codifyd.stepxsd.ImportConfigurationType;
+import com.codifyd.stepxsd.ImportConfigurationsType;
+import com.codifyd.stepxsd.InBoundIntegrationEndpointType;
 import com.codifyd.stepxsd.IntegrationEndpointsType;
+import com.codifyd.stepxsd.KeyType;
 import com.codifyd.stepxsd.KeysType;
+import com.codifyd.stepxsd.ListOfValueType;
 import com.codifyd.stepxsd.ListOfValuesGroupListType;
+import com.codifyd.stepxsd.ListOfValuesGroupType;
 import com.codifyd.stepxsd.ListsOfValuesType;
 import com.codifyd.stepxsd.ObjectFactory;
+import com.codifyd.stepxsd.OutBoundIntegrationEndpointType;
 import com.codifyd.stepxsd.STEPProductInformation;
 import com.codifyd.stepxsd.UserGroupListType;
+import com.codifyd.stepxsd.UserGroupType;
 import com.codifyd.stepxsd.UserListType;
+import com.codifyd.stepxsd.UserType;
 
 //class to convert StepXML to smaller classes based on ID for migration
 public class StepDataXMLHandler {
@@ -59,7 +75,7 @@ public class StepDataXMLHandler {
 			stepProductInformation.setContextID(inputStepProductInfo.getContextID());
 			stepProductInformation.setWorkspaceID(inputStepProductInfo.getWorkspaceID());
 
-			// for each tag , read string , get ids, write ids			
+			// for each tag , read string , get ids, write ids
 			List<String> BusinessRuleIDs = getIDsFromString(xmlExtractorInputUtil.getBusinessRuleIDs());
 			if (!BusinessRuleIDs.isEmpty()) {
 				writeBusinessRulesToOutput(inputStepProductInfo, BusinessRuleIDs, objectFactory,
@@ -72,8 +88,7 @@ public class StepDataXMLHandler {
 			}
 			List<String> AttributeIDs = getIDsFromString(xmlExtractorInputUtil.getAttributeIDs());
 			if (!AttributeIDs.isEmpty()) {
-				writeAttributesToOutput(inputStepProductInfo, AttributeIDs, objectFactory,
-						stepProductInformation);
+				writeAttributesToOutput(inputStepProductInfo, AttributeIDs, objectFactory, stepProductInformation);
 			}
 			List<String> AttributeGroupIDs = getIDsFromString(xmlExtractorInputUtil.getAttributeGroupIDs());
 			if (!AttributeGroupIDs.isEmpty()) {
@@ -82,40 +97,51 @@ public class StepDataXMLHandler {
 			}
 			List<String> LOVIDs = getIDsFromString(xmlExtractorInputUtil.getLOVIDs());
 			if (!LOVIDs.isEmpty()) {
-				writeLOVsToOutput(inputStepProductInfo, LOVIDs, objectFactory,
-						stepProductInformation);
+				writeLOVsToOutput(inputStepProductInfo, LOVIDs, objectFactory, stepProductInformation);
 			}
 			List<String> LOVGroupIDs = getIDsFromString(xmlExtractorInputUtil.getLOVGroupIDs());
 			if (!LOVGroupIDs.isEmpty()) {
-				writeLOVGroupsToOutput(inputStepProductInfo, LOVGroupIDs, objectFactory,
-						stepProductInformation);
+				writeLOVGroupsToOutput(inputStepProductInfo, LOVGroupIDs, objectFactory, stepProductInformation);
 			}
 
 			List<String> userIDs = getIDsFromString(xmlExtractorInputUtil.getUserIDs());
 			if (!userIDs.isEmpty()) {
-				writeUsersToOutput(inputStepProductInfo, userIDs, objectFactory,
-						stepProductInformation);
+				writeUsersToOutput(inputStepProductInfo, userIDs, objectFactory, stepProductInformation);
 			}
-			
+
 			List<String> userGroupIDs = getIDsFromString(xmlExtractorInputUtil.getUserGroupIDs());
 			if (!userGroupIDs.isEmpty()) {
-				writeUserGroupsToOutput(inputStepProductInfo, userGroupIDs, objectFactory,
-						stepProductInformation);
+				writeUserGroupsToOutput(inputStepProductInfo, userGroupIDs, objectFactory, stepProductInformation);
 			}
-			
+
 			List<String> keyIDs = getIDsFromString(xmlExtractorInputUtil.getKeyIDs());
 			if (!keyIDs.isEmpty()) {
-				writeKeysToOutput(inputStepProductInfo, keyIDs, objectFactory,
-						stepProductInformation);
+				writeKeysToOutput(inputStepProductInfo, keyIDs, objectFactory, stepProductInformation);
 			}
-			
-			List<String> IntegrationEndpointIDs = getIDsFromString(xmlExtractorInputUtil.getIntegrationEndpointIDs());
-			if (!IntegrationEndpointIDs.isEmpty()) {
-				writeIntegrationEndpointToOutput(inputStepProductInfo, IntegrationEndpointIDs, objectFactory,
+
+			List<String> integrationEndpointIDs = getIDsFromString(xmlExtractorInputUtil.getIntegrationEndpointIDs());
+			if (!integrationEndpointIDs.isEmpty()) {
+				writeIntegrationEndpointToOutput(inputStepProductInfo, integrationEndpointIDs, objectFactory,
 						stepProductInformation);
 			}
 
-			
+			List<String> importConfigurationIDs = getIDsFromString(xmlExtractorInputUtil.getImportConfigurationIDs());
+			if (!importConfigurationIDs.isEmpty()) {
+				writeImportConfigurationsToOutput(inputStepProductInfo, importConfigurationIDs, objectFactory,
+						stepProductInformation);
+			}
+
+			List<String> exportConfigurationIDs = getIDsFromString(xmlExtractorInputUtil.getExportConfigurationIDs());
+			if (!exportConfigurationIDs.isEmpty()) {
+				writeExportConfigurationsToOutput(inputStepProductInfo, exportConfigurationIDs, objectFactory,
+						stepProductInformation);
+			}
+
+			List<String> eventQueueIDs = getIDsFromString(xmlExtractorInputUtil.getEventQueueIDs());
+			if (!eventQueueIDs.isEmpty()) {
+				writeEventQueuesToOutput(inputStepProductInfo, eventQueueIDs, objectFactory, stepProductInformation);
+			}
+
 			// write to outut stepxml
 			File outputStepXML = new File(
 					Paths.get(new File(getDefaultOutputDirectoryFromInput(inputFilePath)).getPath(),
@@ -136,131 +162,221 @@ public class StepDataXMLHandler {
 	private void writeIntegrationEndpointToOutput(STEPProductInformation inputStepProductInfo,
 			List<String> IntegrationEndpointIDs, ObjectFactory objectFactory,
 			STEPProductInformation stepProductInformation) {
-		IntegrationEndpointsType integrationEndpointsType = objectFactory.createIntegrationEndpointsType();
-		inputStepProductInfo.getIntegrationEndpoints().getOutBoundIntegrationEndpoint().forEach(eachEndpoint -> {
-			if (IntegrationEndpointIDs.contains(eachEndpoint.getID())) {
-				integrationEndpointsType.getOutBoundIntegrationEndpoint().add(eachEndpoint);
+		try {
+			IntegrationEndpointsType integrationEndpointsType = objectFactory.createIntegrationEndpointsType();
+
+			for (OutBoundIntegrationEndpointType eachEndpoint : inputStepProductInfo.getIntegrationEndpoints()
+					.getOutBoundIntegrationEndpoint()) {
+				if (IntegrationEndpointIDs.contains(eachEndpoint.getID())) {
+					integrationEndpointsType.getOutBoundIntegrationEndpoint().add(eachEndpoint);
+				}
 			}
-		});
-		inputStepProductInfo.getIntegrationEndpoints().getInBoundIntegrationEndpoint().forEach(eachEndpoint -> {
-			if (IntegrationEndpointIDs.contains(eachEndpoint.getID())) {
-				integrationEndpointsType.getInBoundIntegrationEndpoint().add(eachEndpoint);
+			for (InBoundIntegrationEndpointType eachEndpoint : inputStepProductInfo.getIntegrationEndpoints()
+					.getInBoundIntegrationEndpoint()) {
+				if (IntegrationEndpointIDs.contains(eachEndpoint.getID())) {
+					integrationEndpointsType.getInBoundIntegrationEndpoint().add(eachEndpoint);
+				}
 			}
-		});
-		stepProductInformation.setIntegrationEndpoints(integrationEndpointsType);
+			stepProductInformation.setIntegrationEndpoints(integrationEndpointsType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void writeAttributesToOutput(STEPProductInformation inputStepProductInfo, List<String> attributeIDs,
 			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
-		AttributeListType attributeListType = objectFactory.createAttributeListType();
-		inputStepProductInfo.getAttributeList().getAttribute().forEach(eachAttribute -> {
-			if (attributeIDs.contains(eachAttribute.getID())) {
-				attributeListType.getAttribute().add(eachAttribute);
+		try {
+			AttributeListType attributeListType = objectFactory.createAttributeListType();
+			for (AttributeType eachAttribute : inputStepProductInfo.getAttributeList().getAttribute()) {
+				if (attributeIDs.contains(eachAttribute.getID())) {
+					attributeListType.getAttribute().add(eachAttribute);
+				}
 			}
-		});
-		stepProductInformation.setAttributeList(attributeListType);
-		
+			stepProductInformation.setAttributeList(attributeListType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	private void writeAttributeGroupsToOutput(STEPProductInformation inputStepProductInfo, List<String> attributeGroupIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
-		AttributeGroupListType attributeGroupListType = objectFactory.createAttributeGroupListType();
-		inputStepProductInfo.getAttributeGroupList().getAttributeGroup().forEach(eachAttributeGroup -> {
-			if (attributeGroupIDs.contains(eachAttributeGroup.getID())) {
-				attributeGroupListType.getAttributeGroup().add(eachAttributeGroup);
+
+	private void writeAttributeGroupsToOutput(STEPProductInformation inputStepProductInfo,
+			List<String> attributeGroupIDs, ObjectFactory objectFactory,
+			STEPProductInformation stepProductInformation) {
+		try {
+			AttributeGroupListType attributeGroupListType = objectFactory.createAttributeGroupListType();
+			for (AttributeGroupType eachAttributeGroup : inputStepProductInfo.getAttributeGroupList()
+					.getAttributeGroup()) {
+				if (attributeGroupIDs.contains(eachAttributeGroup.getID())) {
+					attributeGroupListType.getAttributeGroup().add(eachAttributeGroup);
+				}
 			}
-		});
-		stepProductInformation.setAttributeGroupList(attributeGroupListType);		
+			stepProductInformation.setAttributeGroupList(attributeGroupListType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-	
+
 	private void writeLOVsToOutput(STEPProductInformation inputStepProductInfo, List<String> LOVIDs,
 			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
-		ListsOfValuesType listsOfValuesType = objectFactory.createListsOfValuesType();
-		inputStepProductInfo.getListsOfValues().getListOfValue().forEach(eachLOV -> {
-			if (LOVIDs.contains(eachLOV.getID())) {
-				listsOfValuesType.getListOfValue().add(eachLOV);
+		try {
+			ListsOfValuesType listsOfValuesType = objectFactory.createListsOfValuesType();
+			for (ListOfValueType eachLOV : inputStepProductInfo.getListsOfValues().getListOfValue()) {
+				if (LOVIDs.contains(eachLOV.getID())) {
+					listsOfValuesType.getListOfValue().add(eachLOV);
+				}
 			}
-		});
-		stepProductInformation.setListsOfValues(listsOfValuesType);
-		
+			stepProductInformation.setListsOfValues(listsOfValuesType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+
 	private void writeLOVGroupsToOutput(STEPProductInformation inputStepProductInfo, List<String> LOVGroupIDs,
 			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
-		ListOfValuesGroupListType listOfValuesGroupListType = objectFactory.createListOfValuesGroupListType();
-		inputStepProductInfo.getListOfValuesGroupList().getListOfValuesGroup().forEach(eachLOVGroup -> {
-			if (LOVGroupIDs.contains(eachLOVGroup.getID())) {
-				listOfValuesGroupListType.getListOfValuesGroup().add(eachLOVGroup);
+		try {
+			ListOfValuesGroupListType listOfValuesGroupListType = objectFactory.createListOfValuesGroupListType();
+			for (ListOfValuesGroupType eachLOVGroup : inputStepProductInfo.getListOfValuesGroupList()
+					.getListOfValuesGroup()) {
+				if (LOVGroupIDs.contains(eachLOVGroup.getID())) {
+					listOfValuesGroupListType.getListOfValuesGroup().add(eachLOVGroup);
+				}
 			}
-		});
-		stepProductInformation.setListOfValuesGroupList(listOfValuesGroupListType);		
+			stepProductInformation.setListOfValuesGroupList(listOfValuesGroupListType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void writeBusinessRulesToOutput(STEPProductInformation inputStepProductInfo, List<String> businessRuleIDs,
 			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
-		BusinessRulesType businessRulesType = objectFactory.createBusinessRulesType();
-		inputStepProductInfo.getBusinessRules().getBusinessRule().forEach(eachBusinessRule -> {
-			if (businessRuleIDs.contains(eachBusinessRule.getID())) {
-				businessRulesType.getBusinessRule().add(eachBusinessRule);
+		try {
+			BusinessRulesType businessRulesType = objectFactory.createBusinessRulesType();
+			for (BusinessRuleType eachBusinessRule : inputStepProductInfo.getBusinessRules().getBusinessRule()) {
+				if (businessRuleIDs.contains(eachBusinessRule.getID())) {
+					businessRulesType.getBusinessRule().add(eachBusinessRule);
+				}
 			}
-		});
-		stepProductInformation.setBusinessRules(businessRulesType);
+			stepProductInformation.setBusinessRules(businessRulesType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
 	private void writeBusinessLibrariesToOutput(STEPProductInformation inputStepProductInfo,
 			List<String> businessLibraryIDs, ObjectFactory objectFactory,
 			STEPProductInformation stepProductInformation) {
-		BusinessLibrariesType businessLibrariesType = objectFactory.createBusinessLibrariesType();
-		inputStepProductInfo.getBusinessLibraries().getBusinessRule().forEach(eachBusinessRule -> {
-			if (businessLibraryIDs.contains(eachBusinessRule.getID())) {
-				businessLibrariesType.getBusinessRule().add(eachBusinessRule);
+		try {
+			BusinessLibrariesType businessLibrariesType = objectFactory.createBusinessLibrariesType();
+			for (BusinessRuleType eachBusinessRule : inputStepProductInfo.getBusinessLibraries().getBusinessRule()) {
+				if (businessLibraryIDs.contains(eachBusinessRule.getID())) {
+					businessLibrariesType.getBusinessRule().add(eachBusinessRule);
+				}
 			}
-		});
-		stepProductInformation.setBusinessLibraries(businessLibrariesType);
-
-	}
-	
-	private void writeUserGroupsToOutput(STEPProductInformation inputStepProductInfo,
-			List<String> userGroupIDs, ObjectFactory objectFactory,
-			STEPProductInformation stepProductInformation) {
-		UserGroupListType userGroupListType = objectFactory.createUserGroupListType();
-		inputStepProductInfo.getUserGroupList().getUserGroup().forEach(eachUserGroup -> {
-			if (userGroupIDs.contains(eachUserGroup.getID())){
-				userGroupListType.getUserGroup().add(eachUserGroup);
-			}
-		});
-		stepProductInformation.setUserGroupList(userGroupListType);
+			stepProductInformation.setBusinessLibraries(businessLibrariesType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	private void writeUsersToOutput(STEPProductInformation inputStepProductInfo,
-			List<String> userIDs, ObjectFactory objectFactory,
-			STEPProductInformation stepProductInformation) {
-		UserListType userListType = objectFactory.createUserListType();
-		inputStepProductInfo.getUserList().getUser().forEach(eachUser -> {
-			if (userIDs.contains(eachUser.getID())){
-				userListType.getUser().add(eachUser);
+	private void writeUserGroupsToOutput(STEPProductInformation inputStepProductInfo, List<String> userGroupIDs,
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+		try {
+			UserGroupListType userGroupListType = objectFactory.createUserGroupListType();
+			for (UserGroupType eachUserGroup : inputStepProductInfo.getUserGroupList().getUserGroup()) {
+				if (userGroupIDs.contains(eachUserGroup.getID())) {
+					userGroupListType.getUserGroup().add(eachUserGroup);
+				}
 			}
-		});
-		stepProductInformation.setUserList(userListType);
-	}
-	
-	private void writeKeysToOutput(STEPProductInformation inputStepProductInfo,
-			List<String> KeyIDs, ObjectFactory objectFactory,
-			STEPProductInformation stepProductInformation) {
-		KeysType keysType = objectFactory.createKeysType();
-		inputStepProductInfo.getKeys().getKey().forEach(eackKey -> {
-			if (KeyIDs.contains(eackKey.getID())){
-				keysType.getKey().add(eackKey);
-			}
-		});
-		stepProductInformation.setKeys(keysType);
+			stepProductInformation.setUserGroupList(userGroupListType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	
+	private void writeUsersToOutput(STEPProductInformation inputStepProductInfo, List<String> userIDs,
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+		try {
+			UserListType userListType = objectFactory.createUserListType();
+			for (UserType eachUser : inputStepProductInfo.getUserList().getUser()) {
+				if (userIDs.contains(eachUser.getID())) {
+					userListType.getUser().add(eachUser);
+				}
+			}
+			stepProductInformation.setUserList(userListType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeKeysToOutput(STEPProductInformation inputStepProductInfo, List<String> KeyIDs,
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+		try {
+			KeysType keysType = objectFactory.createKeysType();
+			for (KeyType eachKey : inputStepProductInfo.getKeys().getKey()) {
+				if (KeyIDs.contains(eachKey.getID())) {
+					keysType.getKey().add(eachKey);
+				}
+			}
+			stepProductInformation.setKeys(keysType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeImportConfigurationsToOutput(STEPProductInformation inputStepProductInfo,
+			List<String> importConfigurationIDs, ObjectFactory objectFactory,
+			STEPProductInformation stepProductInformation) {
+		try {
+			ImportConfigurationsType importConfigurationsType = objectFactory.createImportConfigurationsType();
+			for (ImportConfigurationType eachConfiguration : inputStepProductInfo.getImportConfigurations()
+					.getImportConfiguration()) {
+				if (importConfigurationIDs.contains(eachConfiguration.getID())) {
+					importConfigurationsType.getImportConfiguration().add(eachConfiguration);
+				}
+			}
+			stepProductInformation.setImportConfigurations(importConfigurationsType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeExportConfigurationsToOutput(STEPProductInformation inputStepProductInfo,
+			List<String> exportConfigurationIDs, ObjectFactory objectFactory,
+			STEPProductInformation stepProductInformation) {
+		try {
+			ExportConfigurationsType exportConfigurationsType = objectFactory.createExportConfigurationsType();
+			for (ExportConfigurationType eachConfiguration : inputStepProductInfo.getExportConfigurations()
+					.getExportConfiguration()) {
+				if (exportConfigurationIDs.contains(eachConfiguration.getID())) {
+					exportConfigurationsType.getExportConfiguration().add(eachConfiguration);
+				}
+			}
+			stepProductInformation.setExportConfigurations(exportConfigurationsType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void writeEventQueuesToOutput(STEPProductInformation inputStepProductInfo, List<String> eventQueueIDs,
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+		try {
+			EventQueuesType eventQueuesType = objectFactory.createEventQueuesType();
+			for (EventQueueType eachEventQueue : inputStepProductInfo.getEventQueues().getEventQueue()) {
+				if (eventQueueIDs.contains(eachEventQueue.getID())) {
+					eventQueuesType.getEventQueue().add(eachEventQueue);
+				}
+			}
+			stepProductInformation.setEventQueues(eventQueuesType);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private List<String> getIDsFromString(String IDStrings) {
 		if (isNullOrBlank(IDStrings)) {
 			return new ArrayList<>();
 		}
-		return Arrays.asList(IDStrings.replaceAll("[,\\s]+$", ",").split(","));
+		return Arrays.asList(IDStrings.replaceAll(",|\\s", ",").split(","));
 	}
 
 	public static String getDefaultOutputDirectoryFromInput(String inputFilePath) {
