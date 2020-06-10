@@ -19,10 +19,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.stepconversion.util.ConfigHandler;
 import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
+import com.codifyd.automation.util.AutomationConstants;
 import com.codifyd.stepxsd.AttributeGroupLinkType;
 import com.codifyd.stepxsd.AttributeListType;
 import com.codifyd.stepxsd.AttributeType;
@@ -43,18 +45,23 @@ import com.codifyd.stepxsd.ValueType;
 public class AttributeExcelFileHandler implements FileConversionHandler {
 
 	@Override
-	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
+	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
 
 		try {
 			// parse the input for errors
-			InputValidator.validateExcelToXML(userInputFileUtilDO);
+			InputValidator.validateExcelToXML(userInput);
+			
+			ConfigHandler configFile = userInput.getConfigFile();
+			List<String> headerList = new ArrayList<String>();
+			for (String key : configFile.keySet())
+				headerList.add(key);
 
 			// Read the Excel and build the UOM Objects
 			ArrayList<AttributeExcelInfo> excelValues = new ArrayList<AttributeExcelInfo>();
-			readExcel(new File(userInputFileUtilDO.getInputPath()), excelValues);
+			readExcel(new File(userInput.getInputPath()), excelValues,headerList);
 
 			File outputFile = new File(Paths
-					.get(new File(userInputFileUtilDO.getOutputPath()).getPath(), userInputFileUtilDO.getFilename())
+					.get(new File(userInput.getOutputPath()).getPath(), userInput.getFilename())
 					.toUri());
 
 			// Initialize object factory and add unit values
@@ -102,7 +109,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 				attribute.setDerived(
 						Boolean.parseBoolean(attrInfo.getCalculated()) ? TrueFalseType.TRUE : TrueFalseType.FALSE);
 
-				if (attrInfo.getValidation_Base_Type().equalsIgnoreCase(HandlerConstants.LOV)
+				if (attrInfo.getValidation_Base_Type().equalsIgnoreCase(AutomationConstants.LOV)
 						&& !attrInfo.getList_of_Values().isEmpty()) {
 
 					ListOfValueLinkType listOfValueLink = objectFactory.createListOfValueLinkType();
@@ -229,13 +236,14 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 			System.out.println("File Generated in path : " + outputFile.getAbsolutePath());
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
 
-	private void readExcel(File inputFIle, List<AttributeExcelInfo> excelValues) throws Exception {
+	private void readExcel(File inputFIle, List<AttributeExcelInfo> excelValues, List<String> headerList) throws Exception {
 		try {
-			List<String> headerList = null;
+			List<String> columnHeader = null;
 			InputStream fs = new FileInputStream(inputFIle);
 
 			// Create Workbook instance holding reference to .xlsx file
@@ -248,10 +256,10 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 				Row row = iterator.next();
 
 				if (row.getRowNum() == 0) {
-					headerList = new ArrayList<String>();
+					columnHeader = new ArrayList<String>();
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 						Cell cell = iterator2.next();
-						headerList.add(cell.getStringCellValue());
+						columnHeader.add(cell.getStringCellValue());
 					}
 				}
 
@@ -261,66 +269,93 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 						Cell cell = iterator2.next();
 
-						if (cell.getColumnIndex() == 0) {
+						if (cell.getColumnIndex() == headerList.indexOf("STEP_ID")) {
 							attributeInfo.setAttributeID(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 1) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("STEP_Name")) {
 							attributeInfo.setAttributeName(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 2) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Validation_Base_Type")) {
 							attributeInfo.setValidation_Base_Type(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 3) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("List_of_Values")) {
 							attributeInfo.setList_of_Values(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 4) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Minimum_Value")) {
 							attributeInfo.setMinimum_Value(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 5) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Maximum_Value")) {
 							attributeInfo.setMaximum_Value(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 6) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Maximum_Length")) {
 							attributeInfo.setMaximum_Length(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 7) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Mask")) {
 							attributeInfo.setMask(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 8) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Type")) {
 							attributeInfo.setType(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 9) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Mandatory")) {
 							attributeInfo.setMandatory(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 10) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Multi_Valued")) {
 							attributeInfo.setMulti_Valued(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 11) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Externally_Maintained")) {
 							attributeInfo.setExternallyMaitained(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 12) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Calculated")) {
 							attributeInfo.setCalculated(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 13) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Value_Template")) {
 							attributeInfo.setValueTemplate(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 14) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Validity")) {
 							attributeInfo.setValidity(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 15) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("LinkType")) {
 							attributeInfo.setLinkType(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 16) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Unit_ID")) {
 							attributeInfo.setUnit_ID(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 17) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Unit_Name")) {
 							attributeInfo.setUnit_Name(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 18) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Default_Unit_ID")) {
 							attributeInfo.setDefault_Unit_ID(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 19) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Default_Unit_Name")) {
 							attributeInfo.setDefault_Unit_Name(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 20) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Attribute_Group_Reference_ID")) {
 							attributeInfo.setAttribute_Group_Reference_ID(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 21) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Attribute_Group_Reference_Name")) {
 							attributeInfo.setAttribute_Group_Reference_Name(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 22) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Full_Text_Indexible")) {
 							attributeInfo.setFullTextIndexed(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 23) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Completeness_Score")) {
 							attributeInfo.setCompletenessScore(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 24) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Hierarchical_Filtering")) {
 							attributeInfo.setHierarchialFiltering(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 25) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Classification_Hierarchical_Filtering")) {
 							attributeInfo.setClassificationHierarchialFiltering(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == 26) {
+						
+						} else if (cell.getColumnIndex() == headerList.indexOf("Dimension_Dependencies")) {
 							attributeInfo.setDimension_Dependencies(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() > 26 && cell.getColumnIndex() < headerList.size()) {
+						
+						} else if (cell.getColumnIndex() > 26 && cell.getColumnIndex() < columnHeader.size()) {
 							Map<String, String> map = attributeInfo.getAttributeMetadata();
 							if (map == null) {
 								map = attributeInfo.createMetadatMap();
 							}
-							map.put(headerList.get(cell.getColumnIndex()), df.formatCellValue(cell));
+							map.put(columnHeader.get(cell.getColumnIndex()), df.formatCellValue(cell));
 							attributeInfo.setAttributeMetadata(map);
 						}
 					}
@@ -330,6 +365,7 @@ public class AttributeExcelFileHandler implements FileConversionHandler {
 			workbook.close();
 			fs.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}

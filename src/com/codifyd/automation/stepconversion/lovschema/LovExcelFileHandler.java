@@ -3,6 +3,7 @@ package com.codifyd.automation.stepconversion.lovschema;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.codifyd.automation.stepconversion.util.ConfigHandler;
 import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
@@ -34,23 +36,29 @@ import com.codifyd.stepxsd.ValueType;
 
 public class LovExcelFileHandler implements FileConversionHandler {
 
-	public void handleFile(UserInputFileUtilDO userInputFileUtilDO) throws Exception {
+	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
 
 		try {
 
 			// parse the input for errors
-			InputValidator.validateExcelToXML(userInputFileUtilDO);
+			InputValidator.validateExcelToXML(userInput);
+
+			ConfigHandler configFile = userInput.getConfigFile();
+			List<String> headerList = new ArrayList<String>();
+			for (String key : configFile.keySet())
+				headerList.add(key);
 
 			// Read the Excel and build the UOM Objects
 			TreeMap<String, ArrayList<LovExcelInfo>> excelinfo = new TreeMap<String, ArrayList<LovExcelInfo>>();
-			readExcel(new File(userInputFileUtilDO.getInputPath()), excelinfo);
+			readExcel(new File(userInput.getInputPath()), excelinfo, headerList);
 
-			String delimeter = userInputFileUtilDO.getDelimiters();
+			String delimeter = userInput.getDelimiters();
 			if (delimeter.equals("|")) {
 				delimeter = "\\|";
 			}
 
-			File file = new File(userInputFileUtilDO.getOutputPath() + "\\" + userInputFileUtilDO.getFilename());
+			File outputFile = new File(
+					Paths.get(new File(userInput.getOutputPath()).getPath(), userInput.getFilename()).toUri());
 
 			// Initialize object factory and add unit values
 			ObjectFactory objectFactory = new ObjectFactory();
@@ -132,16 +140,17 @@ public class LovExcelFileHandler implements FileConversionHandler {
 			// output pretty printed
 			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
-			jaxbMarshaller.marshal(stepProductInformation, file);
+			jaxbMarshaller.marshal(stepProductInformation, outputFile);
 
-			System.out.println("File Generated in path : " + file.getAbsolutePath());
+			System.out.println("File Generated in path : " + outputFile.getAbsolutePath());
 
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
 	}
 
-	private void readExcel(File inputFile, TreeMap<String, ArrayList<LovExcelInfo>> excelinfo) throws Exception {
+	private void readExcel(File inputFile, TreeMap<String, ArrayList<LovExcelInfo>> excelinfo, List<String> headerList)
+			throws Exception {
 		try {
 			InputStream fs = new FileInputStream(inputFile);
 
@@ -150,65 +159,65 @@ public class LovExcelFileHandler implements FileConversionHandler {
 
 			// Get first/desired sheet from the workbook
 			XSSFSheet sheet = workbook.getSheetAt(0);
-			ArrayList<String> headerList = new ArrayList<String>();
+			ArrayList<String> columnHeader = new ArrayList<String>();
 			for (Iterator<Row> iterator = sheet.iterator(); iterator.hasNext();) {
 				DataFormatter df = new DataFormatter();
 				Row row = (Row) iterator.next();
 				if (row.getRowNum() == 0)
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();)
-						headerList.add(df.formatCellValue(iterator2.next()));
+						columnHeader.add(df.formatCellValue(iterator2.next()));
 
 				if (row.getRowNum() > 0) {
 					LovExcelInfo lovInfo = new LovExcelInfo();
-					String id = df.formatCellValue(row.getCell(0));
+					String id = df.formatCellValue(row.getCell(headerList.indexOf("")));
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 						Cell cell = (Cell) iterator2.next();
 
-						if (cell.getColumnIndex() == 0)
+						if (cell.getColumnIndex() == headerList.indexOf("LOV_ID"))
 							lovInfo.setLovID(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 1)
+						else if (cell.getColumnIndex() == headerList.indexOf("LOV_Name"))
 							lovInfo.setLovName(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 2)
+						else if (cell.getColumnIndex() == headerList.indexOf("LOV_Group_ID"))
 							lovInfo.setLovGroupID(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 3)
+						else if (cell.getColumnIndex() == headerList.indexOf("Referenced"))
 							lovInfo.setReferenced(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 4)
+						else if (cell.getColumnIndex() == headerList.indexOf("Allow_User_Value_Addition"))
 							lovInfo.setAllowUserValueAddition(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 5)
+						else if (cell.getColumnIndex() == headerList.indexOf("User_Value_ID"))
 							lovInfo.setUserValueID(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 6)
+						else if (cell.getColumnIndex() == headerList.indexOf("Validation_BaseType"))
 							lovInfo.setBaseType(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 7)
+						else if (cell.getColumnIndex() == headerList.indexOf("Minimum_Value"))
 							lovInfo.setMinValue(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 8)
+						else if (cell.getColumnIndex() == headerList.indexOf("Maximum_Value"))
 							lovInfo.setMaxValue(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 9)
+						else if (cell.getColumnIndex() == headerList.indexOf("Maximum_Length"))
 							lovInfo.setMaxLength(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 10)
+						else if (cell.getColumnIndex() == headerList.indexOf("Input_Mask"))
 							lovInfo.setInputMask(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 11)
+						else if (cell.getColumnIndex() == headerList.indexOf("Value_ID"))
 							lovInfo.setValueID(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() == 12)
+						else if (cell.getColumnIndex() == headerList.indexOf("Value_Name"))
 							lovInfo.setValueName(df.formatCellValue(cell));
 
-						else if (cell.getColumnIndex() > 12 && cell.getColumnIndex() < headerList.size()) {
+						else if (cell.getColumnIndex() > 12 && cell.getColumnIndex() < columnHeader.size()) {
 							Map<String, String> map = lovInfo.getLovMetadata();
 							if (map == null) {
 								map = lovInfo.createMetadatMap();
 							}
-							map.put(headerList.get(cell.getColumnIndex()), df.formatCellValue(cell));
+							map.put(columnHeader.get(cell.getColumnIndex()), df.formatCellValue(cell));
 							lovInfo.setLovMetadata(map);
 						}
 					}
