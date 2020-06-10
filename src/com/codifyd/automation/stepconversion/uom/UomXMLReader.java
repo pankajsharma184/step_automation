@@ -58,6 +58,10 @@ public class UomXMLReader {
 				if (unit instanceof UnitType) {
 					i++;
 					List<String> data = new ArrayList<String>();
+					for (int index = data.size(); index <= headerList1.size(); index++) {
+						data.add("");
+					}
+					
 					Map<String, String> map = new HashMap<String, String>();
 
 					String unitId = ((UnitType) unit).getID();
@@ -101,18 +105,14 @@ public class UomXMLReader {
 						metadataMap.put(unitId + unitGroupID, map);
 					}
 
-					data.add(unitId);
-					data.add(unitName);
-					data.add(unitGroupID);
-					data.add(unitGroupName);
-					data.add(reference);
-					data.add(conversionBaseUnitId);
-					data.add(conversionFactor);
-					data.add(conversionoffset);
-
-					for (int index = data.size(); index <= headerList1.size(); index++) {
-						data.add("");
-					}
+					data.set(headerList2.indexOf("Unit_ID"), unitId);
+					data.set(headerList2.indexOf("Unit_Name"), unitName);
+					data.set(headerList2.indexOf("Unit_Group_ID"), unitGroupID);
+					data.set(headerList2.indexOf("Unit_Group_Name"), unitGroupName);
+					data.set(headerList2.indexOf("Referenced"), reference);
+					data.set(headerList2.indexOf("Unit_Conversion_BaseUNIT_ID"), conversionBaseUnitId);
+					data.set(headerList2.indexOf("Unit_Conversion_Factor"), conversionFactor);
+					data.set(headerList2.indexOf("Unit_Conversion_Offset"), conversionoffset);
 
 					uomMap.put(i, data);
 

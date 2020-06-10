@@ -1,8 +1,6 @@
 package com.codifyd.automation.bgp;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Set;
 
