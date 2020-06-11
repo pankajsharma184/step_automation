@@ -17,6 +17,7 @@ public class XMLExtractorInputUtil {
 	private String ImportConfigurationIDs;
 	private String ExportConfigurationIDs;
 	private String EventQueueIDs;
+	private String EventProcessorIDs;
 
 	public String getInputFilePath() {
 		return inputFilePath;
@@ -136,6 +137,14 @@ public class XMLExtractorInputUtil {
 
 	public void setEventQueueIDs(String eventQueueIDs) {
 		EventQueueIDs = eventQueueIDs;
+	}
+
+	public String getEventProcessorIDs() {
+		return EventProcessorIDs;
+	}
+
+	public void setEventProcessorIDs(String eventProcessorIDs) {
+		EventProcessorIDs = eventProcessorIDs;
 	}
 
 }

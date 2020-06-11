@@ -88,6 +88,10 @@ public class UserInputXmlExtractor {
 				userInput.setEventQueueIDs(idString);
 				break;
 
+			case 15:
+				userInput.setEventProcessorIDs(idString);
+				break;
+
 			default:
 				System.out.println("Invalid Input");
 				break;
@@ -117,5 +121,6 @@ public class UserInputXmlExtractor {
 		System.out.println("12. ImportConfiguration");
 		System.out.println("13. ExportConfiguration");
 		System.out.println("14. EventQueue");
+		System.out.println("15. EventProcessor");
 	}
 }

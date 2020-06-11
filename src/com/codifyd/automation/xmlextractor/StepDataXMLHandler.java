@@ -21,6 +21,8 @@ import com.codifyd.stepxsd.AttributeType;
 import com.codifyd.stepxsd.BusinessLibrariesType;
 import com.codifyd.stepxsd.BusinessRuleType;
 import com.codifyd.stepxsd.BusinessRulesType;
+import com.codifyd.stepxsd.EventProcessorType;
+import com.codifyd.stepxsd.EventProcessorsType;
 import com.codifyd.stepxsd.EventQueueType;
 import com.codifyd.stepxsd.EventQueuesType;
 import com.codifyd.stepxsd.ExportConfigurationType;
@@ -142,6 +144,12 @@ public class StepDataXMLHandler {
 				writeEventQueuesToOutput(inputStepProductInfo, eventQueueIDs, objectFactory, stepProductInformation);
 			}
 
+			List<String> eventProcessorIDs = getIDsFromString(xmlExtractorInputUtil.getEventProcessorIDs());
+			if (!eventProcessorIDs.isEmpty()) {
+				writeEventProcessorsToOutput(inputStepProductInfo, eventProcessorIDs, objectFactory,
+						stepProductInformation);
+			}
+
 			// write to outut stepxml
 			File outputStepXML = new File(
 					Paths.get(new File(getDefaultOutputDirectoryFromInput(inputFilePath)).getPath(),
@@ -155,13 +163,14 @@ public class StepDataXMLHandler {
 
 		} catch (JAXBException e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 
 	}
 
 	private void writeIntegrationEndpointToOutput(STEPProductInformation inputStepProductInfo,
 			List<String> IntegrationEndpointIDs, ObjectFactory objectFactory,
-			STEPProductInformation stepProductInformation) {
+			STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			IntegrationEndpointsType integrationEndpointsType = objectFactory.createIntegrationEndpointsType();
 
@@ -180,11 +189,12 @@ public class StepDataXMLHandler {
 			stepProductInformation.setIntegrationEndpoints(integrationEndpointsType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeAttributesToOutput(STEPProductInformation inputStepProductInfo, List<String> attributeIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			AttributeListType attributeListType = objectFactory.createAttributeListType();
 			for (AttributeType eachAttribute : inputStepProductInfo.getAttributeList().getAttribute()) {
@@ -195,12 +205,13 @@ public class StepDataXMLHandler {
 			stepProductInformation.setAttributeList(attributeListType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeAttributeGroupsToOutput(STEPProductInformation inputStepProductInfo,
-			List<String> attributeGroupIDs, ObjectFactory objectFactory,
-			STEPProductInformation stepProductInformation) {
+			List<String> attributeGroupIDs, ObjectFactory objectFactory, STEPProductInformation stepProductInformation)
+			throws Exception {
 		try {
 			AttributeGroupListType attributeGroupListType = objectFactory.createAttributeGroupListType();
 			for (AttributeGroupType eachAttributeGroup : inputStepProductInfo.getAttributeGroupList()
@@ -212,11 +223,12 @@ public class StepDataXMLHandler {
 			stepProductInformation.setAttributeGroupList(attributeGroupListType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeLOVsToOutput(STEPProductInformation inputStepProductInfo, List<String> LOVIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			ListsOfValuesType listsOfValuesType = objectFactory.createListsOfValuesType();
 			for (ListOfValueType eachLOV : inputStepProductInfo.getListsOfValues().getListOfValue()) {
@@ -227,11 +239,12 @@ public class StepDataXMLHandler {
 			stepProductInformation.setListsOfValues(listsOfValuesType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeLOVGroupsToOutput(STEPProductInformation inputStepProductInfo, List<String> LOVGroupIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			ListOfValuesGroupListType listOfValuesGroupListType = objectFactory.createListOfValuesGroupListType();
 			for (ListOfValuesGroupType eachLOVGroup : inputStepProductInfo.getListOfValuesGroupList()
@@ -243,11 +256,12 @@ public class StepDataXMLHandler {
 			stepProductInformation.setListOfValuesGroupList(listOfValuesGroupListType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeBusinessRulesToOutput(STEPProductInformation inputStepProductInfo, List<String> businessRuleIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			BusinessRulesType businessRulesType = objectFactory.createBusinessRulesType();
 			for (BusinessRuleType eachBusinessRule : inputStepProductInfo.getBusinessRules().getBusinessRule()) {
@@ -258,13 +272,14 @@ public class StepDataXMLHandler {
 			stepProductInformation.setBusinessRules(businessRulesType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 
 	}
 
 	private void writeBusinessLibrariesToOutput(STEPProductInformation inputStepProductInfo,
-			List<String> businessLibraryIDs, ObjectFactory objectFactory,
-			STEPProductInformation stepProductInformation) {
+			List<String> businessLibraryIDs, ObjectFactory objectFactory, STEPProductInformation stepProductInformation)
+			throws Exception {
 		try {
 			BusinessLibrariesType businessLibrariesType = objectFactory.createBusinessLibrariesType();
 			for (BusinessRuleType eachBusinessRule : inputStepProductInfo.getBusinessLibraries().getBusinessRule()) {
@@ -275,11 +290,12 @@ public class StepDataXMLHandler {
 			stepProductInformation.setBusinessLibraries(businessLibrariesType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeUserGroupsToOutput(STEPProductInformation inputStepProductInfo, List<String> userGroupIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			UserGroupListType userGroupListType = objectFactory.createUserGroupListType();
 			for (UserGroupType eachUserGroup : inputStepProductInfo.getUserGroupList().getUserGroup()) {
@@ -290,11 +306,12 @@ public class StepDataXMLHandler {
 			stepProductInformation.setUserGroupList(userGroupListType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeUsersToOutput(STEPProductInformation inputStepProductInfo, List<String> userIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			UserListType userListType = objectFactory.createUserListType();
 			for (UserType eachUser : inputStepProductInfo.getUserList().getUser()) {
@@ -305,11 +322,12 @@ public class StepDataXMLHandler {
 			stepProductInformation.setUserList(userListType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeKeysToOutput(STEPProductInformation inputStepProductInfo, List<String> KeyIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			KeysType keysType = objectFactory.createKeysType();
 			for (KeyType eachKey : inputStepProductInfo.getKeys().getKey()) {
@@ -320,12 +338,13 @@ public class StepDataXMLHandler {
 			stepProductInformation.setKeys(keysType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeImportConfigurationsToOutput(STEPProductInformation inputStepProductInfo,
 			List<String> importConfigurationIDs, ObjectFactory objectFactory,
-			STEPProductInformation stepProductInformation) {
+			STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			ImportConfigurationsType importConfigurationsType = objectFactory.createImportConfigurationsType();
 			for (ImportConfigurationType eachConfiguration : inputStepProductInfo.getImportConfigurations()
@@ -337,12 +356,13 @@ public class StepDataXMLHandler {
 			stepProductInformation.setImportConfigurations(importConfigurationsType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeExportConfigurationsToOutput(STEPProductInformation inputStepProductInfo,
 			List<String> exportConfigurationIDs, ObjectFactory objectFactory,
-			STEPProductInformation stepProductInformation) {
+			STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			ExportConfigurationsType exportConfigurationsType = objectFactory.createExportConfigurationsType();
 			for (ExportConfigurationType eachConfiguration : inputStepProductInfo.getExportConfigurations()
@@ -354,11 +374,12 @@ public class StepDataXMLHandler {
 			stepProductInformation.setExportConfigurations(exportConfigurationsType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
 	private void writeEventQueuesToOutput(STEPProductInformation inputStepProductInfo, List<String> eventQueueIDs,
-			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) {
+			ObjectFactory objectFactory, STEPProductInformation stepProductInformation) throws Exception {
 		try {
 			EventQueuesType eventQueuesType = objectFactory.createEventQueuesType();
 			for (EventQueueType eachEventQueue : inputStepProductInfo.getEventQueues().getEventQueue()) {
@@ -369,6 +390,25 @@ public class StepDataXMLHandler {
 			stepProductInformation.setEventQueues(eventQueuesType);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	private void writeEventProcessorsToOutput(STEPProductInformation inputStepProductInfo,
+			List<String> eventProcessorIDs, ObjectFactory objectFactory, STEPProductInformation stepProductInformation)
+			throws Exception {
+		try {
+			EventProcessorsType eventProcessorsType = objectFactory.createEventProcessorsType();
+			for (EventProcessorType eachEventProcessor : inputStepProductInfo.getEventProcessors()
+					.getEventProcessor()) {
+				if (eventProcessorIDs.contains(eachEventProcessor.getID())) {
+					eventProcessorsType.getEventProcessor().add(eachEventProcessor);
+				}
+			}
+			stepProductInformation.setEventProcessors(eventProcessorsType);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
 		}
 	}
 
