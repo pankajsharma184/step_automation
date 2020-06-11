@@ -3,21 +3,21 @@ package com.codifyd.automation.xmlextractor;
 public class XMLExtractorInputUtil {
 
 	private String inputFilePath;
-	private String BusinessRuleIDs;
-	private String BusinessLibraryIDs;
-	private String AttributeIDs;
-	private String AttributeGroupIDs;
-	private String LOVIDs;
-	private String LOVGroupIDs;
-	private String UserGroupIDs;
-	private String UserIDs;
-	private String ActionSetIDs;
-	private String KeyIDs;
-	private String IntegrationEndpointIDs;
-	private String ImportConfigurationIDs;
-	private String ExportConfigurationIDs;
-	private String EventQueueIDs;
-	private String EventProcessorIDs;
+	public String BusinessRuleIDs;
+	public String BusinessLibraryIDs;
+	public String AttributeIDs;
+	public String AttributeGroupIDs;
+	public String LOVIDs;
+	public String LOVGroupIDs;
+	public String UserGroupIDs;
+	public String UserIDs;
+	public String ActionSetIDs;
+	public String KeyIDs;
+	public String IntegrationEndpointIDs;
+	public String ImportConfigurationIDs;
+	public String ExportConfigurationIDs;
+	public String EventQueueIDs;
+	public String EventProcessorIDs;
 
 	public String getInputFilePath() {
 		return inputFilePath;
