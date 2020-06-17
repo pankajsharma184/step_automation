@@ -8,7 +8,8 @@ public class AutomationConstants {
 	public static final String ATTRIBUTELINK = "Attributelink";
 	public static final String LOV = "LOV";
 	public static final String UOM = "UOM";
-	public static final String TAXONOMY = "Taxonomy";	
+	public static final String PRODUCTTAXONOMY = "ProductTaxonomy";
+	public static final String CLASSIFICATIONTAXONOMY = "ClassificationTaxonomy";
 	public static final String MIL = "Mil";
 	public static final String BGP = "bgp";
 	public static final String DIMENSION = "Dimension";

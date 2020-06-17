@@ -73,9 +73,11 @@ public class UserInputFileUtilDO {
 				inStream = classLoader.getResourceAsStream("resources/LOV-Config.properties");
 			} else if (str.equals(AutomationConstants.UOM)) {
 				inStream = classLoader.getResourceAsStream("resources/UOM-Config.properties");
-			} else if (str.equals(AutomationConstants.TAXONOMY)) {
+			} else if (str.equals(AutomationConstants.PRODUCTTAXONOMY)) {
 				inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
-			} else if (str.equals(AutomationConstants.MIL)) {
+			} else if (str.equals(AutomationConstants.CLASSIFICATIONTAXONOMY)) {
+				inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
+			}else if (str.equals(AutomationConstants.MIL)) {
 				inStream = classLoader.getResourceAsStream("resources/stepTomilconversion-config.properties");
 			}
 
@@ -145,7 +147,9 @@ public class UserInputFileUtilDO {
 				inStream = classLoader.getResourceAsStream("resources/LOV-Config.properties");
 			} else if (str.equals(AutomationConstants.UOM)) {
 				inStream = classLoader.getResourceAsStream("resources/UOM-Config.properties");
-			} else if (str.equals(AutomationConstants.TAXONOMY)) {
+			} else if (str.equals(AutomationConstants.PRODUCTTAXONOMY)) {
+				inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
+			} else if (str.equals(AutomationConstants.CLASSIFICATIONTAXONOMY)) {
 				inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
 			}
 

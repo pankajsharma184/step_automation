@@ -27,9 +27,12 @@ public class TestConversionSampleInfo {
 		option.put(10, "UOM - Properties");
 		option.put(11, "UOM - InputSampleXML");
 		option.put(12, "UOM - InputSampleExcel");
-		option.put(13, "MIL - Properties");
-		option.put(14, "MIL - InputSampleXML");
-		option.put(15, "BGP - InputSampleText");
+		option.put(13, "Taxonomy - Properties");
+		option.put(14, "Taxonomy - InputSampleXML");
+		option.put(15, "Taxonomy - InputSampleExcel");
+		option.put(16, "MIL - Properties");
+		option.put(17, "MIL - InputSampleXML");
+		option.put(18, "BGP - InputSampleText");
 
 		AttributeSampleInfo attributeSampleInfo = new AttributeSampleInfo();
 		AttributeLinkSampleInfo attributeLinkSampleInfo = new AttributeLinkSampleInfo();
@@ -83,12 +86,22 @@ public class TestConversionSampleInfo {
 				break;
 
 			case 13:
-				milSampleInfo.getSampleConfigPropertiesFile();
+				uomSampleInfo.getSamplePropertiesFile();
 				break;
 			case 14:
-				milSampleInfo.getSampleInputXMLFile();
+				uomSampleInfo.getSampleInputXMLFile();
 				break;
 			case 15:
+				uomSampleInfo.getSampleInputExcelFile();
+				break;
+
+			case 16:
+				milSampleInfo.getSampleConfigPropertiesFile();
+				break;
+			case 17:
+				milSampleInfo.getSampleInputXMLFile();
+				break;
+			case 18:
 				bgpReportSampleInfo.getSampleInputFile();
 				break;
 

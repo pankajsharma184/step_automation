@@ -17,11 +17,13 @@ public class SampleFileHelperUtil {
 			inStream = classLoader.getResourceAsStream("resources/LOV-Config.properties");
 		} else if (str.equals(AutomationConstants.UOM)) {
 			inStream = classLoader.getResourceAsStream("resources/UOM-Config.properties");
-		} else if (str.equals(AutomationConstants.TAXONOMY)) {
+		} else if (str.equals(AutomationConstants.PRODUCTTAXONOMY)) {
+			inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
+		} else if (str.equals(AutomationConstants.CLASSIFICATIONTAXONOMY)) {
 			inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
 		} else if (str.equals(AutomationConstants.MIL)) {
 			inStream = classLoader.getResourceAsStream("resources/stepTomilconversion-config.properties");
-		} 
+		}
 		return inStream;
 	}
 
@@ -36,9 +38,11 @@ public class SampleFileHelperUtil {
 			inStream = classLoader.getResourceAsStream("sample/LOVXMLInputSample.xml");
 		} else if (str.equals(AutomationConstants.UOM)) {
 			inStream = classLoader.getResourceAsStream("sample/UnitsOfMeasureXMLInputSample.xml");
-		} else if (str.equals(AutomationConstants.TAXONOMY)) {
+		} else if (str.equals(AutomationConstants.PRODUCTTAXONOMY)) {
 			inStream = classLoader.getResourceAsStream("sample/TaxonomyXMLInputSample.xml");
-		}else if (str.equals(AutomationConstants.MIL)) {
+		} else if (str.equals(AutomationConstants.CLASSIFICATIONTAXONOMY)) {
+			inStream = classLoader.getResourceAsStream("resources/Taxonomy-Config.properties");
+		} else if (str.equals(AutomationConstants.MIL)) {
 			inStream = classLoader.getResourceAsStream("sample/MilXMLInputSample.xml");
 		}
 
@@ -56,19 +60,21 @@ public class SampleFileHelperUtil {
 			inStream = classLoader.getResourceAsStream("sample/LOVXMLInputSample.xml");
 		} else if (str.equals(AutomationConstants.UOM)) {
 			inStream = classLoader.getResourceAsStream("sample/UnitsOfMeasureXMLInputSample.xlsx");
-		} else if (str.equals(AutomationConstants.TAXONOMY)) {
+		} else if (str.equals(AutomationConstants.PRODUCTTAXONOMY)) {
 			inStream = classLoader.getResourceAsStream("sample/TaxonomyXMLInputSample.xlsx");
-		} 
+		}else if (str.equals(AutomationConstants.CLASSIFICATIONTAXONOMY)) {
+			inStream = classLoader.getResourceAsStream("sample/TaxonomyXMLInputSample.xlsx");
+		}
 		return inStream;
 
 	}
-	
-	public static InputStream getSampleInputFile(String str){
+
+	public static InputStream getSampleInputFile(String str) {
 		InputStream inStream = null;
 		Class<SampleFileHelperUtil> classLoader = SampleFileHelperUtil.class;
 		if (str.equals(AutomationConstants.BGP)) {
 			inStream = classLoader.getResourceAsStream("sample/BGPReportInputSample.txt");
-		} 
+		}
 		return inStream;
 	}
 
