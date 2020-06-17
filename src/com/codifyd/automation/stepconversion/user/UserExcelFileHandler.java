@@ -144,9 +144,7 @@ public class UserExcelFileHandler implements FileConversionHandler {
 							userExcelInfo.setUserEmail(df.formatCellValue(cell));
 						} else if (cell.getColumnIndex() == columnHeader.indexOf("Password")) {
 							userExcelInfo.setPassword(df.formatCellValue(cell));
-						} else if (cell.getColumnIndex() == columnHeader.indexOf("User_Information")) {
-							userExcelInfo.setUserInfo(df.formatCellValue(cell));
-						}
+						} 
 
 					}
 					excelValues.add(userExcelInfo);
