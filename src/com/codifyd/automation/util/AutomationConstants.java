@@ -14,5 +14,7 @@ public class AutomationConstants {
 	public static final String BGP = "bgp";
 	public static final String DIMENSION = "Dimension";
 	public static final String CONTEXT = "Context";
+	public static final String USERGROUP = "UserGroup";
+	public static final String USER = "User";
 
 }

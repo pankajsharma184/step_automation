@@ -17,6 +17,8 @@ import com.codifyd.automation.stepconversion.lovschema.LovExcelFileHandler;
 import com.codifyd.automation.stepconversion.taxonomy.ClassificationTaxonomyExcelFileHandler;
 import com.codifyd.automation.stepconversion.taxonomy.ProductTaxonomyExcelFileHandler;
 import com.codifyd.automation.stepconversion.uom.UomExcelFileHandler;
+import com.codifyd.automation.stepconversion.user.UserExcelFileHandler;
+import com.codifyd.automation.stepconversion.user.UserGroupExcelFileHandler;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
 import com.codifyd.automation.util.AutomationConstants;
 import com.codifyd.test.util.UserInputUtil;
@@ -35,6 +37,8 @@ public class TestConversionExcelFileHandler {
 		options.put(6, "Classification Taxonomy");
 		options.put(7, "Dimension");
 		options.put(8, "Context");
+		options.put(9, "User Group");
+		options.put(10, "User");
 
 		try {
 			Integer choice = UserInputUtil.getUserSelectedOptionFromMap(options);
@@ -85,6 +89,18 @@ public class TestConversionExcelFileHandler {
 						.handleFile(UserInputUtil.getUserInput(AutomationConstants.CONTEXT, defaultObject));
 				break;
 
+			case 9:
+				UserGroupExcelFileHandler userGroupExcelFileHandler = new UserGroupExcelFileHandler();
+				userGroupExcelFileHandler
+						.handleFile(UserInputUtil.getUserInput(AutomationConstants.USERGROUP, defaultObject));
+				break;
+
+			case 10:
+				UserExcelFileHandler userExcelFileHandler = new UserExcelFileHandler();
+				userExcelFileHandler
+						.handleFile(UserInputUtil.getUserInput(AutomationConstants.USER, defaultObject));
+				break;
+
 			default:
 				break;
 
@@ -101,7 +117,7 @@ public class TestConversionExcelFileHandler {
 
 	static UserInputFileUtilDO getDefaultUserInputDO() {
 		UserInputFileUtilDO defaultObject = new UserInputFileUtilDO();
-		String inputFilePath = Paths.get(System.getProperty("user.home"), "Downloads", "conv1", "Context.xlsx")
+		String inputFilePath = Paths.get(System.getProperty("user.home"), "Downloads", "conv1", "Users.xlsx")
 				.toString();
 
 		File tmpFile = new File(inputFilePath);
