@@ -11,6 +11,8 @@ import java.util.Map;
 
 import com.codifyd.automation.stepconversion.attributelink.AttributeLinkExcelFileHandler;
 import com.codifyd.automation.stepconversion.attributeschema.AttributeExcelFileHandler;
+import com.codifyd.automation.stepconversion.context.ContextExcelFileHandler;
+import com.codifyd.automation.stepconversion.context.DimensionExcelFileHandler;
 import com.codifyd.automation.stepconversion.lovschema.LovExcelFileHandler;
 import com.codifyd.automation.stepconversion.uom.UomExcelFileHandler;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
@@ -27,6 +29,8 @@ public class TestConversionExcelFileHandler {
 		options.put(2, "AttributeLinkSchema");
 		options.put(3, "LOV");
 		options.put(4, "UOM");
+		options.put(5, "Dimension");
+		options.put(6, "Context");
 
 		try {
 			Integer choice = UserInputUtil.getUserSelectedOptionFromMap(options);
@@ -52,6 +56,17 @@ public class TestConversionExcelFileHandler {
 				UomExcelFileHandler uomExcelFIleHandler = new UomExcelFileHandler();
 				uomExcelFIleHandler.handleFile(UserInputUtil.getUserInput(AutomationConstants.UOM, defaultObject));
 				break;
+				
+			case 5:
+				DimensionExcelFileHandler dimensionExcelFileHandler = new DimensionExcelFileHandler();
+				dimensionExcelFileHandler.handleFile(UserInputUtil.getUserInput(AutomationConstants.DIMENSION, defaultObject));
+				break;
+				
+			case 6:
+				ContextExcelFileHandler contextExcelFileHandler = new ContextExcelFileHandler();
+				contextExcelFileHandler.handleFile(UserInputUtil.getUserInput(AutomationConstants.CONTEXT, defaultObject));
+				break;
+				
 			default:
 				break;
 
@@ -68,7 +83,7 @@ public class TestConversionExcelFileHandler {
 
 	static UserInputFileUtilDO getDefaultUserInputDO() {
 		UserInputFileUtilDO defaultObject = new UserInputFileUtilDO();
-		String inputFilePath = Paths.get(System.getProperty("user.home"), "Desktop", "test", "test.xlsx").toString();
+		String inputFilePath = Paths.get(System.getProperty("user.home"), "Downloads", "conv1", "Context.xlsx").toString();
 
 		File tmpFile = new File(inputFilePath);
 		String ouputDir = tmpFile.getParentFile().getAbsolutePath();

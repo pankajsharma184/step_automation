@@ -11,5 +11,7 @@ public class AutomationConstants {
 	public static final String TAXONOMY = "Taxonomy";	
 	public static final String MIL = "Mil";
 	public static final String BGP = "bgp";
+	public static final String DIMENSION = "Dimension";
+	public static final String CONTEXT = "Context";
 
 }
