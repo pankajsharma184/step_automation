@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -45,10 +46,11 @@ public class ProductTaxonomyExcelFileHandler implements FileConversionHandler {
 			File outputFile = new File(Paths.get(userInput.getOutputPath(), userInput.getFilename()).toString());
 
 			List<String> excelError = new ArrayList<String>();
+			Map<String, Map<String, String>> attributeValues = new TreeMap<String, Map<String, String>>();
 
 			ExcelDO excelValues = new ExcelDO();
 
-			readExcel(inputFile, excelValues, configFile, excelError);
+			readExcel(inputFile, excelValues, configFile, attributeValues, excelError);
 			if (excelError.isEmpty()) {
 
 				// Initialize object factory and add unit values
@@ -56,7 +58,7 @@ public class ProductTaxonomyExcelFileHandler implements FileConversionHandler {
 				STEPProductInformation stepProductInformation = objectFactory.createSTEPProductInformation();
 				stepProductInformation.setContextID(HandlerConstants.CONTEXT1);
 				stepProductInformation.setWorkspaceID(HandlerConstants.MAIN);
-				
+
 				ProductsType productsType = objectFactory.createProductsType();
 				List<ProductType> level1ProductList = productsType.getProduct();
 				Map<String, TaxonomyExcelInfo> level1Map = excelValues.structureMapList.get(0);

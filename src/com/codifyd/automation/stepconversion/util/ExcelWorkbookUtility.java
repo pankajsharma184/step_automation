@@ -29,4 +29,11 @@ public class ExcelWorkbookUtility {
 		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		return cellStyle;
 	}
+
+	public static boolean isNullOrBlank(String param) {
+		if (param == null || param.trim().equals("")) {
+			return true;
+		}
+		return false;
+	}
 }

@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.codifyd.automation.stepconversion.util.ConfigHandler;
+import com.codifyd.automation.stepconversion.util.ExcelWorkbookUtility;
 
 public class TaxonomyExcelReader {
 
@@ -79,13 +80,13 @@ public class TaxonomyExcelReader {
 						int cellnum = cell.getColumnIndex();
 
 						String cellValue = df.formatCellValue(cell);
-						if (isNullOrBlank(cellValue)) {
+						if (ExcelWorkbookUtility.isNullOrBlank(cellValue)) {
 							continue;
 						}
 						if (cellnum < structInfo.size()) {
-							if (isNullOrBlank(cellValue)) {
+							if (ExcelWorkbookUtility.isNullOrBlank(cellValue)) {
 								String nextCellVal = df.formatCellValue(row.getCell(cell.getColumnIndex() + 1));
-								if (isNullOrBlank(nextCellVal)) {
+								if (ExcelWorkbookUtility.isNullOrBlank(nextCellVal)) {
 									continue;
 								} else {
 									excelError.add("Row - " + row.getRowNum());
@@ -129,11 +130,11 @@ public class TaxonomyExcelReader {
 
 					// get current structure
 					for (int x = structInfo.size() - 1; x >= 0; x--) {
-						if (x > 0 && !isNullOrBlank(structInfo.get(x).getName())) {
+						if (x > 0 && !ExcelWorkbookUtility.isNullOrBlank(structInfo.get(x).getName())) {
 							addStructureToMap(currentStructure, structureMap.get(x), parentStructure,
 									structureMap.get(x - 1), excelError);
 							break;
-						} else if (x == 0 && !isNullOrBlank(structInfo.get(x).getName())) {
+						} else if (x == 0 && !ExcelWorkbookUtility.isNullOrBlank(structInfo.get(x).getName())) {
 							addStructureToMap(currentStructure, structureMap.get(x), null, null, excelError);
 							break;
 						}
@@ -171,10 +172,4 @@ public class TaxonomyExcelReader {
 
 	}
 
-	public static boolean isNullOrBlank(String param) {
-		if (param == null || param.trim().equals("")) {
-			return true;
-		}
-		return false;
-	}
 }
