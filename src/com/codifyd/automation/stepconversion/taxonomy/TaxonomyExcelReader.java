@@ -19,8 +19,8 @@ import com.codifyd.automation.stepconversion.util.ConfigHandler;
 
 public class TaxonomyExcelReader {
 
-	public static void readExcel(File inputFile, ExcelDO excelValues, ConfigHandler configFile, List<String> excelError)
-			throws Exception {
+	public static void readExcel(File inputFile, ExcelDO excelValues, ConfigHandler configFile,
+			Map<String, Map<String, String>> attributeValues, List<String> excelError) throws Exception {
 		try {
 			InputStream fs = new FileInputStream(inputFile);
 
@@ -34,6 +34,7 @@ public class TaxonomyExcelReader {
 			List<String> headers = new ArrayList<>();
 
 			List<Map<String, TaxonomyExcelInfo>> structureMap = new ArrayList<Map<String, TaxonomyExcelInfo>>();
+
 			/*
 			 * // get meta data information Map<Integer, String> metaData = new HashMap<>();
 			 * if (!isNullOrBlank(properties.getProperty("MetaData"))) {
@@ -75,17 +76,31 @@ public class TaxonomyExcelReader {
 
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 						Cell cell = iterator2.next();
+						int cellnum = cell.getColumnIndex();
 
 						String cellValue = df.formatCellValue(cell);
 						if (isNullOrBlank(cellValue)) {
 							continue;
 						}
-						int cellnum = cell.getColumnIndex();
 						if (cellnum < structInfo.size()) {
+							if (isNullOrBlank(cellValue)) {
+								String nextCellVal = df.formatCellValue(row.getCell(cell.getColumnIndex() + 1));
+								if (isNullOrBlank(nextCellVal)) {
+									continue;
+								} else {
+									excelError.add("Row - " + row.getRowNum());
+									continue;
+								}
+							} else {
+								if (excelError.contains(row.getRowNum() + "" + cellnum)) {
+									continue;
+								}
+							}
 							switch (cellnum) {
 							case 0:
 								structInfo.get(cellnum).setName(cellValue);
 								structInfo.get(cellnum).setObjectType(configFile.get("Level" + cellnum + 1));
+								structInfo.get(cellnum);
 								structInfo.get(cellnum).setStructurePath(cellValue);
 								currentStructure = structInfo.get(cellnum);
 								break;
@@ -98,18 +113,15 @@ public class TaxonomyExcelReader {
 								currentStructure = structInfo.get(cellnum);
 								break;
 							}
+						} else if (cellnum == structInfo.size()) {
+						} else if (cellnum == structInfo.size() + 1) {
 						} else {
-							switch (cellnum) {
-							default:
-								/*
-								 * if (key.equals(cell.getColumnIndex())) {
-								 * currentStructure.setUniqueKeyID(properties.getProperty("KeyID"));
-								 * currentStructure.setUniqueKeyValue(cellValue); } else if
-								 * (metaData.containsKey(cell.getColumnIndex())) {
-								 * currentStructure.getAttributeValues().put(metaData.get(cell.getColumnIndex())
-								 * , cellValue); }
-								 */
-								break;
+							Map<String, String> map = new HashMap<String, String>();
+							map.put(headers.get(cell.getColumnIndex()), df.formatCellValue(cell));
+							if (!attributeValues.containsKey(currentStructure.getStructurePath())) {
+								attributeValues.put(currentStructure.getStructurePath(), map);
+							} else {
+								attributeValues.get(currentStructure.getStructurePath()).putAll(map);
 							}
 						}
 
@@ -151,7 +163,8 @@ public class TaxonomyExcelReader {
 				System.out.println(
 						parentStructure.getStructurePath() + "for current value" + currentStructure.getStructurePath());
 
-				excelError.add(currentStructure.getStructurePath());
+				excelError.add("Parent Missing for" + currentStructure.getName() + " : "
+						+ currentStructure.getStructurePath());
 			}
 
 		}
@@ -159,7 +172,7 @@ public class TaxonomyExcelReader {
 	}
 
 	public static boolean isNullOrBlank(String param) {
-		if (param == null || param.trim().isEmpty()) {
+		if (param == null || param.trim().equals("")) {
 			return true;
 		}
 		return false;

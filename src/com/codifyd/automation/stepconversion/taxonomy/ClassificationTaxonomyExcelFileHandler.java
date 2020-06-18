@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -46,8 +47,9 @@ public class ClassificationTaxonomyExcelFileHandler implements FileConversionHan
 			List<String> excelError = new ArrayList<String>();
 
 			ExcelDO excelValues = new ExcelDO();
+			Map<String, Map<String, String>> attributeValues = new HashMap<String, Map<String, String>>();
 
-			readExcel(inputFile, excelValues, configFile, excelError);
+			readExcel(inputFile, excelValues, configFile, attributeValues, excelError);
 			if (excelError.isEmpty()) {
 
 				// Initialize object factory and add unit values
