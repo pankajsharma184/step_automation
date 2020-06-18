@@ -1,11 +1,13 @@
 package com.codifyd.automation.stepconversion.context;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ContextExcelInfo {
 	
 	private String contextID;
 	private String contextName;	
-	private String countryID;
-	private String languageID;
+	private List<String> dimensionPointIDs = new ArrayList<String>();
 	
 	public String getContextID() {
 		return contextID;
@@ -19,20 +21,12 @@ public class ContextExcelInfo {
 	public void setContextName(String contextName) {
 		this.contextName = contextName;
 	}
-	public String getCountryID() {
-		return countryID;
+	public List<String> getDimensionPointIDs() {
+		return dimensionPointIDs;
 	}
-	public void setCountryID(String countryID) {
-		this.countryID = countryID;
+	public void setDimensionPointIDs(List<String> dimensionPointIDs) {
+		this.dimensionPointIDs = dimensionPointIDs;
 	}
-	public String getLanguageID() {
-		return languageID;
-	}
-	public void setLanguageID(String languageID) {
-		this.languageID = languageID;
-	}
-	
-	
-	
+
 
 }

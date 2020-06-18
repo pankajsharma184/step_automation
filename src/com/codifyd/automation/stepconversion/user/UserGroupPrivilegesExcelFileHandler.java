@@ -1,17 +1,22 @@
-package com.codifyd.automation.stepconversion.context;
+package com.codifyd.automation.stepconversion.user;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -21,14 +26,17 @@ import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
-import com.codifyd.stepxsd.ContextListType;
-import com.codifyd.stepxsd.ContextType;
-import com.codifyd.stepxsd.DimensionPointLinkType;
 import com.codifyd.stepxsd.NameType;
 import com.codifyd.stepxsd.ObjectFactory;
+import com.codifyd.stepxsd.PrivilegeRuleType;
 import com.codifyd.stepxsd.STEPProductInformation;
+import com.codifyd.stepxsd.UserGroupLinkType;
+import com.codifyd.stepxsd.UserGroupListType;
+import com.codifyd.stepxsd.UserGroupType;
+import com.codifyd.stepxsd.UserListType;
+import com.codifyd.stepxsd.UserType;
 
-public class ContextExcelFileHandler implements FileConversionHandler {
+public class UserGroupPrivilegesExcelFileHandler implements FileConversionHandler {
 
 	@Override
 	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
@@ -43,7 +51,7 @@ public class ContextExcelFileHandler implements FileConversionHandler {
 			// headerList.add(key);
 
 			// Read the Excel
-			ArrayList<ContextExcelInfo> excelValues = new ArrayList<>();
+			Map<String,List<UserGroupPrivilegeExcelInfo>> excelValues = new HashMap<>();
 			readExcel(new File(userInput.getInputPath()), excelValues);
 
 			File outputFile = new File(
@@ -55,29 +63,39 @@ public class ContextExcelFileHandler implements FileConversionHandler {
 			stepProductInformation.setContextID(HandlerConstants.CONTEXT1);
 			stepProductInformation.setWorkspaceID(HandlerConstants.MAIN);
 
-			ContextListType contextListType = objectFactory.createContextListType();
-
-			for (ContextExcelInfo contextInfo : excelValues) {
-				if (!isNullOrBlank(contextInfo.getContextID())) {
-					ContextType contextType = objectFactory.createContextType();
-					// set id
-					contextType.setID(contextInfo.getContextID());
-					// set name
-					NameType nameType = objectFactory.createNameType();
-					nameType.setContent(contextInfo.getContextName());
-					contextType.getName().add(nameType);
-					// link
-					contextInfo.getDimensionPointIDs().forEach(dimensionPoint -> {
-						DimensionPointLinkType langDimensionPointLinkType = objectFactory.createDimensionPointLinkType();
-						langDimensionPointLinkType.setDimensionPointID(dimensionPoint);
-						contextType.getDimensionPointLink().add(langDimensionPointLinkType);
-					});
-					
-					contextListType.getContext().add(contextType);
-				}
+			UserGroupListType userGroupListType = objectFactory.createUserGroupListType();
+			
+			for (Entry<String, List<UserGroupPrivilegeExcelInfo>> entrySet : excelValues.entrySet()) {
+				UserGroupType userGroupType = objectFactory.createUserGroupType();
+				userGroupType.setID(entrySet.getKey());
+				entrySet.getValue().forEach(privilege -> {
+					PrivilegeRuleType privilegeRuleType = objectFactory.createPrivilegeRuleType();
+					privilegeRuleType.setActionSetID(privilege.getActionSetID());					
+					if (!isNullOrBlank(privilege.getNodeType())) {
+						
+						
+						try {
+							//set the value					
+							Method method = privilegeRuleType.getClass().getMethod("set" + privilege.getNodeType() + "ID",
+										new Class[] { privilege.getNodeID().getClass() });
+							method.invoke(privilegeRuleType, privilege.getNodeID());
+						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (NoSuchMethodException | SecurityException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				});
+				
+						
+				userGroupListType.getUserGroup().add(userGroupType);				
 			}
+			
+			
 
-			stepProductInformation.setContextList(contextListType);
+			stepProductInformation.setUserGroupList(userGroupListType);
 
 			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -95,7 +113,7 @@ public class ContextExcelFileHandler implements FileConversionHandler {
 		}
 	}
 
-	private void readExcel(File inputFile, ArrayList<ContextExcelInfo> excelValues) throws Exception {
+	private void readExcel(File inputFile, Map<String, List<UserGroupPrivilegeExcelInfo>> excelValues) throws Exception {
 		try {
 			List<String> columnHeader = null;
 			InputStream fs = new FileInputStream(inputFile);
@@ -119,37 +137,24 @@ public class ContextExcelFileHandler implements FileConversionHandler {
 
 				DataFormatter df = new DataFormatter();
 				if (row.getRowNum() > 0) {
-					ContextExcelInfo contextExcelInfo = new ContextExcelInfo();
+					UserGroupPrivilegeExcelInfo userGroupPrivilegeExcelInfo = new UserGroupPrivilegeExcelInfo();
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 						Cell cell = iterator2.next();
-
-						if (cell.getColumnIndex() == columnHeader.indexOf("CONTEXT_ID")) {
-							String cellValue = null;
-							if(cell.getCellTypeEnum()==CellType.STRING){			
-								cellValue = df.formatCellValue(cell);
-							}	else if(cell.getCellTypeEnum()==CellType.FORMULA){	
-								switch(cell.getCachedFormulaResultType()) {
-								case Cell.CELL_TYPE_NUMERIC:
-									cellValue = String.valueOf(cell.getNumericCellValue());
-									break;
-								case Cell.CELL_TYPE_STRING:
-									cellValue = String.valueOf(cell.getRichStringCellValue());              
-									break;
-								}
-							}
-							
-							contextExcelInfo.setContextID(cellValue);
-
-						} else if (cell.getColumnIndex() == columnHeader.indexOf("CONTEXT_NAME")) {
-							contextExcelInfo.setContextName(df.formatCellValue(cell));
-
-						} else if (cell.getColumnIndex() > 1) {
-							contextExcelInfo.getDimensionPointIDs().add(df.formatCellValue(cell));
-
-						} 
-
-					}
-					excelValues.add(contextExcelInfo);
+						switch(cell.getColumnIndex()){
+						case 0:userGroupPrivilegeExcelInfo.setUserGroupID(df.formatCellValue(cell));
+							break;
+						case 1:userGroupPrivilegeExcelInfo.setActionSetID(df.formatCellValue(cell));
+							break;
+						case 2:userGroupPrivilegeExcelInfo.setNodeType(df.formatCellValue(cell));
+							break;
+						case 3:userGroupPrivilegeExcelInfo.setNodeID(df.formatCellValue(cell));
+							break;
+						default:
+							break;
+						
+						}						
+					}					
+					excelValues.computeIfAbsent(userGroupPrivilegeExcelInfo.getUserGroupID(), k -> new ArrayList<>()).add(userGroupPrivilegeExcelInfo);
 				}
 			}
 			workbook.close();

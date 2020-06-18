@@ -19,6 +19,7 @@ import com.codifyd.automation.stepconversion.taxonomy.ProductTaxonomyExcelFileHa
 import com.codifyd.automation.stepconversion.uom.UomExcelFileHandler;
 import com.codifyd.automation.stepconversion.user.UserExcelFileHandler;
 import com.codifyd.automation.stepconversion.user.UserGroupExcelFileHandler;
+import com.codifyd.automation.stepconversion.user.UserGroupPrivilegesExcelFileHandler;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
 import com.codifyd.automation.util.AutomationConstants;
 import com.codifyd.test.util.UserInputUtil;
@@ -38,7 +39,9 @@ public class TestConversionExcelFileHandler {
 		options.put(7, "Dimension");
 		options.put(8, "Context");
 		options.put(9, "User Group");
-		options.put(10, "User");
+		options.put(10, "User Group Privilges");
+		options.put(11, "User");
+		
 
 		try {
 			Integer choice = UserInputUtil.getUserSelectedOptionFromMap(options);
@@ -96,6 +99,12 @@ public class TestConversionExcelFileHandler {
 				break;
 
 			case 10:
+				UserGroupPrivilegesExcelFileHandler userGroupPrivilegesExcelFileHandler = new UserGroupPrivilegesExcelFileHandler();
+				userGroupPrivilegesExcelFileHandler
+						.handleFile(UserInputUtil.getUserInput(AutomationConstants.USERGROUPPRIVILEGES, defaultObject));
+				break;
+				
+			case 11:
 				UserExcelFileHandler userExcelFileHandler = new UserExcelFileHandler();
 				userExcelFileHandler
 						.handleFile(UserInputUtil.getUserInput(AutomationConstants.USER, defaultObject));
@@ -117,7 +126,7 @@ public class TestConversionExcelFileHandler {
 
 	static UserInputFileUtilDO getDefaultUserInputDO() {
 		UserInputFileUtilDO defaultObject = new UserInputFileUtilDO();
-		String inputFilePath = Paths.get(System.getProperty("user.home"), "Downloads", "conv1", "Users.xlsx")
+		String inputFilePath = Paths.get(System.getProperty("user.home"), "Downloads", "conv1", "Context.xlsx")
 				.toString();
 
 		File tmpFile = new File(inputFilePath);
