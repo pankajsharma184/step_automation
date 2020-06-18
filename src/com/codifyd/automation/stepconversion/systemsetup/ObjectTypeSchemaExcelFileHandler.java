@@ -1,15 +1,20 @@
 package com.codifyd.automation.stepconversion.systemsetup;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
@@ -45,20 +50,21 @@ public class ObjectTypeSchemaExcelFileHandler implements FileConversionHandler {
 
 			ConfigHandler configFile = userInputFileUtilDO.getConfigFile();
 			List<String> headerList = new ArrayList<String>();
-			for (String key : configFile.keySet())
+			for (String key : configFile.keySet()) {
 				headerList.add(key);
+			}
 
-			System.out.println(configFile);
 			File inputFile = new File(userInputFileUtilDO.getInputPath());
 
 			URI outputUri = Paths.get(userInputFileUtilDO.getOutputPath(), userInputFileUtilDO.getFilename()).toUri();
 			File outputFile = new File(outputUri);
 
-			List<ObjectTypeSchemaExcelInfo> excelVal = new ArrayList<ObjectTypeSchemaExcelInfo>();
+			Map<String, ObjectTypeSchemaExcelInfo> excelVal = new LinkedHashMap<String, ObjectTypeSchemaExcelInfo>();
+			List<String> errorList = new ArrayList<String>();
 
-			readExcel(inputFile, excelVal, configFile);
+			readExcel(inputFile, excelVal, headerList, errorList);
 
-			if (!excelVal.isEmpty()) {
+			if (!excelVal.isEmpty() && errorList.isEmpty()) {
 				// Initialize object factory and add unit values
 				ObjectFactory objectFactory = new ObjectFactory();
 				STEPProductInformation stepProductInformation = objectFactory.createSTEPProductInformation();
@@ -66,7 +72,8 @@ public class ObjectTypeSchemaExcelFileHandler implements FileConversionHandler {
 				stepProductInformation.setWorkspaceID(HandlerConstants.MAIN);
 
 				UserTypesType userTypes = objectFactory.createUserTypesType();
-				for (ObjectTypeSchemaExcelInfo objectInfo : excelVal) {
+				for (String key : excelVal.keySet()) {
+					ObjectTypeSchemaExcelInfo objectInfo = excelVal.get(key);
 					UserTypeType userType = objectFactory.createUserTypeType();
 
 					String objectTypeID = objectInfo.getObjectTypeID();
@@ -85,7 +92,6 @@ public class ObjectTypeSchemaExcelFileHandler implements FileConversionHandler {
 					if (!ExcelWorkbookUtility.isNullOrBlank(idPattern)) {
 						userType.setIDPattern(idPattern);
 					}
-					System.out.println(objectTypeID + "\t" + objectTypeName + "\t" + idPattern);
 					if (null != objectInfo.getParentID() && !objectInfo.getParentID().isEmpty()) {
 						for (String parentID : objectInfo.getParentID()) {
 							if (!ExcelWorkbookUtility.isNullOrBlank(parentID)) {
@@ -97,6 +103,7 @@ public class ObjectTypeSchemaExcelFileHandler implements FileConversionHandler {
 					}
 
 					userTypes.getUserType().add(userType);
+
 				}
 
 				stepProductInformation.setUserTypes(userTypes);
@@ -111,16 +118,32 @@ public class ObjectTypeSchemaExcelFileHandler implements FileConversionHandler {
 
 				System.out.println("File Generated in path : " + outputFile.getAbsolutePath());
 
+			} else {
+				DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+				File file = new File(
+						Paths.get(userInputFileUtilDO.getOutputPath(), "Errors" + df.format(new Date()) + ".txt")
+								.toString());
+				FileWriter writer = new FileWriter(file);
+				BufferedWriter buffer = new BufferedWriter(writer);
+				for (String errors : errorList) {
+					buffer.write(errors + "\n");
+				}
+				buffer.close();
+				writer.close();
+				System.out.println("Errors Found In Excel File");
+				System.out.println("Error File Generated in path : " + file.getAbsolutePath());
 			}
 
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
 
-	private void readExcel(File inputFile, List<ObjectTypeSchemaExcelInfo> excelVal, ConfigHandler configFile)
-			throws Exception {
+	private void readExcel(File inputFile, Map<String, ObjectTypeSchemaExcelInfo> excelVal, List<String> headerList,
+			List<String> errorList) throws Exception {
 		try {
 			InputStream fs = new FileInputStream(inputFile);
 
@@ -134,44 +157,51 @@ public class ObjectTypeSchemaExcelFileHandler implements FileConversionHandler {
 			List<String> columnHeaders = new ArrayList<String>();
 
 			DataFormatter df = new DataFormatter();
-
-			for (Iterator<Row> rowItr = sheet.iterator(); rowItr.hasNext();) {
-				Row row = rowItr.next();
-				int rownum = row.getRowNum();
+			Row row0 = sheet.getRow(0);
+			for (int rownum = 0; rownum <= sheet.getLastRowNum(); rownum++) {
+				Row row = sheet.getRow(rownum);
 				ObjectTypeSchemaExcelInfo excelInfo = new ObjectTypeSchemaExcelInfo();
-				List<ObjectTypeSchemaExcelInfo> list = new ArrayList<ObjectTypeSchemaExcelInfo>();
 
 				if (rownum == 0) {
-					for (Iterator<Cell> cellItr = row.iterator(); cellItr.hasNext();) {
-						Cell cell = cellItr.next();
+					for (int cellnum = 0; cellnum < row0.getLastCellNum(); cellnum++) {
+						Cell cell = row.getCell(cellnum);
 						columnHeaders.add(df.formatCellValue(cell).trim());
 					}
 					System.out.println(columnHeaders);
 				} else {
-					for (Iterator<Cell> cellItr = row.iterator(); cellItr.hasNext();) {
-						Cell cell = cellItr.next();
-						int cellnum = cell.getColumnIndex();
+					for (int cellnum = 0; cellnum < row0.getLastCellNum(); cellnum++) {
+						Cell cell = row.getCell(cellnum);
 
 						String cellVal = df.formatCellValue(cell);
+						if (ExcelWorkbookUtility.isNullOrBlank(cellVal)) {
+							cellVal = "";
+						}
 
-						System.out.println(cellVal);
-
-						if (cellnum == columnHeaders.indexOf(configFile.get("UserTypeID"))) {
+						if (cellnum == headerList.indexOf("UserTypeID")) {
 							excelInfo.setObjectTypeID(cellVal);
-						} else if (cellnum == columnHeaders.indexOf(configFile.get("IDPattern"))) {
+						} else if (cellnum == headerList.indexOf("IDPattern")) {
 							excelInfo.setIdPattern(cellVal);
-						} else if (cellnum == columnHeaders.indexOf(configFile.get("Name"))) {
+						} else if (cellnum == headerList.indexOf("ObjectTypeName")) {
 							excelInfo.setName(cellVal);
-						} else if (cellnum == columnHeaders.indexOf(configFile.get("ParentID"))) {
+						} else if (cellnum == headerList.indexOf("ParentObjectTypeID")) {
 							Set<String> set = new HashSet<String>();
-							set.addAll(Arrays.asList(cellVal.split(",|;|\\|")));
+							for (String str : cellVal.split(",|;|\\|")) {
+								set.add(str.trim());
+							}
 							excelInfo.setParentID(set);
 						}
+
 					}
-					excelVal.add(excelInfo);
+//					System.out.println(excelInfo.getName() + "\t" + excelInfo.getParentID());
+					if (excelVal.containsKey(excelInfo.getObjectTypeID())) {
+						errorList.add("Duplicate ID Found at row : " + (rownum + 1));
+					} else {
+						excelVal.put(excelInfo.getObjectTypeID(), excelInfo);
+					}
+
 				}
 			}
-
+//			System.out.println("=======================================");
 			workbook.close();
 			fs.close();
 		} catch (Exception e) {
