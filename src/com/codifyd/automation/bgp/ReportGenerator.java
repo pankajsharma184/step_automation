@@ -1,6 +1,9 @@
 package com.codifyd.automation.bgp;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +25,15 @@ public class ReportGenerator {
 		}
 
 		// Get Output Path
-		File outputFile = userinput.getOutputFile();
+		String fileName = inputFile.getName();
+		int pos = fileName.lastIndexOf(".");
+		if (pos > 0 && pos < (fileName.length() - 1)) {
+			// If '.' is not the first or last character.
+			fileName = fileName.substring(0, pos);
+		}
+		DateFormat df = new SimpleDateFormat("yyyyMMddhhmmss");
+		String outputFilePath = inputFile.getParentFile().getAbsolutePath() + File.separator + "BGPErrorFile_"
+				+ df.format(new Date()) +"_"+ fileName + ".xlsx";
 
 		// Get Host Url
 		String urlText = userinput.getInputServerPath();
@@ -31,11 +42,10 @@ public class ReportGenerator {
 			throw new Exception("Input Server path is invalid. Given value - " + urlText);
 		}
 
-		Set<String> urls = BGPRestAPI.getValidURLsFromInput(inputFile, urlText, userinput.getContextID(),
-				userinput.getWorkspaceID());
+		Set<String> urls = BGPRestAPI.getValidURLsFromInput(inputFile, urlText, userinput.getContextID());
 		List<JSONObject> list = JSONHandler.getErrorList(urls,
 				new StepAuthenticator(userinput.getUsername(), userinput.getPassword()));
-		JSONHandler.writeJSONtoExcel(list, outputFile);
+		JSONHandler.writeJSONtoExcel(list, outputFilePath);
 	}
 
 	private static String getFileExtension(String file) {

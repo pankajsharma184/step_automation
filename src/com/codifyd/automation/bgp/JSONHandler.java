@@ -1,8 +1,11 @@
 package com.codifyd.automation.bgp;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Authenticator;
@@ -17,6 +20,7 @@ import java.util.TreeMap;
 import javax.net.ssl.HttpsURLConnection;
 
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -30,26 +34,33 @@ import org.json.simple.parser.ParseException;
 
 public class JSONHandler {
 
-	public static void writeJSONtoExcel(List<JSONObject> list, File outputFile) throws Exception, ParseException {
+	public static void writeJSONtoExcel(List<JSONObject> list, String outputFilePath) throws Exception, ParseException {
 		// parse error rows to excel data
 		int i = 0;
 		TreeMap<Integer, ArrayList<String>> map = new TreeMap<Integer, ArrayList<String>>();
+		List<String> errors = new ArrayList<>();
 		for (JSONObject obj : list) {
 			ArrayList<String> set = new ArrayList<String>();
 			String entryText = (String) obj.get("entryText");
-			String attributeID = getAttributeID(entryText);
-			String productID = getProductID(entryText);
-			String errorValue = getErrorValue(entryText, attributeID, productID);
+			if (entryText.contains("step://attribute")) {
+				String attributeID = getAttributeID(entryText);
+				String productID = getProductID(entryText);
+				String errorValue = getErrorValue(entryText, attributeID, productID);
 
-			set.add(attributeID);
-			set.add(productID);
-			set.add(errorValue);
-			map.put(i, set);
+				set.add(attributeID);
+				set.add(productID);
+				set.add(errorValue);
+				map.put(i, set);
 
-			i++;
+				i++;
+			} else {
+				errors.add(entryText);
+			}
 		}
 		// write to excel
-		writeToExcel(map, outputFile);
+		writeToExcel(map, outputFilePath);
+		writeErrorToExcel(errors, outputFilePath);
+		System.out.println("File Generated in path : " + outputFilePath);
 
 	}
 
@@ -75,7 +86,7 @@ public class JSONHandler {
 		return errorValue;
 	}
 
-	private static void writeToExcel(TreeMap<Integer, ArrayList<String>> map, File outputFile) throws Exception {
+	private static void writeToExcel(TreeMap<Integer, ArrayList<String>> map, String outputFilePath) throws Exception {
 		try {
 			XSSFWorkbook wb = new XSSFWorkbook();
 			// Create a blank sheet
@@ -134,12 +145,53 @@ public class JSONHandler {
 			}
 
 			// Write the workbook in file system
-			FileOutputStream out = new FileOutputStream(outputFile);
+			FileOutputStream out = new FileOutputStream(outputFilePath);
 			wb.write(out);
 			out.close();
 			wb.close();
-			System.out.println("File Generated in path : " + outputFile);
 		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+
+	}
+
+	private static void writeErrorToExcel(List<String> errors, String outputFilePath) throws Exception {
+		try {
+			FileInputStream inputStream = new FileInputStream(new File(outputFilePath));
+			XSSFWorkbook wb = new XSSFWorkbook(inputStream);
+			// Create a blank sheet
+			XSSFSheet sheet = wb.createSheet("Other Errors");
+			// Create row object
+			XSSFRow row;
+			// Create cell object
+			XSSFCell cell;
+			// Excel cell color
+			XSSFCellStyle cellStyle;
+
+			// add header
+			row = sheet.createRow(0);
+			cell = row.createCell(0);
+			cell.setCellValue("Errors");
+			cellStyle = wb.createCellStyle();
+			cellStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(50, 120, 180)));
+			cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+			cell.setCellStyle(cellStyle);
+
+			// add data
+			int rowid = 1;
+			for (String eachErrorText : errors) {
+				row = sheet.createRow(rowid);
+				cell = row.createCell(0);
+				cell.setCellValue(eachErrorText);
+				rowid++;
+			}
+			inputStream.close();
+			// Write the workbook in file system
+			FileOutputStream out = new FileOutputStream(outputFilePath);
+			wb.write(out);
+			out.close();
+			wb.close();
+		} catch (IOException e) {
 			throw new Exception(e.getMessage());
 		}
 
