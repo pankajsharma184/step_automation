@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.codifyd.automation.stepconversion.attributedata.ProductAttributeDataExcelFileHandler;
 import com.codifyd.automation.stepconversion.attributelink.AttributeLinkExcelFileHandler;
 import com.codifyd.automation.stepconversion.attributeschema.AttributeExcelFileHandler;
 import com.codifyd.automation.stepconversion.context.ContextExcelFileHandler;
@@ -41,6 +42,7 @@ public class TestConversionExcelFileHandler {
 		options.put(9, "User Group");
 		options.put(10, "User Group Privilges");
 		options.put(11, "User");
+		options.put(12, "Product Attribute Data");
 		
 
 		try {
@@ -109,6 +111,12 @@ public class TestConversionExcelFileHandler {
 				userExcelFileHandler
 						.handleFile(UserInputUtil.getUserInput(AutomationConstants.USER, defaultObject));
 				break;
+				
+			case 12:
+				ProductAttributeDataExcelFileHandler productAttributeDataExcelFileHandler = new ProductAttributeDataExcelFileHandler();
+				productAttributeDataExcelFileHandler
+						.handleFile(UserInputUtil.getUserInput(AutomationConstants.PRODUCTATTRIBUTEDATA, defaultObject));
+				break;
 
 			default:
 				break;
@@ -126,7 +134,7 @@ public class TestConversionExcelFileHandler {
 
 	static UserInputFileUtilDO getDefaultUserInputDO() {
 		UserInputFileUtilDO defaultObject = new UserInputFileUtilDO();
-		String inputFilePath = Paths.get(System.getProperty("user.home"), "Downloads", "conv1", "Context.xlsx")
+		String inputFilePath = Paths.get(System.getProperty("user.home"), "Downloads", "conv1", "AttributeData.xlsx")
 				.toString();
 
 		File tmpFile = new File(inputFilePath);

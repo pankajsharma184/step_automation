@@ -1,0 +1,175 @@
+package com.codifyd.automation.stepconversion.attributedata;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.codifyd.automation.stepconversion.util.FileConversionHandler;
+import com.codifyd.automation.stepconversion.util.HandlerConstants;
+import com.codifyd.automation.stepconversion.util.InputValidator;
+import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
+import com.codifyd.stepxsd.KeyValueType;
+import com.codifyd.stepxsd.ObjectFactory;
+import com.codifyd.stepxsd.ProductType;
+import com.codifyd.stepxsd.ProductsType;
+import com.codifyd.stepxsd.STEPProductInformation;
+import com.codifyd.stepxsd.ValueType;
+import com.codifyd.stepxsd.ValuesType;
+
+public class ProductAttributeDataExcelFileHandler implements FileConversionHandler {
+
+	@Override
+	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
+
+		try {
+			// parse the input for errors
+			InputValidator.validateExcelToXML(userInput);
+
+			// ConfigHandler configFile = userInput.getConfigFile();
+			// List<String> headerList = new ArrayList<String>();
+			// for (String key : configFile.keySet())
+			// headerList.add(key);
+
+			// Read the Excel
+			ArrayList<AttributeDataExcelInfo> excelValues = new ArrayList<>();
+			readExcel(new File(userInput.getInputPath()), excelValues);
+
+			File outputFile = new File(
+					Paths.get(new File(userInput.getOutputPath()).getPath(), userInput.getFilename()).toUri());
+
+			// Initialize object factory and add unit values
+			ObjectFactory objectFactory = new ObjectFactory();
+			STEPProductInformation stepProductInformation = objectFactory.createSTEPProductInformation();
+			stepProductInformation.setContextID(HandlerConstants.CONTEXT1);
+			stepProductInformation.setWorkspaceID(HandlerConstants.MAIN);
+
+			ProductsType productsType = objectFactory.createProductsType();
+
+			for (AttributeDataExcelInfo attributeDataExcelInfo : excelValues) {
+
+				ProductType productType = objectFactory.createProductType();
+				if (!isNullOrBlank(attributeDataExcelInfo.getStepID())) {
+					productType.setID(attributeDataExcelInfo.getStepID());
+				}
+
+				// add unique key if present
+				if (!isNullOrBlank(attributeDataExcelInfo.getUniqueKeyValue())) {
+					KeyValueType keyValue = objectFactory.createKeyValueType();
+					keyValue.setKeyID(attributeDataExcelInfo.getUniqueKeyID());
+					keyValue.setContent(attributeDataExcelInfo.getUniqueKeyValue());
+					productType.setKeyValue(keyValue);
+				}
+
+				// add attribute values
+				if (!attributeDataExcelInfo.getAttributeData().isEmpty()) {
+					List<ValueType> valuesList = new ArrayList<>();
+					for (Map.Entry<String, String> eachAttr : attributeDataExcelInfo.getAttributeData().entrySet()) {
+						if (!isNullOrBlank(eachAttr.getKey())) {
+							ValueType value = objectFactory.createValueType();
+							value.setAttributeID(eachAttr.getKey());
+							String attrValue = String.join("<multisep/>", eachAttr.getValue().split(";|,|\\|"));
+							value.setContent(attrValue);
+							valuesList.add(value);
+						}
+					}
+					ValuesType values = objectFactory.createValuesType();
+					values.getValueOrMultiValueOrValueGroup().addAll(valuesList);
+					productType.getProductOrSequenceProductOrSuppressedProductCrossReference().add(values);
+				}
+				productsType.getProduct().add(productType);
+			}
+
+			stepProductInformation.setProducts(productsType);
+
+			JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+			// output pretty printed
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			jaxbMarshaller.marshal(stepProductInformation, outputFile);
+
+			System.out.println("File Generated in path : " + outputFile.getAbsolutePath());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	private void readExcel(File inputFile, ArrayList<AttributeDataExcelInfo> excelValues) throws Exception {
+		try {
+			List<String> columnHeader = null;
+			InputStream fs = new FileInputStream(inputFile);
+
+			// Create Workbook instance holding reference to .xlsx file
+			XSSFWorkbook workbook = new XSSFWorkbook(fs);
+
+			// Get first/desired sheet from the workbook
+			XSSFSheet sheet = workbook.getSheetAt(0);
+
+			for (Iterator<Row> iterator = sheet.iterator(); iterator.hasNext();) {
+				Row row = iterator.next();
+
+				if (row.getRowNum() == 0) {
+					columnHeader = new ArrayList<String>();
+					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
+						Cell cell = iterator2.next();
+						columnHeader.add(cell.getStringCellValue());
+					}
+				}
+
+				if (row.getRowNum() > 0) {
+					AttributeDataExcelInfo attributeDataExcelInfo = new AttributeDataExcelInfo();
+					DataFormatter df = new DataFormatter();
+					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
+						Cell cell = iterator2.next();
+
+						String cellValue = df.formatCellValue(cell);
+						if (isNullOrBlank(cellValue)) {
+							continue;
+						}
+
+						if (cell.getColumnIndex() == 0) {
+							attributeDataExcelInfo.setStepID(cellValue);
+						} else if (cell.getColumnIndex() == 1) {
+							attributeDataExcelInfo.setUniqueKeyID(columnHeader.get(1));
+							attributeDataExcelInfo.setUniqueKeyValue(cellValue);
+						} else if (cell.getColumnIndex() > 1) {
+							attributeDataExcelInfo.getAttributeData().put(columnHeader.get(cell.getColumnIndex()),
+									cellValue);
+						}
+
+					}
+					excelValues.add(attributeDataExcelInfo);
+				}
+			}
+			workbook.close();
+			fs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	public static boolean isNullOrBlank(String param) {
+		if (param == null || param.trim().length() == 0) {
+			return true;
+		}
+		return false;
+	}
+}
