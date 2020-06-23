@@ -18,6 +18,7 @@ import com.codifyd.automation.stepconversion.lovschema.LovExcelFileHandler;
 import com.codifyd.automation.stepconversion.taxonomy.ClassificationTaxonomyExcelFileHandler;
 import com.codifyd.automation.stepconversion.taxonomy.ProductTaxonomyExcelFileHandler;
 import com.codifyd.automation.stepconversion.uom.UomExcelFileHandler;
+import com.codifyd.automation.stepconversion.user.SetupGroupPrivilegesExcelFileHandler;
 import com.codifyd.automation.stepconversion.user.UserExcelFileHandler;
 import com.codifyd.automation.stepconversion.user.UserGroupExcelFileHandler;
 import com.codifyd.automation.stepconversion.user.UserGroupPrivilegesExcelFileHandler;
@@ -41,8 +42,9 @@ public class TestConversionExcelFileHandler {
 		options.put(8, "Context");
 		options.put(9, "User Group");
 		options.put(10, "User Group Privilges");
-		options.put(11, "User");
-		options.put(12, "Product Attribute Data");
+		options.put(11, "Setup Group Privilges");
+		options.put(12, "User");
+		options.put(13, "Product Attribute Data");
 		
 
 		try {
@@ -107,12 +109,18 @@ public class TestConversionExcelFileHandler {
 				break;
 				
 			case 11:
+				SetupGroupPrivilegesExcelFileHandler setupGroupPrivilegesExcelFileHandler = new SetupGroupPrivilegesExcelFileHandler();
+				setupGroupPrivilegesExcelFileHandler
+						.handleFile(UserInputUtil.getUserInput(AutomationConstants.SETUPGROUPPRIVILEGES, defaultObject));
+				break;
+				
+			case 12:
 				UserExcelFileHandler userExcelFileHandler = new UserExcelFileHandler();
 				userExcelFileHandler
 						.handleFile(UserInputUtil.getUserInput(AutomationConstants.USER, defaultObject));
 				break;
 				
-			case 12:
+			case 13:
 				ProductAttributeDataExcelFileHandler productAttributeDataExcelFileHandler = new ProductAttributeDataExcelFileHandler();
 				productAttributeDataExcelFileHandler
 						.handleFile(UserInputUtil.getUserInput(AutomationConstants.PRODUCTATTRIBUTEDATA, defaultObject));

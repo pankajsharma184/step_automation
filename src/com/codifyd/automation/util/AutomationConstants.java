@@ -16,6 +16,7 @@ public class AutomationConstants {
 	public static final String CONTEXT = "Context";
 	public static final String USERGROUP = "UserGroup";
 	public static final String USERGROUPPRIVILEGES = "UserGroupPrivileges";
+	public static final String SETUPGROUPPRIVILEGES = "SetupGroupPrivileges";
 	public static final String USER = "User";
 	public static final String PRODUCTATTRIBUTEDATA = "ProductAttributeData";
 

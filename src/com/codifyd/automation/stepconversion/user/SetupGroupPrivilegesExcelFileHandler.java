@@ -3,8 +3,6 @@ package com.codifyd.automation.stepconversion.user;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,17 +24,13 @@ import com.codifyd.automation.stepconversion.util.FileConversionHandler;
 import com.codifyd.automation.stepconversion.util.HandlerConstants;
 import com.codifyd.automation.stepconversion.util.InputValidator;
 import com.codifyd.automation.stepconversion.util.UserInputFileUtilDO;
-import com.codifyd.stepxsd.NameType;
 import com.codifyd.stepxsd.ObjectFactory;
 import com.codifyd.stepxsd.PrivilegeRuleType;
 import com.codifyd.stepxsd.STEPProductInformation;
-import com.codifyd.stepxsd.UserGroupLinkType;
 import com.codifyd.stepxsd.UserGroupListType;
 import com.codifyd.stepxsd.UserGroupType;
-import com.codifyd.stepxsd.UserListType;
-import com.codifyd.stepxsd.UserType;
 
-public class UserGroupPrivilegesExcelFileHandler implements FileConversionHandler {
+public class SetupGroupPrivilegesExcelFileHandler implements FileConversionHandler {
 
 	@Override
 	public void handleFile(UserInputFileUtilDO userInput) throws Exception {
@@ -70,27 +64,11 @@ public class UserGroupPrivilegesExcelFileHandler implements FileConversionHandle
 				userGroupType.setID(entrySet.getKey());
 				entrySet.getValue().forEach(privilege -> {
 					PrivilegeRuleType privilegeRuleType = objectFactory.createPrivilegeRuleType();
-					privilegeRuleType.setActionSetID(privilege.getActionSetID());
-					if (!isNullOrBlank(privilege.getNodeType())) {
-						try {
-							// set the value
-							Method method = privilegeRuleType.getClass().getMethod(
-									"set" + privilege.getNodeType().trim() + "ID",
-									new Class[] { privilege.getNodeID().getClass() });
-							method.invoke(privilegeRuleType, privilege.getNodeID());
-						} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (NoSuchMethodException | SecurityException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-					}
-					privilegeRuleType.setUserTypeID(privilege.getUserTypeID());
+					privilegeRuleType.setActionSetID(privilege.getActionSetID());					
 					privilegeRuleType.setAttributeGroupID(privilege.getAttributeGroupID());
+					privilegeRuleType.setSetupGroupID(privilege.getSetupGroupID());
 					userGroupType.getPrivilegeRule().add(privilegeRuleType);
 				});
-
 				userGroupListType.getUserGroup().add(userGroupType);
 			}
 
@@ -137,35 +115,29 @@ public class UserGroupPrivilegesExcelFileHandler implements FileConversionHandle
 
 				DataFormatter df = new DataFormatter();
 				if (row.getRowNum() > 0) {
-					PrivilegeExcelInfo userGroupPrivilegeExcelInfo = new PrivilegeExcelInfo();
+					PrivilegeExcelInfo setupGroupPrivilegeExcelInfo = new PrivilegeExcelInfo();
 					for (Iterator<Cell> iterator2 = row.iterator(); iterator2.hasNext();) {
 						Cell cell = iterator2.next();
 						switch (cell.getColumnIndex()) {
 						case 0:
-							userGroupPrivilegeExcelInfo.setUserGroupID(df.formatCellValue(cell));
+							setupGroupPrivilegeExcelInfo.setUserGroupID(df.formatCellValue(cell));
 							break;
 						case 1:
-							userGroupPrivilegeExcelInfo.setActionSetID(df.formatCellValue(cell));
-							break;
+							setupGroupPrivilegeExcelInfo.setActionSetID(df.formatCellValue(cell));
+							break;						
 						case 2:
-							userGroupPrivilegeExcelInfo.setNodeType(df.formatCellValue(cell));
+							setupGroupPrivilegeExcelInfo.setAttributeGroupID(df.formatCellValue(cell));
 							break;
 						case 3:
-							userGroupPrivilegeExcelInfo.setNodeID(df.formatCellValue(cell));
-							break;
-						case 4:
-							userGroupPrivilegeExcelInfo.setUserTypeID(df.formatCellValue(cell));
-							break;
-						case 5:
-							userGroupPrivilegeExcelInfo.setAttributeGroupID(df.formatCellValue(cell));
+							setupGroupPrivilegeExcelInfo.setSetupGroupID(df.formatCellValue(cell));
 							break;
 						default:
 							break;
 
 						}
 					}
-					excelValues.computeIfAbsent(userGroupPrivilegeExcelInfo.getUserGroupID(), k -> new ArrayList<>())
-							.add(userGroupPrivilegeExcelInfo);
+					excelValues.computeIfAbsent(setupGroupPrivilegeExcelInfo.getUserGroupID(), k -> new ArrayList<>())
+							.add(setupGroupPrivilegeExcelInfo);
 				}
 			}
 			workbook.close();

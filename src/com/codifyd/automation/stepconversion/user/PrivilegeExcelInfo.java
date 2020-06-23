@@ -1,11 +1,14 @@
 package com.codifyd.automation.stepconversion.user;
 
-public class UserGroupPrivilegeExcelInfo {
+public class PrivilegeExcelInfo {
 	
 	private String userGroupID;	
 	private String actionSetID;
 	private String nodeType;
 	private String nodeID;
+	private String userTypeID;
+	private String attributeGroupID;
+	private String setupGroupID;
 	
 	public String getUserGroupID() {
 		return userGroupID;
@@ -30,6 +33,24 @@ public class UserGroupPrivilegeExcelInfo {
 	}
 	public void setNodeID(String nodeID) {
 		this.nodeID = nodeID;
+	}
+	public String getUserTypeID() {
+		return userTypeID;
+	}
+	public void setUserTypeID(String userTypeID) {
+		this.userTypeID = userTypeID;
+	}
+	public String getAttributeGroupID() {
+		return attributeGroupID;
+	}
+	public void setAttributeGroupID(String attributeGroupID) {
+		this.attributeGroupID = attributeGroupID;
+	}
+	public String getSetupGroupID() {
+		return setupGroupID;
+	}
+	public void setSetupGroupID(String setupGroupID) {
+		this.setupGroupID = setupGroupID;
 	}
 	
 	
